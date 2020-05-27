@@ -1,12 +1,13 @@
+import { Method } from 'axios';
 import { HttpResponseCodeEnums } from '@/enums/HttpResponseCodeEnums';
 
 /*
  * @Author: Always
- * @LastEditors: Always
+ * @LastEditors  : Always
  * @email: 740905172@qq.com
  * @Date: 2019-12-31 16:57:23
- * @LastEditTime: 2020-05-27 18:58:32
- * @FilePath: /backgorund_system/src/enums/Http.ts
+ * @LastEditTime : 2020-01-09 16:19:08
+ * @FilePath: /managementSystem/src/interface/Http.ts
  */
 export interface IHttp {
   type?: Method;
