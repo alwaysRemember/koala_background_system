@@ -1,0 +1,62 @@
+.login-wrapper {
+  position: relative;
+  height: 100%;
+  background: #303e4f;
+  background-position: center;
+  .login-con {
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    left: 50%;
+    top: 50%;
+    width: 100%;
+    transform: translate(-50%, -50%);
+    .login {
+      padding: 30px;
+      border-radius: 20px;
+      background: #edf0f1dc;
+      box-shadow: 0 2px 5px #cdd0d1;
+      animation: login 0.4s linear;
+      @keyframes login {
+        from {
+          opacity: 0;
+          margin-top: -60px;
+        }
+      }
+      .login-title {
+        font-size: 36px;
+        font-family: 'Comic Sans MS';
+        text-align: center;
+        color: #4280b4;
+        margin-bottom: 20px;
+      }
+      .login-sub-title {
+        font-size: 28px;
+        text-align: center;
+        color: #5098d6;
+        margin: 30px auto;
+      }
+      .login-input-wrapper {
+        .input {
+          margin: 10px 0;
+        }
+      }
+      .submit {
+        display: block;
+        margin: 20px auto 0;
+      }
+    }
+  }
+}
+
+@media all and (max-width: 768px) {
+  .login-wrapper {
+    .login-con {
+      .login {
+        .login-title {
+          font-size: 24px;
+        }
+      }
+    }
+  }
+}

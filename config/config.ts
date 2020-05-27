@@ -2,7 +2,7 @@
  * @Author: Always
  * @LastEditors: Always
  * @Date: 2020-05-27 15:36:36
- * @LastEditTime: 2020-05-27 16:58:00
+ * @LastEditTime: 2020-05-27 17:33:31
  * @FilePath: /backgorund_system/config/config.ts
  */
 

@@ -2,7 +2,7 @@
  * @Author: Always
  * @LastEditors: Always
  * @Date: 2020-05-27 15:52:05
- * @LastEditTime: 2020-05-27 15:58:38
+ * @LastEditTime: 2020-05-27 17:20:56
  * @FilePath: /backgorund_system/src/enums/UserAuthEnum.ts
  */
 
@@ -14,3 +14,4 @@ export enum EUserAuth {
   PROXY = 100, // 代理
   PUBLIC = 0, // 普通用户
 }
+
