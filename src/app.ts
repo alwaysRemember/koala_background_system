@@ -1,13 +1,7 @@
-/**
- * 修改props参数
- * @param props
- * @param param1
+/*
+ * @Author: Always
+ * @LastEditors: Always
+ * @Date: 2020-05-28 13:36:22
+ * @LastEditTime: 2020-05-28 13:50:58
+ * @FilePath: /koala_background_system/src/app.ts
  */
-export const modifyRouteProps = (props: any, { route }: any) => {
-  const { meta } = route;
-
-  // 设置页面名称
-  document.title = meta?.title || 'koala后台管理系统';
-
-  return { ...props };
-};

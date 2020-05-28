@@ -9,8 +9,11 @@
 import { TResponseCode } from './interface/Http';
 import { HttpResponseCodeEnums } from './enums/HttpResponseCodeEnums';
 
-export const codeType = (code: TResponseCode, message: string): Promise<any> => {
-  return new Promise((res,rej) => {
+export const codeType = (
+  code: TResponseCode,
+  message: string,
+): Promise<any> => {
+  return new Promise((res, rej) => {
     if (code === HttpResponseCodeEnums.ALERT) {
       // TODO 弹窗
       window.message.error(message);

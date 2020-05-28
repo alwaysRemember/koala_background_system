@@ -1,13 +1,14 @@
-/*
- * @Author: Always
- * @LastEditors: Always
- * @Date: 2020-05-27 15:13:50
- * @LastEditTime: 2020-05-27 16:27:01
- * @FilePath: /backgorund_system/typings.d.ts
- */ 
 declare module '*.css';
-declare module "*.png";
 declare module '*.less';
+declare module '*.png';
+declare module '*.svg' {
+  export function ReactComponent(
+    props: React.SVGProps<SVGSVGElement>,
+  ): React.ReactElement;
+  const url: string;
+  export default url;
+}
+
 interface Window {
   // axios请求中止函数
   cancelRequestFnList: Array<Function>;

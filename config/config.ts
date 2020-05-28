@@ -1,35 +1,19 @@
 /*
  * @Author: Always
  * @LastEditors: Always
- * @Date: 2020-05-27 15:36:36
- * @LastEditTime: 2020-05-27 17:33:31
- * @FilePath: /backgorund_system/config/config.ts
+ * @Date: 2020-05-28 13:36:22
+ * @LastEditTime: 2020-05-28 13:56:17
+ * @FilePath: /koala_background_system/config/config.ts
  */
 
-import { IConfig } from 'umi-types';
+import { defineConfig } from 'umi';
 import routes from './routes';
-// ref: https://umijs.org/config/
-const config: IConfig = {
-  publicPath:"./",
-  treeShaking: true,
+export default defineConfig({
+  nodeModulesTransform: {
+    type: 'none',
+  },
   routes,
-  plugins: [
-    // ref: https://umijs.org/plugin/umi-plugin-react.html
-    [
-      'umi-plugin-react',
-      {
-        antd: true,
-        dva: false,
-        dynamicImport: true,
-        title: 'backgorund_system',
-        dll: false,
-
-        routes: {
-          exclude: [/components\//],
-        },
-      },
-    ],
-  ],
-};
-
-export default config;
+  dynamicImport: {
+    loading: '@/components/PageLoading',
+  },
+});

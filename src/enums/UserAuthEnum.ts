@@ -14,4 +14,3 @@ export enum EUserAuth {
   PROXY = 100, // 代理
   PUBLIC = 0, // 普通用户
 }
-
