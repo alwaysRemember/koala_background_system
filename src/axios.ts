@@ -3,8 +3,8 @@
  * @LastEditors: Always
  * @email: 740905172@qq.com
  * @Date: 2020-03-19 15:45:36
- * @LastEditTime: 2020-03-19 18:43:30
- * @FilePath: /managementSystem/src/axios.ts
+ * @LastEditTime: 2020-05-28 16:23:51
+ * @FilePath: /koala_background_system/src/axios.ts
  */
 import axios, {
   Method,
@@ -18,6 +18,9 @@ import Qs from 'qs';
 import { codeType } from './codeType';
 import { HttpResponseCodeEnums } from './enums/HttpResponseCodeEnums';
 import { IHttpResponseData } from './interface/Http';
+import { getLocal } from './utils';
+import { IUserDataResponse } from './pages/Login/interface';
+import { EGlobal } from './enums/Global';
 
 type TContentType = 'form' | 'json' | 'formData';
 interface IAxiosRequest {
@@ -31,6 +34,8 @@ class Axios {
   private timeout: number = 30000; // 超时时间
   private withCredentials: boolean = true; // 跨域是否使用凭证
   private baseURL: string = this._setHost('/api'); //自动加在url前的参数
+  private token: string =
+    getLocal<IUserDataResponse>(EGlobal.LOCAL_USER_INFO).token || '';
 
   /**
    * 数据请求体
@@ -111,7 +116,8 @@ class Axios {
       withCredentials: this.withCredentials,
       baseURL: this.baseURL,
       headers: {
-        contentType: this._setContentType(options.contentType),
+        'Content-Type': this._setContentType(options.contentType),
+        Token: this.token,
       },
       cancelToken: new CancelToken(c => {
         window.cancelRequestFnList.push(c);

@@ -1,14 +1,19 @@
-import React, { useState, ChangeEventHandler } from 'react';
+import React, { useState, ChangeEventHandler, useEffect } from 'react';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
+import { Base64 } from 'js-base64';
 import { Row, Col, Input, Button } from 'antd';
 import styles from './index.less';
-import { IUserData } from './interface';
+import { IUserData, IUserDataResponse } from './interface';
+import { userLogin } from '@/api';
+import { setLocal } from '@/utils';
+import { EGlobal } from '@/enums/Global';
 
 /**
  * 登录
  */
 const Login = () => {
   const [btnLoading, setBtnLoading] = useState<boolean>(false); // 按钮loading状态
+  const [btnDisabled, setBtnDisabled] = useState<boolean>(false); // 登录是否失效
 
   const [userData, setUserData] = useState<IUserData>({
     username: '',
@@ -22,9 +27,10 @@ const Login = () => {
    */
   const onChange = (key: 'username' | 'password', e: any) => {
     e.persist();
+    const { value } = e.target;
     setUserData(prev =>
       Object.assign({}, prev, {
-        [key]: e.target.value,
+        [key]: key === 'username' ? value.replace(/[^\w]/g, '') : value,
       }),
     );
   };
@@ -32,9 +38,42 @@ const Login = () => {
   /**
    * 数据提交
    */
-  const submit = () => {
+  const submit = async () => {
+    // 校验用户名
+    if (!userData.username) {
+      window.message.warning('请输入用户名');
+      return;
+    }
+
+    // 校验密码
+    if (
+      !/^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,16}$/.test(userData.password)
+    ) {
+      window.message.warning('请输入正确的密码，格式为6-16位数数字、字母混合');
+      return;
+    }
+
     setBtnLoading(true);
+    try {
+      const data: IUserDataResponse = await userLogin({
+        username: userData.username,
+        password: Base64.encode(userData.password),
+      });
+      setBtnLoading(false);
+      setLocal(EGlobal.LOCAL_USER_INFO, JSON.stringify(data));
+      // TODO 跳转主页
+    } catch (e) {}
   };
+
+  // 设置按钮是否可点
+  useEffect(() => {
+    setBtnDisabled(
+      !(
+        userData.username &&
+        /^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,16}$/.test(userData.password)
+      ),
+    );
+  }, [userData]);
 
   return (
     <div className={styles['login-wrapper']}>
@@ -63,6 +102,7 @@ const Login = () => {
               />
             </div>
             <Button
+              disabled={btnDisabled}
               size="large"
               type="primary"
               loading={btnLoading}
