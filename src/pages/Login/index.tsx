@@ -1,5 +1,6 @@
 import React, { useState, ChangeEventHandler, useEffect } from 'react';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
+import { history } from 'umi';
 import { Base64 } from 'js-base64';
 import { Row, Col, Input, Button } from 'antd';
 import styles from './index.less';
@@ -7,6 +8,8 @@ import { IUserData, IUserDataResponse } from './interface';
 import { userLogin } from '@/api';
 import { setLocal } from '@/utils';
 import { EGlobal } from '@/enums/Global';
+import { useDispatch } from 'redux-react-hook';
+import { updateUserInfo } from '@/store/actions';
 
 /**
  * 登录
@@ -14,6 +17,8 @@ import { EGlobal } from '@/enums/Global';
 const Login = () => {
   const [btnLoading, setBtnLoading] = useState<boolean>(false); // 按钮loading状态
   const [btnDisabled, setBtnDisabled] = useState<boolean>(false); // 登录是否失效
+
+  const dispatch = useDispatch();
 
   const [userData, setUserData] = useState<IUserData>({
     username: '',
@@ -61,7 +66,8 @@ const Login = () => {
       });
       setBtnLoading(false);
       setLocal(EGlobal.LOCAL_USER_INFO, JSON.stringify(data));
-      // TODO 跳转主页
+      dispatch(updateUserInfo(data));
+      history.replace('/server');
     } catch (e) {}
   };
 
@@ -89,6 +95,7 @@ const Login = () => {
                 placeholder="请输入您的用户名"
                 value={userData.username}
                 prefix={<UserOutlined />}
+                onPressEnter={submit}
                 onChange={e => onChange('username', e)}
               />
               <Input.Password
@@ -98,6 +105,7 @@ const Login = () => {
                 value={userData.password}
                 placeholder="请输入您的密码"
                 prefix={<LockOutlined />}
+                onPressEnter={submit}
                 onChange={e => onChange('password', e)}
               />
             </div>

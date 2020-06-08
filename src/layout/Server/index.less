@@ -1,0 +1,28 @@
+.server-warpper {
+  min-height: 100%;
+  .server-header {
+    box-sizing: border-box;
+    padding: 0 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 80px;
+    box-shadow: 0 10px 10px 10px #f7f7f7;
+
+    .logo {
+      width: 150px;
+    }
+    .avatar-wrapper {
+      .avatar {
+        width: 60px;
+        transition: all 0.3s linear;
+        cursor: pointer;
+      }
+      &:hover {
+        .avatar {
+          transform: rotate(360deg);
+        }
+      }
+    }
+  }
+}
