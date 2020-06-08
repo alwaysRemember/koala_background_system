@@ -2,7 +2,7 @@
  * @Author: Always
  * @LastEditors: Always
  * @Date: 2020-05-28 15:59:48
- * @LastEditTime: 2020-05-28 16:15:36
+ * @LastEditTime: 2020-06-08 17:34:07
  * @FilePath: /koala_background_system/src/utils/index.ts
  */
 
@@ -22,4 +22,12 @@ export const getLocal = <T>(key: string): T => {
  */
 export const setLocal = (key: string, value: string): void => {
   window.localStorage.setItem(key, value);
+};
+
+/**
+ * 删除缓存
+ * @param key
+ */
+export const removeLocal = (key: string): void => {
+  window.localStorage.removeItem(key);
 };

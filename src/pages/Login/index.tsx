@@ -35,7 +35,8 @@ const Login = () => {
     const { value } = e.target;
     setUserData(prev =>
       Object.assign({}, prev, {
-        [key]: key === 'username' ? value.replace(/[^\w]/g, '') : value,
+        [key]:
+          key === 'username' ? value.replace(/[\u4e00-\u9fa5]/g, '') : value,
       }),
     );
   };
@@ -52,7 +53,9 @@ const Login = () => {
 
     // 校验密码
     if (
-      !/^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,16}$/.test(userData.password)
+      !/^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,16}$/.test(
+        userData.password as string,
+      )
     ) {
       window.message.warning('请输入正确的密码，格式为6-16位数数字、字母混合');
       return;
@@ -62,13 +65,15 @@ const Login = () => {
     try {
       const data: IUserDataResponse = await userLogin({
         username: userData.username,
-        password: Base64.encode(userData.password),
+        password: Base64.encode(userData.password as string),
       });
       setBtnLoading(false);
       setLocal(EGlobal.LOCAL_USER_INFO, JSON.stringify(data));
       dispatch(updateUserInfo(data));
       history.replace('/server');
-    } catch (e) {}
+    } catch (e) {
+      setBtnLoading(false);
+    }
   };
 
   // 设置按钮是否可点
@@ -76,7 +81,9 @@ const Login = () => {
     setBtnDisabled(
       !(
         userData.username &&
-        /^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,16}$/.test(userData.password)
+        /^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,16}$/.test(
+          userData.password as string,
+        )
       ),
     );
   }, [userData]);

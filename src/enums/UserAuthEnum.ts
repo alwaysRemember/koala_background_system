@@ -2,8 +2,8 @@
  * @Author: Always
  * @LastEditors: Always
  * @Date: 2020-05-27 15:52:05
- * @LastEditTime: 2020-05-27 17:20:56
- * @FilePath: /backgorund_system/src/enums/UserAuthEnum.ts
+ * @LastEditTime: 2020-06-08 17:13:37
+ * @FilePath: /koala_background_system/src/enums/UserAuthEnum.ts
  */
 
 /**

@@ -2,7 +2,7 @@
  * @Author: Always
  * @LastEditors: Always
  * @Date: 2020-06-08 16:32:21
- * @LastEditTime: 2020-06-08 16:39:06
+ * @LastEditTime: 2020-06-08 17:37:05
  * @FilePath: /koala_background_system/src/store/index.ts
  */
 
@@ -25,4 +25,5 @@ const myReducers = persistReducer<any, any>(persistConfig, reducers);
 const store = createStore(myReducers, undefined, composeWithDevTools());
 
 export const persistor = persistStore(store);
+
 export default store;

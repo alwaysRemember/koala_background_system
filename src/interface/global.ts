@@ -2,7 +2,7 @@
  * @Author: Always
  * @LastEditors: Always
  * @Date: 2020-05-27 16:00:38
- * @LastEditTime: 2020-06-08 16:26:23
+ * @LastEditTime: 2020-06-08 18:00:28
  * @FilePath: /koala_background_system/src/interface/Global.ts
  */
 import { IRoute } from 'umi';

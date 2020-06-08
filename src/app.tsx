@@ -2,7 +2,7 @@
  * @Author: Always
  * @LastEditors: Always
  * @Date: 2020-05-28 13:36:22
- * @LastEditTime: 2020-06-08 16:46:28
+ * @LastEditTime: 2020-06-08 17:47:08
  * @FilePath: /koala_background_system/src/app.tsx
  */
 import routerList from './routes';
@@ -49,3 +49,7 @@ export function rootContainer(container: any) {
   );
   return PrsistGateContainer;
 }
+
+export const render = (oldRender: any) => {
+  oldRender();
+};

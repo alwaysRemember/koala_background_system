@@ -3,7 +3,7 @@
  * @LastEditors: Always
  * @email: 740905172@qq.com
  * @Date: 2020-03-19 15:45:36
- * @LastEditTime: 2020-05-28 16:23:51
+ * @LastEditTime: 2020-06-08 18:08:22
  * @FilePath: /koala_background_system/src/axios.ts
  */
 import axios, {
@@ -55,7 +55,7 @@ class Axios {
             await codeType(code, message);
             resolve(data);
           } catch (e) {
-            // reject({ code, message });
+            reject({ code, message });
           }
         })
         .catch(async e => {

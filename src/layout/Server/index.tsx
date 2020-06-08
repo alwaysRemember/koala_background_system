@@ -1,26 +1,12 @@
-import React, { useCallback } from 'react';
+import React from 'react';
 import styles from './index.less';
-import { useMappedState } from 'redux-react-hook';
+import Header from './components/Header';
 const Server = (props: any) => {
-  const { userInfo } = useMappedState(useCallback(state => state, []));
-  console.log(userInfo);
-
   return (
-    <div className={styles['server-warpper']}>
-      <header className={styles['server-header']}>
-        <img
-          src={require('../../images/global/koala_logo.png')}
-          alt=""
-          className={styles['logo']}
-        />
-        <div className={styles['avatar-wrapper']}>
-          <img
-            src={require('../../images/global/avatar.jpg')}
-            alt=""
-            className={styles['avatar']}
-          />
-        </div>
-      </header>
+    <div className={styles['server-wrapper']}>
+      <Header />
+      <div className={styles['menu-lg-wrapper']}>menu</div>
+      <div className={styles['server-container']}>{props.children}</div>
     </div>
   );
 };

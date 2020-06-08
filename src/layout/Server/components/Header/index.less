@@ -1,0 +1,142 @@
+.server-header {
+  position: fixed;
+  top: 0;
+  overflow: hidden;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 0 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 70px;
+  background: #fff;
+  box-shadow: 0 10px 10px 10px #f7f7f7;
+  .menu-icon {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 60px;
+    height: 100%;
+    & > i {
+      font-size: 24px;
+      font-weight: bold;
+    }
+  }
+  .logo {
+    width: 150px;
+  }
+  .user-info-wrapper {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    .menu-icon {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 60px;
+      height: 100%;
+      & > i {
+        font-size: 24px;
+        font-weight: bold;
+      }
+    }
+    .avatar {
+      width: 60px;
+      animation: avatar 0.3s linear;
+      cursor: pointer;
+      @keyframes avatar {
+        from {
+          transform: rotate(0);
+        }
+        to {
+          transform: rotate(360deg);
+        }
+      }
+    }
+    .user-info {
+      box-sizing: border-box;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      margin: 0 20px;
+      & > li {
+        .label,
+        .value {
+          font-size: 16px;
+          text-align: right;
+        }
+        &:first-child {
+          margin-bottom: 10px;
+        }
+      }
+    }
+  }
+}
+@media all and (min-width: 768px) {
+  .server-header {
+    .menu-icon {
+      display: none;
+    }
+  }
+}
+
+@media all and (max-width: 768px) {
+  .server-header {
+    height: 60px;
+    padding: 0 10px;
+    .menu-icon {
+      justify-content: left;
+    }
+    .logo {
+      width: 100px;
+    }
+    .user-info-wrapper {
+      .avatar {
+        width: 40px;
+      }
+      .user-info {
+        & > li {
+          .label,
+          .value {
+            font-size: 12px;
+          }
+          &:first-child {
+            margin-bottom: 8px;
+          }
+        }
+      }
+      .quit {
+        font-size: 12px;
+      }
+    }
+  }
+}
+@media all and (max-width: 480px) {
+  .server-header {
+    .menu-icon {
+      width: 40px;
+    }
+    .logo {
+      display: none;
+    }
+    .user-info-wrapper {
+      .avatar {
+        width: 40px;
+      }
+      .user-info {
+        & > li {
+          .label,
+          .value {
+            font-size: 12px;
+          }
+          &:first-child {
+            margin-bottom: 5px;
+          }
+        }
+      }
+      .quit {
+        font-size: 12px;
+      }
+    }
+  }
+}
