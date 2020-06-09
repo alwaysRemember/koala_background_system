@@ -2,7 +2,7 @@
  * @Author: Always
  * @LastEditors: Always
  * @Date: 2020-05-27 15:38:05
- * @LastEditTime: 2020-06-09 14:57:01
+ * @LastEditTime: 2020-06-09 18:35:41
  * @FilePath: /koala_background_system/src/routes.ts
  */
 
@@ -28,6 +28,16 @@ export const serverRoutes: Array<IRouteData> = [
     component: require('./pages/UserList').default,
     meta: {
       title: '用户列表',
+      auth: EUserAuth.PROXY,
+    },
+  },
+  {
+    path: '/server/changePassword',
+    exact: true,
+    wrappers: [require('./wrappers/Auth').default],
+    component: require('./pages/ChangePassword').default,
+    meta: {
+      title: '修改密码',
       auth: EUserAuth.PROXY,
     },
   },

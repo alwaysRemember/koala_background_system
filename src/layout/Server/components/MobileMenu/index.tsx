@@ -19,7 +19,7 @@ const MobileMenu = ({ cref }: { cref: any }) => {
       ])}
     >
       <div className={styles['mobile-menu-con']}>
-        <Menu />
+        <Menu menuClick={() => setShow(false)} />
       </div>
       <div
         className={styles['mobile-menu-mask']}

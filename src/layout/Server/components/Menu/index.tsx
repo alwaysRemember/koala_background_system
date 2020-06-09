@@ -6,7 +6,7 @@ import { IMenuItem, ISubMenuItem } from '../../interface';
 import { menuList } from '../../menuData';
 
 const { SubMenu, Item } = Menu;
-const MenuCom = () => {
+const MenuCom = ({ menuClick }: { menuClick?: () => void }) => {
   const {
     location: { pathname },
   } = history;
@@ -38,6 +38,7 @@ const MenuCom = () => {
   const menuItemClick = ({ key }: { key: string }) => {
     if (key === selectedKeys[0]) return;
     setSelectedKeys([key]);
+    menuClick && menuClick();
     history.push(key);
   };
 

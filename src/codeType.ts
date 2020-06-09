@@ -3,10 +3,11 @@
  * @LastEditors: Always
  * @email: 740905172@qq.com
  * @Date: 2019-12-31 17:09:16
- * @LastEditTime: 2020-05-28 16:25:50
+ * @LastEditTime: 2020-06-09 18:27:28
  * @FilePath: /koala_background_system/src/codeType.ts
  */
 import { TResponseCode } from './interface/Http';
+import { history } from 'umi';
 import { HttpResponseCodeEnums } from './enums/HttpResponseCodeEnums';
 
 export const codeType = (
@@ -20,7 +21,7 @@ export const codeType = (
       return;
     }
     if (code === HttpResponseCodeEnums.NO_LOGIN) {
-      //TODO 跳转登录页
+      history.replace('/login');
       return;
     }
     res();
