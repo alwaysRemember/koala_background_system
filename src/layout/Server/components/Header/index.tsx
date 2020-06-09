@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useState, useEffect } from 'react';
 import styles from './index.less';
 import { history } from 'umi';
 import { Button } from 'antd';
@@ -9,7 +9,7 @@ import { useMappedState } from 'redux-react-hook';
 import { persistor } from '@/store';
 import { removeLocal } from '@/utils';
 
-const Header = () => {
+const Header = ({ mobileMenuClick }: { mobileMenuClick: () => void }) => {
   const { userInfo }: { userInfo: IUserDataResponse } = useMappedState(
     useCallback(state => state, []),
   );
@@ -34,7 +34,7 @@ const Header = () => {
   };
   return (
     <header className={styles['server-header']}>
-      <div className={styles['menu-icon']}>
+      <div className={styles['menu-icon']} onClick={mobileMenuClick}>
         <i className="iconfont icon-caidan" />
       </div>
       <img

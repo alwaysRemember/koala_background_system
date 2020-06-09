@@ -2,13 +2,36 @@
  * @Author: Always
  * @LastEditors: Always
  * @Date: 2020-05-27 15:38:05
- * @LastEditTime: 2020-06-08 18:00:36
+ * @LastEditTime: 2020-06-09 14:57:01
  * @FilePath: /koala_background_system/src/routes.ts
  */
 
 import { IRoute } from 'umi';
 import { IRouteData } from './interface/Global';
 import { EUserAuth } from './enums/UserAuthEnum';
+
+export const serverRoutes: Array<IRouteData> = [
+  {
+    path: '/server',
+    exact: true,
+    wrappers: [require('./wrappers/Auth').default],
+    component: require('./pages/ServerHome').default,
+    meta: {
+      title: '主页',
+      auth: EUserAuth.PROXY,
+    },
+  },
+  {
+    path: '/server/userList',
+    exact: true,
+    wrappers: [require('./wrappers/Auth').default],
+    component: require('./pages/UserList').default,
+    meta: {
+      title: '用户列表',
+      auth: EUserAuth.PROXY,
+    },
+  },
+];
 
 const routes: Array<IRouteData> = [
   {
@@ -22,20 +45,8 @@ const routes: Array<IRouteData> = [
   },
   {
     path: '/server',
-    exact: true,
     component: require('./layout/Server').default,
-    routes: [
-      {
-        path: '/server',
-        exact: true,
-        wrappers: [require('./wrappers/Auth').default],
-        component: require('./pages/ServerHome').default,
-        meta: {
-          title: '主页',
-          auth: EUserAuth.PROXY,
-        },
-      },
-    ],
+    routes: serverRoutes,
   },
   {
     path: '/deniend',

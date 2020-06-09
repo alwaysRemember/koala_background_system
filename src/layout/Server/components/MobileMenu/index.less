@@ -1,0 +1,22 @@
+.mobile-menu-wrapper {
+  display: flex;
+  position: fixed;
+  left: 0;
+  width: 100%;
+  top: 60px;
+  bottom: 0;
+  background: rgba(166, 166, 166, 0.4);
+  z-index: 10;
+  &.hide {
+    background: rgba(166, 166, 166, 1);
+    left: -100%;
+  }
+  .mobile-menu-con {
+    display: flex;
+    width: 200px;
+    height: 100%;
+  }
+  .mobile-menu-mask {
+    flex: 1;
+  }
+}

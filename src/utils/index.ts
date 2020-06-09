@@ -2,9 +2,12 @@
  * @Author: Always
  * @LastEditors: Always
  * @Date: 2020-05-28 15:59:48
- * @LastEditTime: 2020-06-08 17:34:07
+ * @LastEditTime: 2020-06-09 17:37:00
  * @FilePath: /koala_background_system/src/utils/index.ts
  */
+
+export const setClassName = (classNameList: Array<string>) =>
+  classNameList.join(' ');
 
 /**
  * 获取缓存的数据

@@ -1,15 +1,19 @@
 .server-wrapper {
+  position: relative;
   min-height: 100%;
   .menu-lg-wrapper {
+    display: flex;
     overflow-y: scroll;
     position: fixed;
     top: 70px;
     bottom: 0;
     width: 200px;
+    z-index: 10;
   }
   .server-container {
+    position: relative;
     padding: 20px;
-    padding-left: 200px;
+    padding-left: 220px;
     padding-top: 90px;
   }
 }
