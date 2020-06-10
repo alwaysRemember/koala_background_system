@@ -2,7 +2,7 @@
  * @Author: Always
  * @LastEditors: Always
  * @Date: 2020-06-09 15:00:10
- * @LastEditTime: 2020-06-09 18:36:25
+ * @LastEditTime: 2020-06-10 15:19:25
  * @FilePath: /koala_background_system/src/layout/Server/menuData.ts
  */
 import { ISubMenuItem, IMenuItem } from './interface';
@@ -17,7 +17,7 @@ export const menuList: Array<ISubMenuItem | IMenuItem> = [
     key: 'user',
     children: [
       {
-        path: '/server/userList',
+        path: '/server/adminUserList',
         menuTitle: '用户列表',
         subMenuKey: 'user',
       },

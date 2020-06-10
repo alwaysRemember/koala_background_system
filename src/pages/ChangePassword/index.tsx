@@ -1,11 +1,15 @@
 import React, { useCallback, useState, useEffect } from 'react';
 import { Input, Button } from 'antd';
+import { history } from 'umi';
 import { Base64 } from 'js-base64';
 import styles from './index.less';
 import { useMappedState } from 'redux-react-hook';
 import { IUserDataResponse } from '../Login/interface';
 import { IRequestData } from './interface';
 import { changeUserPassword } from '@/api';
+import { removeLocal } from '@/utils';
+import { EGlobal } from '@/enums/Global';
+import { persistor } from '@/store';
 const ChangePassword = () => {
   const { userInfo }: { userInfo: IUserDataResponse } = useMappedState(
     useCallback(state => state, []),
@@ -56,7 +60,11 @@ const ChangePassword = () => {
         }),
       );
       setBtnLoading(false);
-      window.message.success('修改成功');
+      window.message.success('修改成功,请重新登录', 1, () => {
+        removeLocal(EGlobal.LOCAL_USER_INFO);
+        persistor.purge();
+        history.replace('/login');
+      });
     } catch (e) {
       setBtnLoading(false);
     }

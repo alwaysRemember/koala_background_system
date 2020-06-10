@@ -2,7 +2,7 @@
  * @Author: Always
  * @LastEditors: Always
  * @Date: 2020-05-27 15:38:05
- * @LastEditTime: 2020-06-09 18:35:41
+ * @LastEditTime: 2020-06-10 15:18:59
  * @FilePath: /koala_background_system/src/routes.ts
  */
 
@@ -22,12 +22,12 @@ export const serverRoutes: Array<IRouteData> = [
     },
   },
   {
-    path: '/server/userList',
+    path: '/server/adminUserList',
     exact: true,
     wrappers: [require('./wrappers/Auth').default],
-    component: require('./pages/UserList').default,
+    component: require('./pages/AdminUserList').default,
     meta: {
-      title: '用户列表',
+      title: '管理员列表',
       auth: EUserAuth.PROXY,
     },
   },

@@ -1,6 +1,6 @@
 import React from 'react';
 
-const UserList = () => {
+const AdminUserList = () => {
   console.log('userlist');
 
   return (
@@ -14,4 +14,4 @@ const UserList = () => {
   );
 };
 
-export default UserList;
+export default AdminUserList;

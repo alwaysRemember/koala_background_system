@@ -3,7 +3,7 @@
  * @LastEditors: Always
  * @email: 740905172@qq.com
  * @Date: 2019-12-31 17:09:16
- * @LastEditTime: 2020-06-09 18:27:28
+ * @LastEditTime: 2020-06-10 14:21:27
  * @FilePath: /koala_background_system/src/codeType.ts
  */
 import { TResponseCode } from './interface/Http';
@@ -21,7 +21,10 @@ export const codeType = (
       return;
     }
     if (code === HttpResponseCodeEnums.NO_LOGIN) {
-      history.replace('/login');
+      window.message.error(message, 2, () => {
+        history.replace('/login');
+      });
+      rej();
       return;
     }
     res();
