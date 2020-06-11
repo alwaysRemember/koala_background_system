@@ -2,7 +2,7 @@
  * @Author: Always
  * @LastEditors: Always
  * @Date: 2020-05-28 13:36:22
- * @LastEditTime: 2020-06-09 19:06:58
+ * @LastEditTime: 2020-06-11 16:44:48
  * @FilePath: /koala_background_system/config/config.ts
  */
 
@@ -24,7 +24,7 @@ export default defineConfig({
     },
   ],
   hash: true,
-  mock: {},
+  mock: false,
   dynamicImport: {
     loading: '@/components/PageLoading',
   },

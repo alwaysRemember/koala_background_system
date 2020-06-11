@@ -81,6 +81,7 @@ const Login = () => {
     setBtnDisabled(
       !(
         userData.username &&
+        userData.username.length >= 6 &&
         /^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,16}$/.test(
           userData.password as string,
         )

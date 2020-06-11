@@ -2,7 +2,7 @@
  * @Author: Always
  * @LastEditors: Always
  * @Date: 2020-05-28 15:52:00
- * @LastEditTime: 2020-06-09 19:03:17
+ * @LastEditTime: 2020-06-11 16:46:06
  * @FilePath: /koala_background_system/mock/index.js
  */
 
@@ -15,7 +15,7 @@ export const responseData = data => ({
 });
 
 export default {
-  'POST /backend-user/login': (req, res) => {
+  'POST /api/backend-user/login': (req, res) => {
     delay(() =>
       res.json(
         responseData({
@@ -26,7 +26,10 @@ export default {
       ),
     );
   },
-  'POST /backend-user/change-password': (req, res) => {
+  'POST /api/backend-user/change-password': (req, res) => {
+    delay(() => res.json(responseData(null)));
+  },
+  'POST /api/backend-user/add-user': (req, res) => {
     delay(() => res.json(responseData(null)));
   },
 };
