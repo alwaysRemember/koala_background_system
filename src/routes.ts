@@ -2,7 +2,7 @@
  * @Author: Always
  * @LastEditors: Always
  * @Date: 2020-05-27 15:38:05
- * @LastEditTime: 2020-06-11 14:26:56
+ * @LastEditTime: 2020-06-12 15:51:44
  * @FilePath: /koala_background_system/src/routes.ts
  */
 
@@ -10,7 +10,7 @@ import { IRoute } from 'umi';
 import { IRouteData } from './interface/Global';
 import { EUserAuth } from './enums/UserAuthEnum';
 
-export const serverRoutes: Array<IRouteData> = [
+export let serverRoutes: Array<IRouteData> = [
   {
     path: '/server',
     exact: true,
@@ -53,6 +53,8 @@ export const serverRoutes: Array<IRouteData> = [
   },
 ];
 
+serverRoutes.push({ component: require('./pages/404/index').default });
+
 const routes: Array<IRouteData> = [
   {
     path: '/login',
@@ -77,6 +79,7 @@ const routes: Array<IRouteData> = [
       auth: EUserAuth.PUBLIC,
     },
   },
+  { component: require('./pages/404/index').default },
 ];
 
 export default routes;

@@ -42,6 +42,10 @@ const MenuCom = ({ menuClick }: { menuClick?: () => void }) => {
     history.push(key);
   };
 
+  useEffect(() => {
+    setSelectedKeys([pathname]);
+  }, [pathname]);
+
   return (
     <Menu mode="inline" onClick={menuItemClick} selectedKeys={selectedKeys}>
       {menuList.map((data: IMenuItem | ISubMenuItem) => {
