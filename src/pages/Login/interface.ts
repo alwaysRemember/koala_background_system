@@ -2,7 +2,7 @@
  * @Author: Always
  * @LastEditors: Always
  * @Date: 2020-05-27 18:40:28
- * @LastEditTime: 2020-06-08 17:02:35
+ * @LastEditTime: 2020-06-15 17:48:44
  * @FilePath: /koala_background_system/src/pages/Login/interface.ts
  */
 
@@ -15,5 +15,5 @@ export interface IUserData {
 
 export interface IUserDataResponse extends IUserData {
   token: string;
-  auth: EUserAuth;
+  userType: EUserAuth;
 }

@@ -69,52 +69,60 @@ const AddAdmin = () => {
   return (
     <div className={styles['add-admin-wrapper']}>
       <div className={styles['add-admin-item']}>
-        <p className={styles['label']}>用户名</p>
-        <Input
-          size="small"
-          value={data.username}
-          disabled={btnLoading}
-          className={styles['input']}
-          onChange={e => onChange('username', e)}
-          placeholder="请输入用户名"
-        />
+        <div>
+          <p className={styles['label']}>用户名</p>
+          <Input
+            size="small"
+            value={data.username}
+            disabled={btnLoading}
+            className={styles['input']}
+            onChange={e => onChange('username', e)}
+            placeholder="请输入用户名"
+          />
+        </div>
+        <p className={styles['msg']}>用户名不支持中文以及特殊符号</p>
       </div>
       <div className={styles['add-admin-item']}>
-        <p className={styles['label']}>密码</p>
-        <Input
-          size="small"
-          value={data.password}
-          disabled={btnLoading}
-          className={styles['input']}
-          onChange={e => onChange('password', e)}
-          placeholder="请输入密码"
-        />
+        <div>
+          <p className={styles['label']}>密码</p>
+          <Input
+            size="small"
+            value={data.password}
+            disabled={btnLoading}
+            className={styles['input']}
+            onChange={e => onChange('password', e)}
+            placeholder="请输入密码"
+          />
+        </div>
+        <p className={styles['msg']}>请输入6-16位数字或英文的密码</p>
       </div>
       <div className={styles['add-admin-item']}>
-        <p className={styles['label']}>权限</p>
-        <Select
-          value={(data.userType as unknown) as string}
-          onChange={(value: string) => {
-            setData(prev =>
-              Object.assign({}, prev, {
-                userType: Number(value),
-              }),
-            );
-          }}
-          className={styles['select']}
-          disabled={btnLoading}
-        >
-          {Object.keys(EUserAuth)
-            .filter((key: string) => Boolean(Number(key)))
-            .map((key: string) => {
-              const label: number = Number(key);
-              return (
-                <Option value={label} key={key}>
-                  {EUserAuth[label]}
-                </Option>
+        <div>
+          <p className={styles['label']}>权限</p>
+          <Select
+            value={(data.userType as unknown) as string}
+            onChange={(value: string) => {
+              setData(prev =>
+                Object.assign({}, prev, {
+                  userType: Number(value),
+                }),
               );
-            })}
-        </Select>
+            }}
+            className={styles['select']}
+            disabled={btnLoading}
+          >
+            {Object.keys(EUserAuth)
+              .filter((key: string) => Boolean(Number(key)))
+              .map((key: string) => {
+                const label: number = Number(key);
+                return (
+                  <Option value={label} key={key}>
+                    {EUserAuth[label]}
+                  </Option>
+                );
+              })}
+          </Select>
+        </div>
       </div>
       <Button
         disabled={btnDisabled}

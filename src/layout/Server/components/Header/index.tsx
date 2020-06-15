@@ -50,7 +50,9 @@ const Header = ({ mobileMenuClick }: { mobileMenuClick: () => void }) => {
           </li>
           <li>
             <span className={styles['label']}>权限 : </span>
-            <span className={styles['value']}>{_getAuth(userInfo.auth)}</span>
+            <span className={styles['value']}>
+              {_getAuth(userInfo.userType)}
+            </span>
           </li>
         </ul>
         <Button danger onClick={quit} className={styles['quit']}>

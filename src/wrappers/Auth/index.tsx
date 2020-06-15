@@ -15,7 +15,7 @@ const Auth = (props: any) => {
   }
 
   // 判断页面所需权限是否大于等于用户当前权限
-  if (userInfo.auth < auth) {
+  if (userInfo.userType < auth) {
     history.replace('/deniend');
   }
 
