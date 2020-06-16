@@ -1,0 +1,26 @@
+@itemWid: 240px;
+.search-wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  .search-item {
+    width: @itemWid;
+    display: flex;
+    align-items: center;
+    margin: 10px;
+    .label {
+      flex: 1;
+      font-size: 14px;
+      text-align-last: justify;
+    }
+    .value {
+      width: 150px;
+      margin-left: 10px;
+    }
+    .btn {
+      margin: 0 10px;
+      &:first-child {
+        margin-left: 0;
+      }
+    }
+  }
+}

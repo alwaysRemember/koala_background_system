@@ -3,7 +3,7 @@
  * @LastEditors: Always
  * @email: 740905172@qq.com
  * @Date: 2020-03-19 15:45:36
- * @LastEditTime: 2020-06-08 18:08:22
+ * @LastEditTime: 2020-06-16 18:02:32
  * @FilePath: /koala_background_system/src/axios.ts
  */
 import axios, {
@@ -117,7 +117,7 @@ class Axios {
       baseURL: this.baseURL,
       headers: {
         'Content-Type': this._setContentType(options.contentType),
-        Token: this.token,
+        token: this.token,
       },
       cancelToken: new CancelToken(c => {
         window.cancelRequestFnList.push(c);

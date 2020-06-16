@@ -2,13 +2,17 @@
  * @Author: Always
  * @LastEditors: Always
  * @Date: 2020-05-28 15:37:50
- * @LastEditTime: 2020-06-11 15:25:19
+ * @LastEditTime: 2020-06-16 14:59:31
  * @FilePath: /koala_background_system/src/api/index.ts
  */
 import http from '../axios';
 import { IUserData, IUserDataResponse } from '@/pages/Login/interface';
 import { IRequestData } from '@/pages/ChangePassword/interface';
 import { IAddAdminData } from '@/pages/AddAdmin/interface';
+import {
+  IAdminUserListRequestParams,
+  IAdminUserListResponse,
+} from '@/pages/AdminUserList/interface';
 
 /**
  * 用户登录
@@ -41,6 +45,18 @@ export const changeUserPassword = (params: IRequestData) =>
 export const addUser = (params: IAddAdminData) =>
   http.request({
     url: '/backend-user/add-user',
+    method: 'post',
+    params,
+    contentType: 'json',
+  });
+
+/**
+ * 获取代理列表数据
+ * @param params
+ */
+export const getAdminUserList = (params: IAdminUserListRequestParams) =>
+  http.request<IAdminUserListResponse>({
+    url: '/backend-user/find-user-list',
     method: 'post',
     params,
     contentType: 'json',
