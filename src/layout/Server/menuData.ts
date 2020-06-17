@@ -2,19 +2,22 @@
  * @Author: Always
  * @LastEditors: Always
  * @Date: 2020-06-09 15:00:10
- * @LastEditTime: 2020-06-11 14:27:18
+ * @LastEditTime: 2020-06-17 16:48:30
  * @FilePath: /koala_background_system/src/layout/Server/menuData.ts
  */
 import { ISubMenuItem, IMenuItem } from './interface';
+import { EUserAuth } from '@/enums/UserAuthEnum';
 
 export const menuList: Array<ISubMenuItem | IMenuItem> = [
   {
     path: '/server',
     menuTitle: '主页',
+    auth: EUserAuth.PROXY,
   },
   {
     subMenuTitle: '代理管理',
     key: 'user',
+    auth: EUserAuth.ADMIN,
     children: [
       {
         path: '/server/adminUserList',
@@ -31,5 +34,6 @@ export const menuList: Array<ISubMenuItem | IMenuItem> = [
   {
     path: '/server/changePassword',
     menuTitle: '修改密码',
+    auth: EUserAuth.PROXY,
   },
 ];

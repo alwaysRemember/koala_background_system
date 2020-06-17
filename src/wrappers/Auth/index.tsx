@@ -12,14 +12,14 @@ const Auth = (props: any) => {
   // 如果数据为空证明未登录
   if (!Object.keys(userInfo).length) {
     history.replace('/login');
-  }
-
-  // 判断页面所需权限是否大于等于用户当前权限
-  if (userInfo.userType < auth) {
+  } else if (userInfo.userType < auth) {
+    // 判断页面所需权限是否大于等于用户当前权限
     history.replace('/deniend');
+  } else {
+    return <>{props.children}</>;
   }
 
-  return <>{props.children}</>;
+  return '';
 };
 
 export default Auth;

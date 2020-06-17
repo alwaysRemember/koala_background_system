@@ -2,7 +2,7 @@
  * @Author: Always
  * @LastEditors: Always
  * @Date: 2020-05-27 15:38:05
- * @LastEditTime: 2020-06-12 15:51:44
+ * @LastEditTime: 2020-06-17 17:05:53
  * @FilePath: /koala_background_system/src/routes.ts
  */
 
@@ -28,17 +28,7 @@ export let serverRoutes: Array<IRouteData> = [
     component: require('./pages/AdminUserList').default,
     meta: {
       title: '代理列表',
-      auth: EUserAuth.PROXY,
-    },
-  },
-  {
-    path: '/server/changePassword',
-    exact: true,
-    wrappers: [require('./wrappers/Auth').default],
-    component: require('./pages/ChangePassword').default,
-    meta: {
-      title: '修改密码',
-      auth: EUserAuth.PROXY,
+      auth: EUserAuth.ADMIN,
     },
   },
   {
@@ -49,6 +39,16 @@ export let serverRoutes: Array<IRouteData> = [
     meta: {
       title: '添加代理',
       auth: EUserAuth.ADMIN,
+    },
+  },
+  {
+    path: '/server/changePassword',
+    exact: true,
+    wrappers: [require('./wrappers/Auth').default],
+    component: require('./pages/ChangePassword').default,
+    meta: {
+      title: '修改密码',
+      auth: EUserAuth.PROXY,
     },
   },
 ];

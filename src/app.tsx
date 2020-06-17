@@ -2,7 +2,7 @@
  * @Author: Always
  * @LastEditors: Always
  * @Date: 2020-05-28 13:36:22
- * @LastEditTime: 2020-06-09 14:29:42
+ * @LastEditTime: 2020-06-17 17:03:21
  * @FilePath: /koala_background_system/src/app.tsx
  */
 import routerList from './routes';
@@ -28,7 +28,7 @@ export const patchRoutes = ({ routes }: { routes: Array<IRoute> }) => {
  */
 export const onRouteChange = ({ matchedRoutes }: { matchedRoutes: any }) => {
   if (!matchedRoutes[0]) return;
-  const { meta } = matchedRoutes[0].route;
+  const { meta } = matchedRoutes[matchedRoutes.length - 1].route;
   document.title = meta?.title || 'KOALA 管理系统';
 };
 

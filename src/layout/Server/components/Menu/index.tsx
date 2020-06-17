@@ -1,15 +1,27 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { Menu, Layout } from 'antd';
 import { history } from 'umi';
 import './index.less';
 import { IMenuItem, ISubMenuItem } from '../../interface';
 import { menuList } from '../../menuData';
+import { IUserDataResponse } from '@/pages/Login/interface';
+import { useMappedState } from 'redux-react-hook';
 
 const { SubMenu, Item } = Menu;
 const MenuCom = ({ menuClick }: { menuClick?: () => void }) => {
   const {
     location: { pathname },
   } = history;
+
+  const { userInfo }: { userInfo: IUserDataResponse } = useMappedState(
+    useCallback(state => state, []),
+  );
+
+  // 过滤掉不属于当前权限所能看到的页面
+  const data: Array<ISubMenuItem | IMenuItem> = menuList.filter(
+    (item: ISubMenuItem | IMenuItem) =>
+      (item.auth as number) <= userInfo.userType,
+  );
 
   const [selectedKeys, setSelectedKeys] = useState<Array<string>>([pathname]); // 当前的菜单项
 
@@ -48,7 +60,7 @@ const MenuCom = ({ menuClick }: { menuClick?: () => void }) => {
 
   return (
     <Menu mode="inline" onClick={menuItemClick} selectedKeys={selectedKeys}>
-      {menuList.map((data: IMenuItem | ISubMenuItem) => {
+      {data.map((data: IMenuItem | ISubMenuItem) => {
         if ((data as ISubMenuItem).children) {
           return SubMenuCom(data as ISubMenuItem);
         } else {
