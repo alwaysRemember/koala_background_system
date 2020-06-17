@@ -5,7 +5,7 @@ import styles from './index.less';
 import Search from './components/Search';
 import UserTypeSelect from './components/UserTypeSelect';
 import { EUserAuthSelectList, EUserAuth } from '@/enums/UserAuthEnum';
-import { getAdminUserList } from '@/api';
+import { getAdminUserList, updateAdminUser } from '@/api';
 import {
   IAdminUserListRequestDefaultParams,
   IAdminUserItem,
@@ -176,8 +176,16 @@ const AdminUserList = () => {
           );
         }
       },
-      onOk: () => {
-        // TODO 修改用户 currentChangeData
+      onOk: async () => {
+        try {
+          await updateAdminUser(
+            Object.assign({}, currentChangeData, {
+              password: Base64.encode(currentChangeData?.password as string),
+            }),
+          );
+          await window.message['success']('修改成功', 2);
+          getData();
+        } catch (e) {}
       },
     });
   };

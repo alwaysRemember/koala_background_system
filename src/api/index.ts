@@ -2,7 +2,7 @@
  * @Author: Always
  * @LastEditors: Always
  * @Date: 2020-05-28 15:37:50
- * @LastEditTime: 2020-06-16 14:59:31
+ * @LastEditTime: 2020-06-17 15:15:50
  * @FilePath: /koala_background_system/src/api/index.ts
  */
 import http from '../axios';
@@ -12,6 +12,7 @@ import { IAddAdminData } from '@/pages/AddAdmin/interface';
 import {
   IAdminUserListRequestParams,
   IAdminUserListResponse,
+  IAdminUserItem,
 } from '@/pages/AdminUserList/interface';
 
 /**
@@ -57,6 +58,18 @@ export const addUser = (params: IAddAdminData) =>
 export const getAdminUserList = (params: IAdminUserListRequestParams) =>
   http.request<IAdminUserListResponse>({
     url: '/backend-user/find-user-list',
+    method: 'post',
+    params,
+    contentType: 'json',
+  });
+
+/**
+ * 修改代理用户
+ * @param params
+ */
+export const updateAdminUser = (params: IAdminUserItem) =>
+  http.request({
+    url: '/backend-user/update-admin-user',
     method: 'post',
     params,
     contentType: 'json',

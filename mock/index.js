@@ -2,7 +2,7 @@
  * @Author: Always
  * @LastEditors: Always
  * @Date: 2020-05-28 15:52:00
- * @LastEditTime: 2020-06-16 16:36:10
+ * @LastEditTime: 2020-06-17 15:28:42
  * @FilePath: /koala_background_system/mock/index.js
  */
 
@@ -41,9 +41,14 @@ export default {
             userId: `${key}_${req.body.page}`,
             userType: 999,
             username: `name_${key}_${req.body.page}`,
+            password: '12312312312',
           })),
         }),
       ),
     );
+  },
+
+  'POST /api/backend-user/update-admin-user': (req, res) => {
+    delay(() => res.json(responseData(null)));
   },
 };
