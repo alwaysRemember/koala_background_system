@@ -6,8 +6,6 @@ import { Row, Col, Input, Button } from 'antd';
 import styles from './index.less';
 import { IUserData, IUserDataResponse } from './interface';
 import { userLogin } from '@/api';
-import { setLocal } from '@/utils';
-import { EGlobal } from '@/enums/Global';
 import { useDispatch } from 'redux-react-hook';
 import { updateUserInfo } from '@/store/actions';
 
@@ -68,7 +66,6 @@ const Login = () => {
         password: Base64.encode(userData.password as string),
       });
       setBtnLoading(false);
-      setLocal(EGlobal.LOCAL_USER_INFO, JSON.stringify(data));
       dispatch(updateUserInfo(data));
       history.replace('/server');
     } catch (e) {

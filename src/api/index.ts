@@ -2,7 +2,7 @@
  * @Author: Always
  * @LastEditors: Always
  * @Date: 2020-05-28 15:37:50
- * @LastEditTime: 2020-06-17 15:15:50
+ * @LastEditTime: 2020-06-18 14:59:37
  * @FilePath: /koala_background_system/src/api/index.ts
  */
 import http from '../axios';
@@ -70,6 +70,18 @@ export const getAdminUserList = (params: IAdminUserListRequestParams) =>
 export const updateAdminUser = (params: IAdminUserItem) =>
   http.request({
     url: '/backend-user/update-admin-user',
+    method: 'post',
+    params,
+    contentType: 'json',
+  });
+
+/**
+ * 删除代理用户
+ * @param params
+ */
+export const deleteAdminUser = (params: { userId: number }) =>
+  http.request({
+    url: '/backend-user/delete-admin-user',
     method: 'post',
     params,
     contentType: 'json',

@@ -1,5 +1,5 @@
 import React, { useRef, useState, useEffect } from 'react';
-import { Table, Input, Select, Modal } from 'antd';
+import { Table, Input, Modal, Button, Popconfirm } from 'antd';
 import { Base64 } from 'js-base64';
 import styles from './index.less';
 import Search from './components/Search';
@@ -11,6 +11,7 @@ import {
   IAdminUserItem,
 } from './interface';
 import { ColumnsType } from 'antd/lib/table';
+import { dateFormat } from '@/utils';
 
 const AdminUserList = () => {
   const [page, setPage] = useState<number>(1);
@@ -29,35 +30,22 @@ const AdminUserList = () => {
   const columns: ColumnsType<IAdminUserItem> = [
     {
       title: '用户名',
+      align: 'center',
       dataIndex: 'username',
-      width: 100,
+      width: 140,
       fixed: 'left',
     },
     {
       title: '用户密码',
       dataIndex: 'password',
+      align: 'center',
       width: 200,
       render: (text: string, record: IAdminUserItem, index: number) => {
         return (
           <Input.Password
             value={text}
-            onChange={e => {
-              e.persist();
-              let list = JSON.parse(JSON.stringify(data));
-              list[index].password = e.target.value;
-              setData(list);
-            }}
-            onPressEnter={() => {
-              const { userType, password }: IAdminUserItem = dataClone.filter(
-                (item: IAdminUserItem) => item.userId === record.userId,
-              )[0];
-
-              // 判断数据是否修改了
-              if (userType === record.userType && password === record.password)
-                return;
-
-              setCurrentChangeData(record);
-            }}
+            onChange={e => usernameSearchInputChange(e, index)}
+            onPressEnter={() => usernameSearchPressEnter(record)}
           />
         );
       },
@@ -65,23 +53,51 @@ const AdminUserList = () => {
     {
       title: '用户类型',
       dataIndex: 'userType',
+      align: 'center',
       width: 150,
-      render: (text: string, record: IAdminUserItem, index: number) => {
+      render: (text: string, _, index: number) => {
         return (
           <UserTypeSelect
             value={text}
-            onChange={(value: string) => {
-              let list = JSON.parse(JSON.stringify(data));
-              list[index].userType = value;
-              setData(list);
-              setCurrentChangeData(list[index]);
-            }}
+            onChange={(value: string) => userTypeSearchSelect(value, index)}
             data={Object.keys(EUserAuth).filter((key: string) =>
               Boolean(Number(key)),
             )}
           />
         );
       },
+    },
+    {
+      title: '创建时间',
+      dataIndex: 'createTime',
+      align: 'center',
+      width: 150,
+      render: (text: Date) => dateFormat(new Date(text), 'yy-mm-dd-hh-ii'),
+    },
+    {
+      title: '修改时间',
+      dataIndex: 'updateTime',
+      align: 'center',
+      width: 150,
+      render: (text: Date) => dateFormat(new Date(text), 'yy-mm-dd-hh-ii'),
+    },
+    {
+      title: '操作',
+      key: 'action',
+      align: 'center',
+      width: 150,
+      render: (_, { userId }: IAdminUserItem) => (
+        <Popconfirm
+          title="是否确认删除？"
+          okText="确认"
+          cancelText="取消"
+          onConfirm={() => tableDeleteAdminUser(userId)}
+        >
+          <Button danger type="primary" size="small">
+            删除
+          </Button>
+        </Popconfirm>
+      ),
     },
   ];
 
@@ -146,6 +162,22 @@ const AdminUserList = () => {
     setPageSize(size);
   };
 
+  const resetUpdateData = (userId: number) => {
+    // 从copy的数组中拿出当前修改的源数据
+    const currentDataInClone = dataClone.filter(
+      (item: IAdminUserItem) => item.userId === userId,
+    )[0];
+
+    if (currentDataInClone) {
+      // 修改当前的数据
+      setData(list =>
+        list.map((item: IAdminUserItem) =>
+          item.userId === userId ? currentDataInClone : item,
+        ),
+      );
+    }
+  };
+
   /**
    * 确认修改用户数据弹窗
    */
@@ -162,32 +194,68 @@ const AdminUserList = () => {
       okText: '确认',
       cancelText: '取消',
       onCancel: () => {
-        // 从copy的数组中拿出当前修改的源数据
-        const currentDataInClone = dataClone.filter(
-          (item: IAdminUserItem) => item.userId === userId,
-        )[0];
-
-        if (currentDataInClone) {
-          // 修改当前的数据
-          setData(list =>
-            list.map((item: IAdminUserItem) =>
-              item.userId === userId ? currentDataInClone : item,
-            ),
-          );
-        }
+        resetUpdateData(userId);
       },
       onOk: async () => {
         try {
-          await updateAdminUser(
-            Object.assign({}, currentChangeData, {
-              password: Base64.encode(currentChangeData?.password as string),
-            }),
-          );
+          await updateAdminUser({
+            userId,
+            username,
+            password: Base64.encode(currentChangeData?.password as string),
+            userType,
+          });
           await window.message['success']('修改成功', 2);
           getData();
-        } catch (e) {}
+        } catch (e) {
+          resetUpdateData(userId);
+        }
       },
     });
+  };
+
+  /**
+   * 用户名搜索框输入
+   * @param e
+   * @param index 当前行下标
+   */
+  const usernameSearchInputChange = (e: any, index: number) => {
+    e.persist();
+    let list = JSON.parse(JSON.stringify(data));
+    list[index].password = e.target.value;
+    setData(list);
+  };
+
+  /**
+   * 用户名搜索框enter
+   * @param record
+   */
+  const usernameSearchPressEnter = (record: IAdminUserItem) => {
+    const { userType, password }: IAdminUserItem = dataClone.filter(
+      (item: IAdminUserItem) => item.userId === record.userId,
+    )[0];
+    // 判断数据是否修改了
+    if (userType === record.userType && password === record.password) return;
+    setCurrentChangeData(record);
+  };
+
+  /**
+   * 用户类型搜索
+   * @param value
+   * @param index
+   */
+  const userTypeSearchSelect = (value: string, index: number) => {
+    let list = JSON.parse(JSON.stringify(data));
+    list[index].userType = value;
+    setData(list);
+    setCurrentChangeData(list[index]);
+  };
+
+  /**
+   * 删除用户事件
+   * @param userId
+   */
+  const tableDeleteAdminUser = (userId: number) => {
+    console.log('confirm delete');
   };
 
   useEffect(() => {

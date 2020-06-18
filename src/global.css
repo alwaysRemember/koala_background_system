@@ -11,3 +11,7 @@ body {
 .ant-menu > li:first-child {
   margin-top: 0;
 }
+
+.ant-popover{
+  transition: none;
+}

@@ -2,7 +2,7 @@
  * @Author: Always
  * @LastEditors: Always
  * @Date: 2020-06-15 17:46:47
- * @LastEditTime: 2020-06-16 16:48:06
+ * @LastEditTime: 2020-06-18 14:16:03
  * @FilePath: /koala_background_system/src/pages/AdminUserList/interface.ts
  */
 
@@ -17,6 +17,8 @@ export interface IAdminUserListResponse {
 export interface IAdminUserItem extends IUserData {
   userId: number;
   userType: EUserAuthSelectList;
+  createTime?: Date;
+  updateTime?: Date;
 }
 
 export interface IAdminUserListRequestDefaultParams {
