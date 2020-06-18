@@ -5,7 +5,7 @@ import styles from './index.less';
 import Search from './components/Search';
 import UserTypeSelect from './components/UserTypeSelect';
 import { EUserAuthSelectList, EUserAuth } from '@/enums/UserAuthEnum';
-import { getAdminUserList, updateAdminUser } from '@/api';
+import { getAdminUserList, updateAdminUser, deleteAdminUser } from '@/api';
 import {
   IAdminUserListRequestDefaultParams,
   IAdminUserItem,
@@ -129,7 +129,9 @@ const AdminUserList = () => {
       setData(d);
       setDataClone(d);
       setLoading(false);
-    } catch (e) {}
+    } catch (e) {
+      setLoading(false);
+    }
   };
 
   /**
@@ -204,7 +206,7 @@ const AdminUserList = () => {
             password: Base64.encode(currentChangeData?.password as string),
             userType,
           });
-          await window.message['success']('修改成功', 2);
+          await window.message['success']('修改成功', 1);
           getData();
         } catch (e) {
           resetUpdateData(userId);
@@ -254,8 +256,15 @@ const AdminUserList = () => {
    * 删除用户事件
    * @param userId
    */
-  const tableDeleteAdminUser = (userId: number) => {
-    console.log('confirm delete');
+  const tableDeleteAdminUser = async (userId: number) => {
+    try {
+      setLoading(true);
+      await deleteAdminUser({ userId });
+      await window.message['success']('删除成功', 1);
+      getData();
+    } catch (e) {
+      setLoading(false);
+    }
   };
 
   useEffect(() => {
