@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Input, Select, Button } from 'antd';
+import { Input, Select, Button, Tooltip } from 'antd';
 import { Base64 } from 'js-base64';
 import styles from './index.less';
 import { IAddAdminData } from './interface';
@@ -71,30 +71,32 @@ const AddAdmin = () => {
       <div className={styles['add-admin-item']}>
         <div>
           <p className={styles['label']}>用户名</p>
-          <Input
-            size="small"
-            value={data.username}
-            disabled={btnLoading}
-            className={styles['input']}
-            onChange={e => onChange('username', e)}
-            placeholder="请输入用户名"
-          />
+          <Tooltip placement="top" title="用户名不支持中文以及特殊符号">
+            <Input
+              size="small"
+              value={data.username}
+              disabled={btnLoading}
+              className={styles['input']}
+              onChange={e => onChange('username', e)}
+              placeholder="请输入用户名"
+            />
+          </Tooltip>
         </div>
-        <p className={styles['msg']}>用户名不支持中文以及特殊符号</p>
       </div>
       <div className={styles['add-admin-item']}>
         <div>
           <p className={styles['label']}>密码</p>
-          <Input
-            size="small"
-            value={data.password}
-            disabled={btnLoading}
-            className={styles['input']}
-            onChange={e => onChange('password', e)}
-            placeholder="请输入密码"
-          />
+          <Tooltip placement="top" title="请输入6-16位数字或英文的密码">
+            <Input
+              size="small"
+              value={data.password}
+              disabled={btnLoading}
+              className={styles['input']}
+              onChange={e => onChange('password', e)}
+              placeholder="请输入密码"
+            />
+          </Tooltip>
         </div>
-        <p className={styles['msg']}>请输入6-16位数字或英文的密码</p>
       </div>
       <div className={styles['add-admin-item']}>
         <div>
