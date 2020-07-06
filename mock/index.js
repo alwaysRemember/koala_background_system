@@ -2,7 +2,7 @@
  * @Author: Always
  * @LastEditors: Always
  * @Date: 2020-05-28 15:52:00
- * @LastEditTime: 2020-06-18 17:31:07
+ * @LastEditTime: 2020-07-06 16:48:09
  * @FilePath: /koala_background_system/mock/index.js
  */
 
@@ -13,6 +13,9 @@ export const responseData = data => ({
   data,
   message: '成功',
 });
+
+const logo =
+  'https://wx.qlogo.cn/mmopen/vi_32/7icYslR11jBbaGjm6LAXib6VRxEuibQiagia2LicNPJEgbTacD2SH8dSauGD6Cp9ggicA1tmY3foDwL5NibwZv6F1SI7Vg/132';
 
 export default {
   'POST /api/backend-user/login': (req, res) => {
@@ -55,6 +58,38 @@ export default {
   },
 
   'POST /api/backend-user/delete-admin-user': (req, res) => {
+    delay(() => res.json(responseData(null)));
+  },
+  'POST /api/backend-categories/get-categories': (req, res) => {
+    delay(() =>
+      res.json(
+        responseData({
+          total: 2,
+          list: [
+            {
+              id: 1,
+              name: '标签_1',
+              logo,
+              isShowInHome: false,
+              isUse: true,
+              createTime: new Date(),
+              updateTime: new Date(),
+            },
+            {
+              id: 2,
+              name: '标签_2',
+              logo,
+              isShowInHome: true,
+              isUse: false,
+              createTime: new Date(),
+              updateTime: new Date(),
+            },
+          ],
+        }),
+      ),
+    );
+  },
+  'POST /api/backend-categories/update-categories': (req, res) => {
     delay(() => res.json(responseData(null)));
   },
 };
