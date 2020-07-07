@@ -2,7 +2,7 @@
  * @Author: Always
  * @LastEditors: Always
  * @Date: 2020-05-28 15:52:00
- * @LastEditTime: 2020-07-06 16:48:09
+ * @LastEditTime: 2020-07-07 15:59:19
  * @FilePath: /koala_background_system/mock/index.js
  */
 
@@ -90,6 +90,10 @@ export default {
     );
   },
   'POST /api/backend-categories/update-categories': (req, res) => {
+    delay(() => res.json(responseData(null)));
+  },
+
+  'POST /api/backend-categories/add-categories': (req, res) => {
     delay(() => res.json(responseData(null)));
   },
 };

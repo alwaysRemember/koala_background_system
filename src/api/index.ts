@@ -2,7 +2,7 @@
  * @Author: Always
  * @LastEditors: Always
  * @Date: 2020-05-28 15:37:50
- * @LastEditTime: 2020-07-06 18:18:03
+ * @LastEditTime: 2020-07-07 16:01:04
  * @FilePath: /koala_background_system/src/api/index.ts
  */
 import http from '../axios';
@@ -110,4 +110,16 @@ export const updateCategories = (params: ICategoriesItem) =>
     method: 'post',
     params,
     contentType: 'json',
+  });
+
+/**
+ * 创建商品分类标签
+ * @param params
+ */
+export const createCategories = (params: FormData) =>
+  http.request({
+    url: '/backend-categories/add-categories',
+    method: 'post',
+    params,
+    contentType: 'formData',
   });
