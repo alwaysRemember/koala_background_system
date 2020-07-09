@@ -2,7 +2,7 @@
  * @Author: Always
  * @LastEditors: Always
  * @Date: 2020-05-28 15:37:50
- * @LastEditTime: 2020-07-07 16:01:04
+ * @LastEditTime: 2020-07-09 16:38:16
  * @FilePath: /koala_background_system/src/api/index.ts
  */
 import http from '../axios';
@@ -14,7 +14,11 @@ import {
   IAdminUserListResponse,
   IAdminUserItem,
 } from '@/pages/AdminUserList/interface';
-import { ICategories, ICategoriesItem } from '@/pages/Categories/interface';
+import {
+  ICategories,
+  ICategoriesItem,
+  IUpdateCategories,
+} from '@/pages/Categories/interface';
 
 /**
  * 用户登录
@@ -92,7 +96,7 @@ export const deleteAdminUser = (params: { userId: number }) =>
  * 获取商品分类数据
  * @param params
  */
-export const getCategoriesData = (params: { page: number }) =>
+export const getCategoriesData = (params: { page: number; pageSize: number }) =>
   http.request<ICategories>({
     url: '/backend-categories/get-categories',
     method: 'post',
@@ -104,7 +108,7 @@ export const getCategoriesData = (params: { page: number }) =>
  * 更新商品分类数据
  * @param params
  */
-export const updateCategories = (params: ICategoriesItem) =>
+export const updateCategories = (params: IUpdateCategories) =>
   http.request({
     url: '/backend-categories/update-categories',
     method: 'post',

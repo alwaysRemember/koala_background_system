@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { Table, Avatar, Input, Switch, Modal } from 'antd';
 import { ColumnsType } from 'antd/lib/table';
-import { ICategoriesItem } from './interface';
+import { ICategoriesItem, IUpdateCategories } from './interface';
 import { dateFormat } from '@/utils';
 import { getCategoriesData, updateCategories } from '@/api';
 
@@ -23,21 +23,21 @@ const Categories = () => {
     {
       title: 'logo',
       align: 'center',
-      dataIndex: 'logo',
+      dataIndex: 'categoriesIconUrl',
       width: 120,
       render: (text: string) => <Avatar size="large" src={text} />,
     },
     {
       title: '标签名',
       align: 'center',
-      dataIndex: 'name',
+      dataIndex: 'categoriesName',
       width: 200,
       render: (text: string, record: ICategoriesItem, index: number) => (
         <Input
           value={text}
           onChange={e => {
             e.persist();
-            recordChange(e.target.value, index, 'name');
+            recordChange(e.target.value, index, 'categoriesName');
           }}
           onPressEnter={() => setCurrentChangeData(record)}
         />
@@ -58,13 +58,13 @@ const Categories = () => {
     {
       title: '显示状态',
       align: 'center',
-      dataIndex: 'isShowInHome',
+      dataIndex: 'isShowOnHome',
       width: 200,
       render: (_: string, record: ICategoriesItem, index: number) => (
         <Switch
-          checked={record.isShowInHome}
+          checked={record.isShowOnHome}
           onChange={(checked: boolean) =>
-            recordChange(checked, index, 'isShowInHome')
+            recordChange(checked, index, 'isShowOnHome')
           }
         />
       ),
@@ -88,7 +88,7 @@ const Categories = () => {
   const getData = async () => {
     setLoading(true);
     try {
-      const { total, list } = await getCategoriesData({ page });
+      const { total, list } = await getCategoriesData({ page, pageSize });
       setTotal(total);
       setData(list);
       setDataClone(list);
@@ -114,14 +114,14 @@ const Categories = () => {
   const recordChange = (
     value: string | boolean,
     index: number,
-    key: 'name' | 'isUse' | 'isShowInHome',
+    key: 'categoriesName' | 'isUse' | 'isShowOnHome',
   ) => {
     let list: Array<ICategoriesItem> = JSON.parse(JSON.stringify(data));
 
     list[index][key] = value as never;
     setData(list);
     // 判断非input的情况
-    key !== 'name' && setCurrentChangeData(list[index]);
+    key !== 'categoriesName' && setCurrentChangeData(list[index]);
   };
 
   /**
@@ -129,15 +129,15 @@ const Categories = () => {
    * @param id
    */
   const resetUpdateData = () => {
-    const { id } = currentChangeData as ICategoriesItem;
+    const { categoriesId } = currentChangeData as ICategoriesItem;
     const currentDataInClone = dataClone.filter(
-      (item: ICategoriesItem) => item.id === id,
+      (item: ICategoriesItem) => item.categoriesId === categoriesId,
     )[0];
 
     if (currentDataInClone) {
       setData(list =>
         list.map((item: ICategoriesItem) =>
-          item.id === id ? currentDataInClone : item,
+          item.categoriesId === categoriesId ? currentDataInClone : item,
         ),
       );
     }
@@ -147,12 +147,16 @@ const Categories = () => {
    * 显示修改确认弹窗
    */
   const showConfirmChangeDataModal = () => {
-    const { name, isUse, isShowInHome } = currentChangeData as ICategoriesItem;
+    const {
+      categoriesName,
+      isUse,
+      isShowOnHome,
+    } = currentChangeData as ICategoriesItem;
     Modal.confirm({
       title: '确认',
       content: `是否修改标签名为 ${name} ,使用状态为 ${
         isUse ? '使用' : '不使用'
-      },显示状态为 ${isShowInHome ? '显示' : '不显示'}`,
+      },显示状态为 ${isShowOnHome ? '显示' : '不显示'}`,
       okText: '确认',
       cancelText: '取消',
       onCancel: () => {
@@ -160,7 +164,12 @@ const Categories = () => {
       },
       onOk: async () => {
         try {
-          updateCategories(currentChangeData as ICategoriesItem);
+          updateCategories({
+            categoriesId: currentChangeData?.categoriesId,
+            categoriesName: currentChangeData?.categoriesName,
+            isShowOnHome: currentChangeData?.isShowOnHome,
+            isUse: currentChangeData?.isUse,
+          } as IUpdateCategories);
           await window.message['success']('修改成功', 1);
           getData();
         } catch (e) {}
@@ -174,7 +183,15 @@ const Categories = () => {
 
   useEffect(() => {
     getData();
-  }, []);
+  }, [page]);
+
+  useEffect(() => {
+    if (page === 1 && pageSize !== 10) {
+      getData();
+    } else {
+      setPage(1);
+    }
+  }, [pageSize]);
 
   return (
     <Table
@@ -182,7 +199,7 @@ const Categories = () => {
       dataSource={data}
       bordered
       loading={loading}
-      rowKey={(record: ICategoriesItem) => record.id}
+      rowKey={(record: ICategoriesItem) => record.categoriesId}
       scroll={{
         x: 1120,
       }}

@@ -2,7 +2,7 @@
  * @Author: Always
  * @LastEditors: Always
  * @Date: 2020-05-28 15:52:00
- * @LastEditTime: 2020-07-07 15:59:19
+ * @LastEditTime: 2020-07-07 16:23:55
  * @FilePath: /koala_background_system/mock/index.js
  */
 
@@ -14,7 +14,7 @@ export const responseData = data => ({
   message: '成功',
 });
 
-const logo =
+const categoriesIconUrl =
   'https://wx.qlogo.cn/mmopen/vi_32/7icYslR11jBbaGjm6LAXib6VRxEuibQiagia2LicNPJEgbTacD2SH8dSauGD6Cp9ggicA1tmY3foDwL5NibwZv6F1SI7Vg/132';
 
 export default {
@@ -67,19 +67,19 @@ export default {
           total: 2,
           list: [
             {
-              id: 1,
-              name: '标签_1',
-              logo,
-              isShowInHome: false,
+              categoriesId: 1,
+              categoriesName: '标签_1',
+              categoriesIconUrl,
+              isShowOnHome: false,
               isUse: true,
               createTime: new Date(),
               updateTime: new Date(),
             },
             {
-              id: 2,
-              name: '标签_2',
-              logo,
-              isShowInHome: true,
+              categoriesId: 2,
+              categoriesName: '标签_2',
+              categoriesIconUrl,
+              isShowOnHome: true,
               isUse: false,
               createTime: new Date(),
               updateTime: new Date(),

@@ -10,7 +10,10 @@ const Auth = (props: any) => {
   const { auth } = props.route.meta;
 
   // 如果数据为空证明未登录
-  if (!Object.keys(userInfo).length) {
+  if (
+    !Object.keys(userInfo).length ||
+    (!userInfo.token && !userInfo.username)
+  ) {
     history.replace('/login');
   } else if (userInfo.userType < auth) {
     // 判断页面所需权限是否大于等于用户当前权限
