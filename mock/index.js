@@ -2,7 +2,7 @@
  * @Author: Always
  * @LastEditors: Always
  * @Date: 2020-05-28 15:52:00
- * @LastEditTime: 2020-07-07 16:23:55
+ * @LastEditTime: 2020-07-10 15:27:34
  * @FilePath: /koala_background_system/mock/index.js
  */
 
@@ -95,5 +95,29 @@ export default {
 
   'POST /api/backend-categories/add-categories': (req, res) => {
     delay(() => res.json(responseData(null)));
+  },
+
+  'POST /api/backend-applet-user/get-applet-user-list': (req, res) => {
+    delay(() =>
+      res.json(
+        responseData({
+          total: 50,
+          list: [
+            {
+              userId: 1,
+              nickName: 'always。',
+              avatarUrl:
+                'https://wx.qlogo.cn/mmopen/vi_32/7icYslR11jBbaGjm6LAXib6VRxEuibQiagia2LicNPJEgbTacD2SH8dSauGD6Cp9ggicA1tmY3foDwL5NibwZv6F1SI7Vg/132',
+              gender: 1,
+              country: 'China',
+              province: 'Shanghai',
+              city: 'Pudong New District',
+              createTime: '2020-06-23T09:53:29.941Z',
+              updateTime: '2020-06-29T06:59:08.000Z',
+            },
+          ],
+        }),
+      ),
+    );
   },
 };

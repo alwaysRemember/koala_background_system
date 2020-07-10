@@ -154,9 +154,9 @@ const Categories = () => {
     } = currentChangeData as ICategoriesItem;
     Modal.confirm({
       title: '确认',
-      content: `是否修改标签名为 ${name} ,使用状态为 ${
-        isUse ? '使用' : '不使用'
-      },显示状态为 ${isShowOnHome ? '显示' : '不显示'}`,
+      content: `是否修改标签名为 ${categoriesName} ,使用状态为 ${
+        isUse ? '“使用”' : '“不使用”'
+      },显示状态为 ${isShowOnHome ? '“显示”' : '“不显示”'}`,
       okText: '确认',
       cancelText: '取消',
       onCancel: () => {

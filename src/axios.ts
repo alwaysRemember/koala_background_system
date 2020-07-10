@@ -3,7 +3,7 @@
  * @LastEditors: Always
  * @email: 740905172@qq.com
  * @Date: 2020-03-19 15:45:36
- * @LastEditTime: 2020-06-18 17:15:36
+ * @LastEditTime: 2020-07-10 14:39:10
  * @FilePath: /koala_background_system/src/axios.ts
  */
 import axios, {
@@ -94,7 +94,7 @@ class Axios {
     if (process.env.NODE_ENV === 'development') {
       host = baseUrl;
     } else {
-      host = window.location.origin;
+      host = window.location.origin + baseUrl;
     }
     return host;
   }

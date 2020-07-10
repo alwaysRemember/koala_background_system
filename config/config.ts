@@ -2,7 +2,7 @@
  * @Author: Always
  * @LastEditors: Always
  * @Date: 2020-05-28 13:36:22
- * @LastEditTime: 2020-07-08 17:52:47
+ * @LastEditTime: 2020-07-10 15:28:33
  * @FilePath: /koala_background_system/config/config.ts
  */
 
@@ -33,9 +33,6 @@ export default defineConfig({
     '/api': {
       target: 'http://localhost:3000',
       changeOrigin: true,
-      pathRewrite: {
-        '^/api': '',
-      },
     },
   },
 });

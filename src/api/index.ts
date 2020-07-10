@@ -2,7 +2,7 @@
  * @Author: Always
  * @LastEditors: Always
  * @Date: 2020-05-28 15:37:50
- * @LastEditTime: 2020-07-09 16:38:16
+ * @LastEditTime: 2020-07-10 14:36:28
  * @FilePath: /koala_background_system/src/api/index.ts
  */
 import http from '../axios';
@@ -19,6 +19,7 @@ import {
   ICategoriesItem,
   IUpdateCategories,
 } from '@/pages/Categories/interface';
+import { IAppletUsers } from '@/pages/AppletUsers/interface';
 
 /**
  * 用户登录
@@ -126,4 +127,16 @@ export const createCategories = (params: FormData) =>
     method: 'post',
     params,
     contentType: 'formData',
+  });
+
+/**
+ * 获取小程序用户列表
+ * @param params
+ */
+export const getAppletUsers = (params: { page: number; pageSize: number }) =>
+  http.request<IAppletUsers>({
+    url: '/backend-applet-user/get-applet-user-list',
+    method: 'post',
+    params,
+    contentType: 'json',
   });
