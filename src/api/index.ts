@@ -2,7 +2,7 @@
  * @Author: Always
  * @LastEditors: Always
  * @Date: 2020-05-28 15:37:50
- * @LastEditTime: 2020-07-10 14:36:28
+ * @LastEditTime: 2020-07-16 18:28:16
  * @FilePath: /koala_background_system/src/api/index.ts
  */
 import http from '../axios';
@@ -139,4 +139,31 @@ export const getAppletUsers = (params: { page: number; pageSize: number }) =>
     method: 'post',
     params,
     contentType: 'json',
+  });
+
+/**
+ * 获取使用中的产品标签
+ * @param params
+ */
+export const getUsingCategories = (params: {
+  page: number;
+  pageSize: number;
+}) =>
+  http.request<ICategories>({
+    method: 'post',
+    url: '/backend-categories/get-using-categories',
+    params,
+    contentType: 'json',
+  });
+
+/**
+ * 上传文件到媒体库
+ * @param params
+ */
+export const uploadMediaOnLibrary = (params: FormData) =>
+  http.request<{ filePath: string; id: number }>({
+    method: 'post',
+    url: '/media-library/upload-file',
+    params,
+    contentType: 'formData',
   });

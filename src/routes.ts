@@ -2,7 +2,7 @@
  * @Author: Always
  * @LastEditors: Always
  * @Date: 2020-05-27 15:38:05
- * @LastEditTime: 2020-07-10 14:19:52
+ * @LastEditTime: 2020-07-13 16:53:36
  * @FilePath: /koala_background_system/src/routes.ts
  */
 
@@ -79,6 +79,16 @@ export let serverRoutes: Array<IRouteData> = [
     meta: {
       title: '小程序用户列表',
       auth: EUserAuth.ADMIN,
+    },
+  },
+  {
+    path: '/server/addProduct',
+    exact: true,
+    wrappers: [require('./wrappers/Auth').default],
+    component: require('./pages/AddProduct').default,
+    meta: {
+      title: '新增产品',
+      auth: EUserAuth.PROXY,
     },
   },
 ];

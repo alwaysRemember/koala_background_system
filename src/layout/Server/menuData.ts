@@ -2,7 +2,7 @@
  * @Author: Always
  * @LastEditors: Always
  * @Date: 2020-06-09 15:00:10
- * @LastEditTime: 2020-07-10 14:20:31
+ * @LastEditTime: 2020-07-13 16:54:47
  * @FilePath: /koala_background_system/src/layout/Server/menuData.ts
  */
 import { ISubMenuItem, IMenuItem } from './interface';
@@ -28,6 +28,18 @@ export const menuList: Array<ISubMenuItem | IMenuItem> = [
         path: '/server/addCategories',
         menuTitle: '新增商品分类',
         subMenuKey: 'categories',
+      },
+    ],
+  },
+  {
+    subMenuTitle: '商品管理',
+    key: 'product',
+    auth: EUserAuth.PROXY,
+    children: [
+      {
+        path: '/server/addProduct',
+        menuTitle: '添加商品',
+        subMenuKey: 'product',
       },
     ],
   },

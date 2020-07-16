@@ -129,15 +129,15 @@ const Categories = () => {
    * @param id
    */
   const resetUpdateData = () => {
-    const { categoriesId } = currentChangeData as ICategoriesItem;
+    const { id } = currentChangeData as ICategoriesItem;
     const currentDataInClone = dataClone.filter(
-      (item: ICategoriesItem) => item.categoriesId === categoriesId,
+      (item: ICategoriesItem) => item.id === id,
     )[0];
 
     if (currentDataInClone) {
       setData(list =>
         list.map((item: ICategoriesItem) =>
-          item.categoriesId === categoriesId ? currentDataInClone : item,
+          item.id === id ? currentDataInClone : item,
         ),
       );
     }
@@ -165,7 +165,7 @@ const Categories = () => {
       onOk: async () => {
         try {
           updateCategories({
-            categoriesId: currentChangeData?.categoriesId,
+            id: currentChangeData?.id,
             categoriesName: currentChangeData?.categoriesName,
             isShowOnHome: currentChangeData?.isShowOnHome,
             isUse: currentChangeData?.isUse,
@@ -199,7 +199,7 @@ const Categories = () => {
       dataSource={data}
       bordered
       loading={loading}
-      rowKey={(record: ICategoriesItem) => record.categoriesId}
+      rowKey={(record: ICategoriesItem) => record.id}
       scroll={{
         x: 1120,
       }}

@@ -16,3 +16,15 @@ body {
 .ant-tooltip {
   transition: none;
 }
+
+/* 编辑器相关 */
+.bf-modal-content {
+  max-height: 100%;
+  overflow-y: scroll;
+  transform: translate(-50%, -40%) !important;
+}
+.bf-modal button[type='button'] {
+  position: absolute;
+  right: 0;
+  top: 0;
+}
