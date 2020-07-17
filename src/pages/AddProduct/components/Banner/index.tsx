@@ -1,4 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, {
+  useState,
+  useEffect,
+  MutableRefObject,
+  useImperativeHandle,
+} from 'react';
 
 import styles from './index.less';
 import { Upload, Button, Spin } from 'antd';
@@ -6,11 +11,26 @@ import { IBannerItem } from '../../interface';
 import { UploadFile, UploadChangeParam } from 'antd/lib/upload/interface';
 import { UploadOutlined } from '@ant-design/icons';
 import { uploadProductBanner } from '@/api';
-const Banner = ({ fileList }: { fileList: Array<IBannerItem> }) => {
+import { IFileItem, IBannerRef } from './interface';
+const Banner = ({
+  fileList,
+  cref,
+}: {
+  fileList: Array<IBannerItem>;
+  cref: MutableRefObject<IBannerRef>;
+}) => {
+  useImperativeHandle(cref, () => ({
+    getBannerList: () => bannerList,
+  }));
+
   const [bannerList, setBannerList] = useState<Array<IBannerItem>>(fileList);
 
   const [uploadLoading, setUploadLoading] = useState<boolean>(false);
 
+  /**
+   * 监听上传
+   * @param param0
+   */
   const onChange = async ({ file }: UploadChangeParam) => {
     if (file.status !== 'uploading') return;
     setUploadLoading(true);
@@ -21,13 +41,29 @@ const Banner = ({ fileList }: { fileList: Array<IBannerItem> }) => {
     setUploadLoading(false);
   };
 
-  const onRemove = (info: UploadFile) => {
-    console.log(info);
+  /**
+   * 删除文件
+   * @param info
+   */
+  const onRemove = (info: IFileItem) => {
+    // 获取删除文件的下标
+    const index = bannerList.findIndex(
+      (item: IBannerItem) => item.id === info.id,
+    );
+
+    // 删除文件
+    const prevBannerList: Array<IBannerItem> = JSON.parse(
+      JSON.stringify(bannerList),
+    );
+    prevBannerList.splice(index, 1);
+
+    setBannerList(prevBannerList);
   };
 
   useEffect(() => {
     setBannerList(fileList);
   }, [fileList]);
+
   return (
     <Spin tip="正在上传中..." spinning={uploadLoading}>
       <Upload
@@ -41,10 +77,12 @@ const Banner = ({ fileList }: { fileList: Array<IBannerItem> }) => {
               uid: item.id + '',
               size: 0,
               type: 'IMAGE',
-            }) as UploadFile,
+            }) as IFileItem,
         )}
         isImageUrl={() => true}
-        onRemove={onRemove}
+        onRemove={(info: UploadFile) => {
+          onRemove(info as IFileItem);
+        }}
         onChange={onChange}
       >
         <Button>

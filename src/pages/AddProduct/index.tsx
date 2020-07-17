@@ -9,6 +9,7 @@ import { IBannerItem } from './interface';
 import { UploadFile } from 'antd/lib/upload/interface';
 import { UploadOutlined } from '@ant-design/icons';
 import Banner from './components/Banner';
+import { IBannerRef } from './components/Banner/interface';
 
 /**
  *
@@ -31,6 +32,7 @@ const AddProduct = ({
   const [productAmount, setProductAmount] = useState<number>(0); // 产品金额 分
 
   const editorRef = useRef<IEditor>();
+  const bannerRef = useRef<IBannerRef>();
   /**
    * 分类标题
    * @param param0
@@ -121,7 +123,7 @@ const AddProduct = ({
       {/* 新增banner */}
       <div className={styles['add-product-item']}>
         <ItemTitle text="产品banner" />
-        <Banner fileList={bannerList} />
+        <Banner fileList={bannerList} cref={bannerRef} />
       </div>
 
       {/* 编辑器 */}
