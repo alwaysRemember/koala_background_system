@@ -8,8 +8,13 @@ import React, {
 import BraftEditor, { EditorState } from 'braft-editor';
 import 'braft-editor/dist/index.css';
 import styles from './index.less';
-import { IEditor, IUploadItem } from './interface';
-import { uploadMediaOnLibrary } from '@/api';
+import {
+  IEditor,
+  IUploadItem,
+  IMediaLibraryItem,
+  IMediaLibraryResponseItem,
+} from './interface';
+import { uploadMediaLibrary, getMediaLibraryList } from '@/api';
 
 const Editor = ({
   content,
@@ -20,10 +25,19 @@ const Editor = ({
 }) => {
   const [value, setValue] = useState<EditorState>();
   const editorRef = useRef<any>();
+  const [mediaList, setMediaList] = useState<Array<IMediaLibraryItem>>([]);
 
   useImperativeHandle(cref, () => ({
-    getValue() {
+    // 获取编辑器内容
+    getValue(): string {
       return value.toHTML();
+    },
+    // 获取编辑器的媒体文件id
+    getMediaList(): Array<string> {
+      return Object.values(JSON.parse(value.toRAW()).entityMap).map(
+        item =>
+          (item as { data: IMediaLibraryResponseItem }).data.meta?.id as string,
+      );
     },
   }));
 
@@ -32,7 +46,7 @@ const Editor = ({
     formData.set('file', file);
 
     try {
-      const { filePath, id } = await uploadMediaOnLibrary(formData);
+      const { filePath, id } = await uploadMediaLibrary(formData);
       success({
         url: filePath,
         meta: {
@@ -48,14 +62,34 @@ const Editor = ({
     } catch (e) {}
   };
 
+  const getMediaData = async () => {
+    try {
+      const data = await getMediaLibraryList();
+      setMediaList(data);
+    } catch (e) {}
+  };
+
   useEffect(() => {
     // 初始化文本内容
     setValue(BraftEditor.createEditorState(content ? content : null));
   }, [content]);
 
   useEffect(() => {
-    console.log(value && JSON.parse(value.toRAW()));
-  }, [value]);
+    getMediaData();
+  }, []);
+
+  useEffect(() => {
+    editorRef.current?.getFinderInstance()?.addItems(
+      mediaList.map((item: IMediaLibraryItem) =>
+        Object.assign({}, item, {
+          url: item.path,
+          meta: {
+            id: item.id,
+          },
+        }),
+      ),
+    );
+  }, [mediaList]);
 
   return (
     <div className={styles['editor-wrapper']}>

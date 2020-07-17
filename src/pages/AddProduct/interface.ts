@@ -2,20 +2,18 @@
  * @Author: Always
  * @LastEditors: Always
  * @Date: 2020-07-14 14:15:29
- * @LastEditTime: 2020-07-14 14:37:27
+ * @LastEditTime: 2020-07-17 16:31:30
  * @FilePath: /koala_background_system/src/pages/AddProduct/interface.ts
  */
 
 import { EProductStatus } from '@/enums/EProduct';
 
 export interface IBannerItem {
-  id?: number;
+  id: number;
+  name: string;
+  size: number;
   url: string;
-  fileName: string;
 }
-
-export interface IVideo extends IBannerItem {}
-
 export interface IRequestProduct {
   name: string;
   productStatus: EProductStatus;

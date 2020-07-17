@@ -2,7 +2,7 @@
  * @Author: Always
  * @LastEditors: Always
  * @Date: 2020-07-15 15:38:26
- * @LastEditTime: 2020-07-16 17:39:39
+ * @LastEditTime: 2020-07-17 14:32:19
  * @FilePath: /koala_background_system/src/components/Editor/interface.ts
  */
 
@@ -28,4 +28,19 @@ export interface IUploadItem {
     };
   }) => void;
   error: (err: { msg: string }) => void;
+}
+
+export interface IMediaLibraryItem {
+  id: number;
+  path: string;
+  type: string;
+}
+
+// 从编辑器获取到的媒体数据
+export interface IMediaLibraryResponseItem {
+  url: string;
+  type: string;
+  meta?: {
+    id: string;
+  };
 }

@@ -2,7 +2,7 @@
  * @Author: Always
  * @LastEditors: Always
  * @Date: 2020-05-28 15:37:50
- * @LastEditTime: 2020-07-16 18:28:16
+ * @LastEditTime: 2020-07-17 15:17:10
  * @FilePath: /koala_background_system/src/api/index.ts
  */
 import http from '../axios';
@@ -20,6 +20,8 @@ import {
   IUpdateCategories,
 } from '@/pages/Categories/interface';
 import { IAppletUsers } from '@/pages/AppletUsers/interface';
+import { IMediaLibraryItem } from '@/components/Editor/interface';
+import { IBannerItem } from '@/pages/AddProduct/interface';
 
 /**
  * 用户登录
@@ -160,10 +162,31 @@ export const getUsingCategories = (params: {
  * 上传文件到媒体库
  * @param params
  */
-export const uploadMediaOnLibrary = (params: FormData) =>
+export const uploadMediaLibrary = (params: FormData) =>
   http.request<{ filePath: string; id: number }>({
     method: 'post',
     url: '/media-library/upload-file',
+    params,
+    contentType: 'formData',
+  });
+
+/**
+ * 获取媒体库数据
+ */
+export const getMediaLibraryList = () =>
+  http.request<Array<IMediaLibraryItem>>({
+    method: 'get',
+    url: '/media-library/get-file-list',
+  });
+
+/**
+ * 上传banner
+ * @param params
+ */
+export const uploadProductBanner = (params: FormData) =>
+  http.request<IBannerItem>({
+    method: 'post',
+    url: '/product/upload-product-banner',
     params,
     contentType: 'formData',
   });

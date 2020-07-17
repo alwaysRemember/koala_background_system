@@ -1,11 +1,14 @@
 import React, { useState, useRef } from 'react';
-import { Input, Button, Switch, InputNumber } from 'antd';
+import { Input, Button, Switch, InputNumber, Upload } from 'antd';
 import styles from './index.less';
-import { IBannerItem, IVideo } from './interface';
 import { EProductStatus } from '@/enums/EProduct';
 import CategoriesSelect from './components/CategoriesSelect';
 import Editor from '@/components/Editor';
 import { IEditor } from '@/components/Editor/interface';
+import { IBannerItem } from './interface';
+import { UploadFile } from 'antd/lib/upload/interface';
+import { UploadOutlined } from '@ant-design/icons';
+import Banner from './components/Banner';
 
 /**
  *
@@ -16,24 +19,12 @@ const AddProduct = ({
     query: { productId },
   },
 }: any) => {
-  const [defaultBannerList, setDefaultBannerList] = useState<
-    Array<IBannerItem>
-  >([]); // 从后台获取的banner信息
-  const [showBannerList, setShowBannerList] = useState<Array<IBannerItem>>([]); // banner显示列表
-  const [addBannerList, setAddBannerList] = useState<Array<File>>([]); // 新增的banner图
-  const [delBannerList, setDelBannerLiist] = useState<Array<number>>([]); // 删除的banner 存储字段为banner id
-
-  const [defaultVideo, setDefaultVideo] = useState<IVideo>(); // 从后台获取的视频数据
-  const [showVideo, setShowVideo] = useState<IVideo>(); // 视频显示数据
-  const [addVideo, setAddVideo] = useState<File>(); // 新增的视频
-  const [delVideo, setDelVideo] = useState<number>(); // 删除的视频 存储字段为video id
+  const [bannerList, setBannerList] = useState<Array<IBannerItem>>([]); // banner列表
 
   const [name, setName] = useState<string>(''); // 产品名
-
   const [productStatus, setProductStatus] = useState<EProductStatus>(
     EProductStatus.PUT_ON_SHELF,
   ); // 产品状态  default = 上架
-
   const [categoriresId, setCategoriesId] = useState<number>(); // 产品所属类别
   const [productDetail, setProductDetail] = useState<string>(''); // 产品详情
   const [productBrief, setProductBrief] = useState<string>(''); // 产品简介
@@ -127,8 +118,21 @@ const AddProduct = ({
         </div>
       </div>
 
+      {/* 新增banner */}
+      <div className={styles['add-product-item']}>
+        <ItemTitle text="产品banner" />
+        <Banner fileList={bannerList} />
+      </div>
+
+      {/* 编辑器 */}
       <div className={styles['product-editor']}>
         <Editor cref={editorRef} content={productDetail} />
+      </div>
+
+      <div className={styles['button-wrapper']}>
+        <Button type="primary" className={styles['submit']}>
+          提交
+        </Button>
       </div>
     </div>
   );
