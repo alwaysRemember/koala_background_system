@@ -2,35 +2,30 @@
  * @Author: Always
  * @LastEditors: Always
  * @Date: 2020-07-14 14:15:29
- * @LastEditTime: 2020-07-17 16:31:30
+ * @LastEditTime: 2020-07-20 14:27:28
  * @FilePath: /koala_background_system/src/pages/AddProduct/interface.ts
  */
 
 import { EProductStatus } from '@/enums/EProduct';
 
-export interface IBannerItem {
+interface IRequestFile {
   id: number;
   name: string;
   size: number;
   url: string;
 }
+
+export interface IBannerItem extends IRequestFile {}
+
+export interface IVideo extends IRequestFile {}
+
 export interface IRequestProduct {
   name: string;
   productStatus: EProductStatus;
   categoriesId: number;
   productDetail: string;
-}
-
-// 新增产品
-export interface IRequestAddProduct extends IRequestProduct {
-  bannerList: Array<File>;
-  video: File;
-}
-
-// 修改产品
-export interface IRequestUpdateProduct extends IRequestProduct {
-  addBannerList: Array<File>;
-  delBannerList: Array<number>;
-  addVideo: File;
-  delVideo: number;
+  bannerIdList: Array<number>;
+  delBannerIdList: Array<number>;
+  videoId: number;
+  delVideoIdList: Array<number>;
 }

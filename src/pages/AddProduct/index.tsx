@@ -3,13 +3,15 @@ import { Input, Button, Switch, InputNumber, Upload } from 'antd';
 import styles from './index.less';
 import { EProductStatus } from '@/enums/EProduct';
 import CategoriesSelect from './components/CategoriesSelect';
-import Editor from '@/components/Editor';
-import { IEditor } from '@/components/Editor/interface';
-import { IBannerItem } from './interface';
+import Editor from './components/Editor';
+import { IEditor } from './components/Editor/interface';
+import { IBannerItem, IVideo } from './interface';
 import { UploadFile } from 'antd/lib/upload/interface';
 import { UploadOutlined } from '@ant-design/icons';
 import Banner from './components/Banner';
 import { IBannerRef } from './components/Banner/interface';
+import Video from './components/Video';
+import { IVideoRef } from './components/Video/interface';
 
 /**
  *
@@ -21,6 +23,7 @@ const AddProduct = ({
   },
 }: any) => {
   const [bannerList, setBannerList] = useState<Array<IBannerItem>>([]); // banner列表
+  const [videoData, setVideoData] = useState<IVideo>(); // 产品视频
 
   const [name, setName] = useState<string>(''); // 产品名
   const [productStatus, setProductStatus] = useState<EProductStatus>(
@@ -33,6 +36,7 @@ const AddProduct = ({
 
   const editorRef = useRef<IEditor>();
   const bannerRef = useRef<IBannerRef>();
+  const videoRef = useRef<IVideoRef>();
   /**
    * 分类标题
    * @param param0
@@ -124,6 +128,16 @@ const AddProduct = ({
       <div className={styles['add-product-item']}>
         <ItemTitle text="产品banner" />
         <Banner fileList={bannerList} cref={bannerRef} />
+      </div>
+
+      {/* 新增视频 */}
+      <div className={styles['add-product-item']}>
+        <ItemTitle text="产品视频" />
+        <Video
+          cref={videoRef}
+          videoData={videoData}
+          videoChange={(data: IVideo | undefined) => setVideoData(data)}
+        />
       </div>
 
       {/* 编辑器 */}

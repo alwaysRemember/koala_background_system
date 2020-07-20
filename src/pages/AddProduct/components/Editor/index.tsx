@@ -15,6 +15,8 @@ import {
   IMediaLibraryResponseItem,
 } from './interface';
 import { uploadMediaLibrary, getMediaLibraryList } from '@/api';
+import { useLocation } from 'umi';
+import { ILocation } from '@/interface/Global';
 
 const Editor = ({
   content,
@@ -23,6 +25,10 @@ const Editor = ({
   content: string;
   cref: MutableRefObject<IEditor | undefined>;
 }) => {
+  const {
+    query: { productId },
+  } = useLocation() as ILocation<{ productId: string }>;
+
   const [value, setValue] = useState<EditorState>();
   const editorRef = useRef<any>();
   const [mediaList, setMediaList] = useState<Array<IMediaLibraryItem>>([]);
@@ -64,7 +70,7 @@ const Editor = ({
 
   const getMediaData = async () => {
     try {
-      const data = await getMediaLibraryList();
+      const data = await getMediaLibraryList({ productId });
       setMediaList(data);
     } catch (e) {}
   };
@@ -75,7 +81,7 @@ const Editor = ({
   }, [content]);
 
   useEffect(() => {
-    getMediaData();
+    productId && getMediaData();
   }, []);
 
   useEffect(() => {

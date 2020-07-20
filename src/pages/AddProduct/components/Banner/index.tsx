@@ -17,13 +17,15 @@ const Banner = ({
   cref,
 }: {
   fileList: Array<IBannerItem>;
-  cref: MutableRefObject<IBannerRef>;
+  cref: MutableRefObject<IBannerRef | undefined>;
 }) => {
   useImperativeHandle(cref, () => ({
-    getBannerList: () => bannerList,
+    getBannerIdList: () => bannerList.map((item: IBannerItem) => item.id),
+    getDelBannerIdList: () => delIdList,
   }));
 
   const [bannerList, setBannerList] = useState<Array<IBannerItem>>(fileList);
+  const [delIdList, setDelIdList] = useState<Array<number>>([]);
 
   const [uploadLoading, setUploadLoading] = useState<boolean>(false);
 
@@ -46,6 +48,11 @@ const Banner = ({
    * @param info
    */
   const onRemove = (info: IFileItem) => {
+    setDelIdList(list => {
+      list = JSON.parse(JSON.stringify(list));
+      list.push(info.id);
+      return list;
+    });
     // 获取删除文件的下标
     const index = bannerList.findIndex(
       (item: IBannerItem) => item.id === info.id,
