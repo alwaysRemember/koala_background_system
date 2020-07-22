@@ -22,6 +22,9 @@ const AddProduct = ({
     query: { productId },
   },
 }: any) => {
+  if (!!productId) {
+    document.title = '修改商品详情';
+  }
   const [bannerList, setBannerList] = useState<Array<IBannerItem>>([]); // banner列表
   const [videoData, setVideoData] = useState<IVideo>(); // 产品视频
 
