@@ -2,12 +2,14 @@
  * @Author: Always
  * @LastEditors: Always
  * @Date: 2020-07-15 15:38:26
- * @LastEditTime: 2020-07-17 14:32:19
- * @FilePath: /koala_background_system/src/components/Editor/interface.ts
+ * @LastEditTime: 2020-07-21 19:29:18
+ * @FilePath: /koala_background_system/src/pages/AddProduct/components/Editor/interface.ts
  */
 
 export interface IEditor {
   getValue: () => string;
+  getMediaList: () => Array<number>;
+  getDelMediaList: () => Array<number>;
 }
 
 export interface IUploadItem {

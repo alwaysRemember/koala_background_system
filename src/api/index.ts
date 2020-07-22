@@ -2,7 +2,7 @@
  * @Author: Always
  * @LastEditors: Always
  * @Date: 2020-05-28 15:37:50
- * @LastEditTime: 2020-07-20 14:51:27
+ * @LastEditTime: 2020-07-22 11:13:30
  * @FilePath: /koala_background_system/src/api/index.ts
  */
 import http from '../axios';
@@ -14,14 +14,15 @@ import {
   IAdminUserListResponse,
   IAdminUserItem,
 } from '@/pages/AdminUserList/interface';
-import {
-  ICategories,
-  ICategoriesItem,
-  IUpdateCategories,
-} from '@/pages/Categories/interface';
+import { ICategories, IUpdateCategories } from '@/pages/Categories/interface';
 import { IAppletUsers } from '@/pages/AppletUsers/interface';
-import { IMediaLibraryItem } from '@/components/Editor/interface';
-import { IBannerItem, IVideo } from '@/pages/AddProduct/interface';
+import { IMediaLibraryItem } from '@/pages/AddProduct/components/Editor/interface';
+import {
+  IBannerItem,
+  IVideo,
+  IProduct,
+  IProductResponse,
+} from '@/pages/AddProduct/interface';
 
 /**
  * 用户登录
@@ -147,14 +148,10 @@ export const getAppletUsers = (params: { page: number; pageSize: number }) =>
  * 获取使用中的产品标签
  * @param params
  */
-export const getUsingCategories = (params: {
-  page: number;
-  pageSize: number;
-}) =>
+export const getUsingCategories = () =>
   http.request<ICategories>({
-    method: 'post',
+    method: 'get',
     url: '/backend-categories/get-using-categories',
-    params,
     contentType: 'json',
   });
 
@@ -178,6 +175,8 @@ export const getMediaLibraryList = (params: { productId: string }) =>
   http.request<Array<IMediaLibraryItem>>({
     method: 'post',
     url: '/media-library/get-file-list',
+    params,
+    contentType: 'json',
   });
 
 /**
@@ -202,4 +201,28 @@ export const uploadProductVideo = (params: FormData) =>
     url: '/product/upload-product-video',
     params,
     contentType: 'formData',
+  });
+
+/**
+ * 上传产品
+ * @param params
+ */
+export const uploadProduct = (params: IProduct) =>
+  http.request<{ id: number }>({
+    method: 'post',
+    url: '/product/upload-product',
+    params,
+    contentType: 'json',
+  });
+
+/**
+ * 获取产品详情
+ * @param params
+ */
+export const getProductDetail = (params: { productId: number }) =>
+  http.request<IProductResponse>({
+    method: 'post',
+    url: '/product/get-product-detail',
+    params,
+    contentType: 'json',
   });

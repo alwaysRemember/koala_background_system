@@ -35,15 +35,29 @@ const Editor = ({
 
   useImperativeHandle(cref, () => ({
     // 获取编辑器内容
-    getValue(): string {
+    getValue() {
       return value.toHTML();
     },
     // 获取编辑器的媒体文件id
-    getMediaList(): Array<string> {
+    getMediaList() {
       return Object.values(JSON.parse(value.toRAW()).entityMap).map(
         item =>
-          (item as { data: IMediaLibraryResponseItem }).data.meta?.id as string,
+          Number(
+            (item as { data: IMediaLibraryResponseItem }).data.meta?.id,
+          ) as number,
       );
+    },
+    getDelMediaList() {
+      let arr: Array<number> = [];
+      mediaList.forEach((item: IMediaLibraryItem) => {
+        // 判断原数据是否存在最终数据中
+        let judge: boolean = this.getMediaList().indexOf(item.id) > -1;
+        // 不存在则代表数据不再被使用，添加入数组中
+        if (!judge) {
+          arr.push(item.id);
+        }
+      });
+      return arr;
     },
   }));
 
