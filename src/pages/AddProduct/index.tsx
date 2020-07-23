@@ -32,7 +32,7 @@ const AddProduct = ({
   const [productStatus, setProductStatus] = useState<EProductStatus>(
     EProductStatus.PUT_ON_SHELF,
   ); // 产品状态  default = 上架
-  const [categoriesId, setCategoriesId] = useState<number>(); // 产品所属类别
+  const [categoriesId, setCategoriesId] = useState<string>(); // 产品所属类别
   const [productDetail, setProductDetail] = useState<string>(''); // 产品详情
   const [productBrief, setProductBrief] = useState<string>(''); // 产品简介
   const [productAmount, setProductAmount] = useState<number>(0); // 产品金额 分
@@ -84,7 +84,7 @@ const AddProduct = ({
     let params: IProduct = {
       name,
       productStatus,
-      categoriesId: categoriesId as number,
+      categoriesId: categoriesId as string,
       amount: productAmount,
       productBrief,
       productDetail: editorRef.current?.getValue() || '',
