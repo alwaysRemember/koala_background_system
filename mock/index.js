@@ -2,7 +2,7 @@
  * @Author: Always
  * @LastEditors: Always
  * @Date: 2020-05-28 15:52:00
- * @LastEditTime: 2020-07-14 16:08:25
+ * @LastEditTime: 2020-07-22 16:08:13
  * @FilePath: /koala_background_system/mock/index.js
  */
 
@@ -93,11 +93,10 @@ export default {
     delay(() => res.json(responseData(null)));
   },
 
-  'POST /api/backend-categories/get-using-categories': (req, res) => {
+  'GET /api/backend-categories/get-using-categories': (req, res) => {
     delay(() =>
       res.json(
         responseData({
-          total: 2,
           list: [
             {
               id: 14,

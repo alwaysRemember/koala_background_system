@@ -25,7 +25,7 @@ const Banner = ({
   }));
 
   const [bannerList, setBannerList] = useState<Array<IBannerItem>>(fileList);
-  const [delIdList, setDelIdList] = useState<Array<number>>([]);
+  const [delIdList, setDelIdList] = useState<Array<string>>([]);
 
   const [uploadLoading, setUploadLoading] = useState<boolean>(false);
 

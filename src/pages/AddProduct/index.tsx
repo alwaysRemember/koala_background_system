@@ -3,7 +3,6 @@ import { history } from 'umi';
 import { Input, Button, Switch, InputNumber, Spin } from 'antd';
 import styles from './index.less';
 import { EProductStatus } from '@/enums/EProduct';
-import CategoriesSelect from './components/CategoriesSelect';
 import Editor from './components/Editor';
 import { IEditor } from './components/Editor/interface';
 import { IBannerItem, IVideo, IProduct } from './interface';
@@ -12,6 +11,7 @@ import { IBannerRef } from './components/Banner/interface';
 import Video from './components/Video';
 import { IVideoRef } from './components/Video/interface';
 import { uploadProduct, getProductDetail } from '@/api';
+import CategoriesSelect from '@/components/CategoriesSelect';
 
 /**
  *

@@ -42,13 +42,11 @@ const Editor = ({
     getMediaList() {
       return Object.values(JSON.parse(value.toRAW()).entityMap).map(
         item =>
-          Number(
-            (item as { data: IMediaLibraryResponseItem }).data.meta?.id,
-          ) as number,
+          (item as { data: IMediaLibraryResponseItem }).data.meta?.id as string,
       );
     },
     getDelMediaList() {
-      let arr: Array<number> = [];
+      let arr: Array<string> = [];
       mediaList.forEach((item: IMediaLibraryItem) => {
         // 判断原数据是否存在最终数据中
         let judge: boolean = this.getMediaList().indexOf(item.id) > -1;
