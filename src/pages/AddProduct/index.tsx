@@ -5,13 +5,15 @@ import styles from './index.less';
 import { EProductStatus } from '@/enums/EProduct';
 import Editor from './components/Editor';
 import { IEditor } from './components/Editor/interface';
-import { IBannerItem, IVideo, IProduct } from './interface';
+import { IBannerItem, IVideo, IProduct, IMainImg } from './interface';
 import Banner from './components/Banner';
 import { IBannerRef } from './components/Banner/interface';
 import { IVideoRef } from './components/Video/interface';
 import { uploadProduct, getProductDetail } from '@/api';
 import CategoriesSelect from '@/components/CategoriesSelect';
 import Video from './components/Video';
+import MainImg from './components/MainImg';
+import { IMainImgRef } from './components/MainImg/interface';
 
 /**
  *
@@ -27,6 +29,7 @@ const AddProduct = ({
   }
   const [bannerList, setBannerList] = useState<Array<IBannerItem>>([]); // banner列表
   const [videoData, setVideoData] = useState<IVideo>(); // 产品视频
+  const [mainImg, setMainImg] = useState<IMainImg | undefined>(); // 产品主图
 
   const [name, setName] = useState<string>(''); // 产品名
   const [productStatus, setProductStatus] = useState<EProductStatus>(
@@ -43,6 +46,7 @@ const AddProduct = ({
   const editorRef = useRef<IEditor>();
   const bannerRef = useRef<IBannerRef>();
   const videoRef = useRef<IVideoRef>();
+  const mainImgRef = useRef<IMainImgRef>();
 
   /**
    * 分类标题
@@ -63,6 +67,7 @@ const AddProduct = ({
         productDetail,
         bannerList,
         videoData,
+        mainImg,
       } = await getProductDetail({
         productId,
       });
@@ -75,10 +80,27 @@ const AddProduct = ({
       setProductBrief(productBrief);
       setProductAmount(amount);
       setIsLoading(false);
+      setMainImg(mainImg);
     } catch (e) {}
   };
 
   const submit = async () => {
+    const productDetail = editorRef.current?.getValue() || '';
+    const bannerIdList = bannerRef.current?.getBannerIdList() || [];
+    if (
+      !name ||
+      !categoriesId ||
+      !productAmount ||
+      !productBrief ||
+      !productDetail ||
+      !productDetail ||
+      !bannerIdList.length ||
+      !videoData ||
+      !mainImg
+    ) {
+      window.message.error('请填写商品必须的参数');
+      return;
+    }
     setSpinTip('商品信息上传中');
     setIsLoading(true);
     let params: IProduct = {
@@ -87,13 +109,15 @@ const AddProduct = ({
       categoriesId: categoriesId as string,
       amount: productAmount,
       productBrief,
-      productDetail: editorRef.current?.getValue() || '',
+      productDetail,
       mediaIdList: editorRef.current?.getMediaList() || [],
       delMediaIdList: editorRef.current?.getDelMediaList() || [],
-      bannerIdList: bannerRef.current?.getBannerIdList() || [],
+      bannerIdList,
       delBannerIdList: bannerRef.current?.getDelBannerIdList() || [],
-      videoId: videoData?.id,
+      videoId: videoData.id,
       delVideoIdList: videoRef.current?.getDelVideoIdList() || [],
+      mainImgId: mainImg.id,
+      delMainImgIdList: mainImgRef.current?.getDelMainImgIdList() || [],
     };
 
     if (productId) {
@@ -206,6 +230,16 @@ const AddProduct = ({
             cref={videoRef}
             videoData={videoData}
             videoChange={(data: IVideo | undefined) => setVideoData(data)}
+          />
+        </div>
+
+        {/* 产品主图 */}
+        <div className={styles['add-product-item']}>
+          <ItemTitle text="产品主图" />
+          <MainImg
+            cref={mainImgRef}
+            mainImgData={mainImg}
+            mainImgChange={(data: IMainImg | undefined) => setMainImg(data)}
           />
         </div>
 

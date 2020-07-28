@@ -2,7 +2,7 @@
  * @Author: Always
  * @LastEditors: Always
  * @Date: 2020-05-28 15:37:50
- * @LastEditTime: 2020-07-28 14:57:03
+ * @LastEditTime: 2020-07-28 17:11:05
  * @FilePath: /koala_background_system/src/api/index.ts
  */
 import http from '../axios';
@@ -26,6 +26,7 @@ import {
   IVideo,
   IProduct,
   IProductResponse,
+  IMainImg,
 } from '@/pages/AddProduct/interface';
 import {
   ISelectUserItem,
@@ -208,6 +209,18 @@ export const uploadProductVideo = (params: FormData) =>
   http.request<IVideo>({
     method: 'post',
     url: '/product/upload-product-video',
+    params,
+    contentType: 'formData',
+  });
+
+/**
+ * 上传产品主图
+ * @param params
+ */
+export const uploadProductMainImg = (params: FormData) =>
+  http.request<IMainImg>({
+    method: 'post',
+    url: '/product/upload-product-main-img',
     params,
     contentType: 'formData',
   });
