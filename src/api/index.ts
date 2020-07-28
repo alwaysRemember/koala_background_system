@@ -2,7 +2,7 @@
  * @Author: Always
  * @LastEditors: Always
  * @Date: 2020-05-28 15:37:50
- * @LastEditTime: 2020-07-23 15:38:19
+ * @LastEditTime: 2020-07-28 14:57:03
  * @FilePath: /koala_background_system/src/api/index.ts
  */
 import http from '../axios';
@@ -27,7 +27,11 @@ import {
   IProduct,
   IProductResponse,
 } from '@/pages/AddProduct/interface';
-import { ISelectUserItem } from '@/pages/ProductList/interface';
+import {
+  ISelectUserItem,
+  IRequestProduct,
+} from '@/pages/ProductList/interface';
+import { IProductItem } from '@/components/ProductsTable/interface';
 
 /**
  * 用户登录
@@ -239,4 +243,16 @@ export const getAllUserList = () =>
   http.request<Array<ISelectUserItem>>({
     method: 'get',
     url: '/backend-user/get-all-user-list',
+  });
+
+/**
+ * 获取产品列表数据
+ * @param params
+ */
+export const getProductList = (params: IRequestProduct) =>
+  http.request<{ total: number; list: Array<IProductItem> }>({
+    method: 'post',
+    url: '/product-list/get-product-list',
+    params,
+    contentType: 'json',
   });

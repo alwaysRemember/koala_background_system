@@ -8,10 +8,10 @@ import { IEditor } from './components/Editor/interface';
 import { IBannerItem, IVideo, IProduct } from './interface';
 import Banner from './components/Banner';
 import { IBannerRef } from './components/Banner/interface';
-import Video from './components/Video';
 import { IVideoRef } from './components/Video/interface';
 import { uploadProduct, getProductDetail } from '@/api';
 import CategoriesSelect from '@/components/CategoriesSelect';
+import Video from './components/Video';
 
 /**
  *

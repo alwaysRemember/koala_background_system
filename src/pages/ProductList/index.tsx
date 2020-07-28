@@ -1,11 +1,10 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { Descriptions, Button, Select, InputNumber } from 'antd';
+import { Descriptions, Button } from 'antd';
 import styles from './index.less';
-import { ICategoriesItem } from '../Categories/interface';
 import CategoriesSelect from '@/components/CategoriesSelect';
 import { EProductStatus, EProductStatusTransVal } from '@/enums/EProduct';
 import { ISelectUserItem, IRequestProduct } from './interface';
-import { getAllUserList } from '@/api';
+import { getAllUserList, getProductList } from '@/api';
 import { useMappedState } from 'redux-react-hook';
 import { IUserDataResponse } from '../Login/interface';
 import { EUserAuth } from '@/enums/UserAuthEnum';
@@ -15,6 +14,8 @@ import {
   EDefaultSelectTransVal,
 } from './components/SearchSelect/enums';
 import SearchAmount from './components/SearchAmount';
+import ProductsTable from '@/components/ProductsTable';
+import { IProductItem } from '@/components/ProductsTable/interface';
 
 const ProductList = () => {
   const { userInfo }: { userInfo: IUserDataResponse } = useMappedState(
@@ -43,6 +44,9 @@ const ProductList = () => {
   const [total, setTotal] = useState<number>(1);
   const [page, setPage] = useState<number>(1);
   const [pageSize, setPageSize] = useState<number>(10);
+  const [data, setData] = useState<Array<IProductItem>>([]);
+
+  const [loading, setLoading] = useState<boolean>(false);
 
   const getUserList = async () => {
     try {
@@ -51,18 +55,69 @@ const ProductList = () => {
     } catch (e) {}
   };
 
-  const submitClick = () => {
-    const params: IRequestProduct = {
-      categoriesId: selectCategoriesId,
-      productStatus,
-      userId,
-      minAmount: Number(minAmount) ? _stringTransferNumber(minAmount) : 0,
-      maxAmount: Number(maxAmount) ? _stringTransferNumber(maxAmount) : 0,
-    };
-    console.table(params);
+  /**
+   * 请求表格数据
+   * @param params 参数
+   */
+  const getData = async (params?: IRequestProduct) => {
+    setLoading(true);
+    params = params
+      ? Object.assign({}, params, {
+          pageSize,
+        })
+      : {
+          categoriesId: selectCategoriesId,
+          productStatus,
+          userId,
+          minAmount: Number(minAmount) ? _stringTransferNumber(minAmount) : 0,
+          maxAmount: Number(maxAmount) ? _stringTransferNumber(maxAmount) : 0,
+          page,
+          pageSize,
+        };
+    try {
+      const { total, list } = await getProductList(params);
+      setTotal(total);
+      setData(list);
+    } catch (e) {}
+    setLoading(false);
   };
 
-  const resetClick = () => {};
+  const submitClick = () => {
+    const { ALL } = EDefaultSelect;
+    if (
+      selectCategoriesId === ALL &&
+      productStatus === ALL &&
+      userId === ALL &&
+      !minAmount &&
+      !maxAmount
+    ) {
+      window.message.warn('没有搜索条件');
+      return;
+    }
+    // 非默认page只需要设置page就可以进行请求
+    if (page !== 1) {
+      setPage(1);
+    } else {
+      getData();
+    }
+  };
+
+  const resetClick = () => {
+    _resetData();
+    if (page === 1) {
+      getData({
+        categoriesId: EDefaultSelect.ALL,
+        productStatus: EDefaultSelect.ALL,
+        userId: EDefaultSelect.ALL,
+        minAmount: 0,
+        maxAmount: 0,
+        page: 1,
+        pageSize,
+      });
+    } else {
+      setPage(1);
+    }
+  };
 
   /**
    * 最大价格输入框失焦事件
@@ -84,6 +139,10 @@ const ProductList = () => {
     });
   };
 
+  /**
+   * 金额输入框失焦条件判断
+   * @param type
+   */
   const _compareAmount = (type: 'max' | 'min'): Promise<null> => {
     const min = Number(minAmount) ? _stringTransferNumber(minAmount) : 0;
     const max = Number(maxAmount) ? _stringTransferNumber(maxAmount) : 0;
@@ -140,6 +199,17 @@ const ProductList = () => {
   useEffect(() => {
     isAdmin && getUserList();
   }, []);
+  useEffect(() => {
+    getData();
+  }, [page]);
+
+  useEffect(() => {
+    if (page === 1 && pageSize !== 10) {
+      getData();
+    } else {
+      setPage(1);
+    }
+  }, [pageSize]);
 
   return (
     <div className={styles['product-list-wrapper']}>
@@ -215,6 +285,16 @@ const ProductList = () => {
           </Descriptions.Item>
         </Descriptions>
       </div>
+      {/* 表格 */}
+      <ProductsTable
+        tableData={data}
+        total={total}
+        page={page}
+        pageSize={pageSize}
+        pageChange={page => setPage(page)}
+        pageSizeChange={pageSize => setPageSize(pageSize)}
+        loading={loading}
+      />
     </div>
   );
 };

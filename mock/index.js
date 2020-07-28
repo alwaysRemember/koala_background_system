@@ -2,7 +2,7 @@
  * @Author: Always
  * @LastEditors: Always
  * @Date: 2020-05-28 15:52:00
- * @LastEditTime: 2020-07-22 16:08:13
+ * @LastEditTime: 2020-07-28 14:56:14
  * @FilePath: /koala_background_system/mock/index.js
  */
 
@@ -227,6 +227,26 @@ export default {
               updateTime: '2020-06-29T06:59:08.000Z',
             },
           ],
+        }),
+      ),
+    );
+  },
+  'POST /api/product-list/get-product-list': (req, res) => {
+    delay(() =>
+      res.json(
+        responseData({
+          list: [
+            {
+              productId: '3e478f94-20c1-42f0-9815-9992d85ebb9a',
+              username: 'tanghaojie',
+              categoriesName: '苹果',
+              productAmount: 599900,
+              productBrief: '苹果出品',
+              createTime: '2020-07-23T06:58:27.648Z',
+              updateTime: '2020-07-23T06:58:27.648Z',
+            },
+          ],
+          total: 1,
         }),
       ),
     );

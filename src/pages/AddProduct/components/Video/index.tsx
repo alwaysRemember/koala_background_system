@@ -22,7 +22,7 @@ const Video = ({
   }));
 
   const [uploadLoading, setUploadLoading] = useState<boolean>(false);
-  const [delVideoIdList, setDelVideoIdList] = useState<Array<number>>([]); // 删除的视频文件id
+  const [delVideoIdList, setDelVideoIdList] = useState<Array<string>>([]); // 删除的视频文件id
 
   const onChange = async ({ file }: UploadChangeParam) => {
     if (file.status !== 'uploading') return;
