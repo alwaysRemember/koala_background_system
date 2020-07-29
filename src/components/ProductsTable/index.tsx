@@ -1,9 +1,11 @@
-import React from 'react';
+import React, { useState, useImperativeHandle } from 'react';
 import { IProductItem, IProductsTable } from './interface';
 import { Table, Popover, Button, Popconfirm } from 'antd';
 import { transferAmount, dateFormat } from '@/utils';
 import styles from './index.less';
 import { useHistory } from 'umi';
+import { EProductStatus, EProductStatusTransVal } from '@/enums/EProduct';
+import { delProduct } from '@/api';
 const ProductsTable = ({
   pageChange,
   pageSize,
@@ -11,16 +13,49 @@ const ProductsTable = ({
   columns = [],
   total,
   tableData,
-  loading,
   page,
+  cref,
+  changeTable,
 }: IProductsTable) => {
+  useImperativeHandle(cref, () => ({
+    setLoading: loading => {
+      setLoading(loading);
+    },
+  }));
   const history = useHistory();
+  const [loading, setLoading] = useState<boolean>(true);
+
   columns = columns.concat([
+    {
+      title: '商品主图',
+      align: 'center',
+      dataIndex: 'productMainImg',
+      width: 140,
+      render: (url: string) => (
+        <img
+          src={url}
+          onClick={() => {
+            const a = document.createElement('a');
+            a.href = url;
+            a.target = '_blank';
+            a.click();
+          }}
+          className={styles['product-main-img']}
+        />
+      ),
+    },
     {
       title: '商品名称',
       align: 'center',
       dataIndex: 'productName',
       width: 140,
+    },
+    {
+      title: '商品状态',
+      align: 'center',
+      dataIndex: 'productStatus',
+      width: 100,
+      render: (status: EProductStatus) => EProductStatusTransVal[status],
     },
     {
       title: '所属用户',
@@ -77,8 +112,15 @@ const ProductsTable = ({
         <div className={styles['operating']}>
           <Popconfirm
             title="确定删除此商品么?"
-            onConfirm={() => {
-              console.log('删除');
+            onConfirm={async () => {
+              setLoading(true);
+              try {
+                await delProduct({
+                  productId: record.productId,
+                });
+                changeTable();
+              } catch (e) {}
+              setLoading(false);
             }}
             okText="确定"
             cancelText="取消"
@@ -108,7 +150,7 @@ const ProductsTable = ({
       loading={loading}
       rowKey={(record: IProductItem) => record.productId}
       scroll={{
-        x: 1000,
+        x: 1140,
       }}
       pagination={{
         current: page,

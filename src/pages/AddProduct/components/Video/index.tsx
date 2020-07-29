@@ -32,8 +32,8 @@ const Video = ({
     try {
       const data = await uploadProductVideo(formData);
       videoChange(data);
-      setUploadLoading(false);
     } catch (e) {}
+    setUploadLoading(false);
   };
 
   const onRemove = (info: IFileItem) => {

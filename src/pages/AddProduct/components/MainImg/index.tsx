@@ -31,8 +31,8 @@ const MainImg = ({
     try {
       const data = await uploadProductMainImg(formData);
       mainImgChange(data);
-      setUploadLoading(false);
     } catch (e) {}
+    setUploadLoading(false);
   };
 
   const onRemove = (info: IFileItem) => {

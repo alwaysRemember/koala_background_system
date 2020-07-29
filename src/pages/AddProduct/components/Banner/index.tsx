@@ -38,8 +38,10 @@ const Banner = ({
     setUploadLoading(true);
     const formData = new FormData();
     formData.set('file', file.originFileObj as File);
-    const data = await uploadProductBanner(formData);
-    setBannerList(bannerList.concat([data]));
+    try {
+      const data = await uploadProductBanner(formData);
+      setBannerList(bannerList.concat([data]));
+    } catch (e) {}
     setUploadLoading(false);
   };
 

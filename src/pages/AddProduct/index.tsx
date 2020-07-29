@@ -79,9 +79,9 @@ const AddProduct = ({
       setProductDetail(productDetail);
       setProductBrief(productBrief);
       setProductAmount(amount);
-      setIsLoading(false);
       setMainImg(mainImg);
     } catch (e) {}
+    setIsLoading(false);
   };
 
   const submit = async () => {

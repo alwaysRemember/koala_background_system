@@ -2,7 +2,7 @@
  * @Author: Always
  * @LastEditors: Always
  * @Date: 2020-05-28 15:37:50
- * @LastEditTime: 2020-07-28 17:11:05
+ * @LastEditTime: 2020-07-29 18:21:02
  * @FilePath: /koala_background_system/src/api/index.ts
  */
 import http from '../axios';
@@ -266,6 +266,18 @@ export const getProductList = (params: IRequestProduct) =>
   http.request<{ total: number; list: Array<IProductItem> }>({
     method: 'post',
     url: '/product-list/get-product-list',
+    params,
+    contentType: 'json',
+  });
+
+/**
+ * 删除产品
+ * @param params
+ */
+export const delProduct = (params: { productId: string }) =>
+  http.request({
+    method: 'post',
+    url: 'product/del-product',
     params,
     contentType: 'json',
   });

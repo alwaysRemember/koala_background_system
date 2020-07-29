@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { Descriptions, Button } from 'antd';
 import styles from './index.less';
 import CategoriesSelect from '@/components/CategoriesSelect';
@@ -15,7 +15,10 @@ import {
 } from './components/SearchSelect/enums';
 import SearchAmount from './components/SearchAmount';
 import ProductsTable from '@/components/ProductsTable';
-import { IProductItem } from '@/components/ProductsTable/interface';
+import {
+  IProductItem,
+  IProductsTableRef,
+} from '@/components/ProductsTable/interface';
 
 const ProductList = () => {
   const { userInfo }: { userInfo: IUserDataResponse } = useMappedState(
@@ -46,7 +49,7 @@ const ProductList = () => {
   const [pageSize, setPageSize] = useState<number>(10);
   const [data, setData] = useState<Array<IProductItem>>([]);
 
-  const [loading, setLoading] = useState<boolean>(false);
+  const productsTableRef = useRef<IProductsTableRef>();
 
   const getUserList = async () => {
     try {
@@ -60,7 +63,7 @@ const ProductList = () => {
    * @param params 参数
    */
   const getData = async (params?: IRequestProduct) => {
-    setLoading(true);
+    productsTableRef.current?.setLoading(true);
     params = params
       ? Object.assign({}, params, {
           pageSize,
@@ -79,7 +82,7 @@ const ProductList = () => {
       setTotal(total);
       setData(list);
     } catch (e) {}
-    setLoading(false);
+    productsTableRef.current?.setLoading(false);
   };
 
   const submitClick = () => {
@@ -293,7 +296,8 @@ const ProductList = () => {
         pageSize={pageSize}
         pageChange={page => setPage(page)}
         pageSizeChange={pageSize => setPageSize(pageSize)}
-        loading={loading}
+        cref={productsTableRef}
+        changeTable={getData}
       />
     </div>
   );
