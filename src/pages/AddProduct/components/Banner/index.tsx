@@ -15,9 +15,11 @@ import { IFileItem, IBannerRef } from './interface';
 const Banner = ({
   fileList,
   cref,
+  disabled = false,
 }: {
   fileList: Array<IBannerItem>;
   cref: MutableRefObject<IBannerRef | undefined>;
+  disabled?: boolean;
 }) => {
   useImperativeHandle(cref, () => ({
     getBannerIdList: () => bannerList.map((item: IBannerItem) => item.id),
@@ -76,6 +78,7 @@ const Banner = ({
   return (
     <Spin tip="正在上传中..." spinning={uploadLoading}>
       <Upload
+        disabled={disabled}
         accept="image/*"
         listType="picture"
         fileList={bannerList.map(
@@ -94,7 +97,7 @@ const Banner = ({
         }}
         onChange={onChange}
       >
-        <Button>
+        <Button disabled={disabled}>
           <UploadOutlined /> Upload
         </Button>
       </Upload>

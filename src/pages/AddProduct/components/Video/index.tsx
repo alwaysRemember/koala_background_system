@@ -12,10 +12,12 @@ const Video = ({
   videoData,
   videoChange,
   cref,
+  disabled = false,
 }: {
   videoData: IVideo | undefined;
   videoChange: (data: IVideo | undefined) => void;
   cref: MutableRefObject<IVideoRef | undefined>;
+  disabled?: boolean;
 }) => {
   useImperativeHandle(cref, () => ({
     getDelVideoIdList: () => delVideoIdList,
@@ -55,6 +57,7 @@ const Video = ({
     <div>
       <Spin tip="正在上传中..." spinning={uploadLoading}>
         <Upload
+          disabled={disabled}
           accept="video/*"
           listType="picture"
           fileList={(((videoData && [videoData]) || []) as Array<IVideo>).map(
@@ -75,7 +78,7 @@ const Video = ({
           }}
           onChange={onChange}
         >
-          <Button>
+          <Button disabled={disabled}>
             <UploadOutlined /> Upload
           </Button>
         </Upload>

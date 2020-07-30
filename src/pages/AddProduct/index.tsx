@@ -21,12 +21,13 @@ import { IMainImgRef } from './components/MainImg/interface';
  */
 const AddProduct = ({
   location: {
-    query: { productId },
+    query: { productId, review },
   },
 }: any) => {
   if (!!productId) {
     document.title = '修改商品详情';
   }
+  review = !!review; // 判断是否为只读
   const [bannerList, setBannerList] = useState<Array<IBannerItem>>([]); // banner列表
   const [videoData, setVideoData] = useState<IVideo>(); // 产品视频
   const [mainImg, setMainImg] = useState<IMainImg | undefined>(); // 产品主图
@@ -144,6 +145,7 @@ const AddProduct = ({
           <ItemTitle text="产品名称" />
           <div className={styles['product-item-value']}>
             <Input
+              disabled={review}
               placeholder="请输入产品名称"
               value={name}
               onChange={e => {
@@ -157,6 +159,7 @@ const AddProduct = ({
           <ItemTitle text="产品金额 (分)" />
           <div className={styles['prodcut-item-value']}>
             <InputNumber
+              disabled={review}
               style={{
                 width: '300px',
               }}
@@ -173,6 +176,7 @@ const AddProduct = ({
           <ItemTitle text="产品类型" />
           <div className={styles['prodcut-item-value']}>
             <CategoriesSelect
+              disabled={review}
               defaultValue={categoriesId}
               selectIdChange={id => setCategoriesId(id)}
             />
@@ -207,6 +211,7 @@ const AddProduct = ({
           <ItemTitle text="产品简介" />
           <div className={styles['product-item-value']}>
             <Input.TextArea
+              disabled={review}
               rows={4}
               value={productBrief}
               onChange={e => {
@@ -220,13 +225,14 @@ const AddProduct = ({
         {/* 新增banner */}
         <div className={styles['add-product-item']}>
           <ItemTitle text="产品banner" />
-          <Banner fileList={bannerList} cref={bannerRef} />
+          <Banner disabled={review} fileList={bannerList} cref={bannerRef} />
         </div>
 
         {/* 新增视频 */}
         <div className={styles['add-product-item']}>
           <ItemTitle text="产品视频" />
           <Video
+            disabled={review}
             cref={videoRef}
             videoData={videoData}
             videoChange={(data: IVideo | undefined) => setVideoData(data)}
@@ -237,6 +243,7 @@ const AddProduct = ({
         <div className={styles['add-product-item']}>
           <ItemTitle text="产品主图" />
           <MainImg
+            disabled={review}
             cref={mainImgRef}
             mainImgData={mainImg}
             mainImgChange={(data: IMainImg | undefined) => setMainImg(data)}
@@ -245,13 +252,19 @@ const AddProduct = ({
 
         {/* 编辑器 */}
         <div className={styles['product-editor']}>
-          <Editor cref={editorRef} content={productDetail} />
+          <Editor disabled={review} cref={editorRef} content={productDetail} />
         </div>
 
         <div className={styles['button-wrapper']}>
-          <Button type="primary" className={styles['submit']} onClick={submit}>
-            提交
-          </Button>
+          {!review && (
+            <Button
+              type="primary"
+              className={styles['submit']}
+              onClick={submit}
+            >
+              提交
+            </Button>
+          )}
         </div>
       </div>
     </Spin>

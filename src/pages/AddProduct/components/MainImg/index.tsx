@@ -11,10 +11,12 @@ const MainImg = ({
   cref,
   mainImgChange,
   mainImgData,
+  disabled = false,
 }: {
   cref: MutableRefObject<IMainImgRef | undefined>;
   mainImgData: IMainImg | undefined;
   mainImgChange: (data: IMainImg | undefined) => void;
+  disabled: boolean;
 }) => {
   useImperativeHandle(cref, () => ({
     getDelMainImgIdList: () => delMainImgIdList,
@@ -54,6 +56,7 @@ const MainImg = ({
     <div>
       <Spin tip="正在上传中..." spinning={uploadLoading}>
         <Upload
+          disabled={disabled}
           accept="image/*"
           listType="picture"
           fileList={(((mainImgData && [mainImgData]) || []) as Array<
@@ -77,7 +80,7 @@ const MainImg = ({
           }}
           onChange={onChange}
         >
-          <Button>
+          <Button disabled={disabled}>
             <UploadOutlined /> Upload
           </Button>
         </Upload>

@@ -21,9 +21,11 @@ import { ILocation } from '@/interface/Global';
 const Editor = ({
   content,
   cref,
+  disabled = false,
 }: {
   content: string;
   cref: MutableRefObject<IEditor | undefined>;
+  disabled?: boolean;
 }) => {
   const {
     query: { productId },
@@ -112,6 +114,7 @@ const Editor = ({
   return (
     <div className={styles['editor-wrapper']}>
       <BraftEditor
+        readOnly={disabled}
         media={{
           uploadFn,
           accepts: {

@@ -2,7 +2,7 @@
  * @Author: Always
  * @LastEditors: Always
  * @Date: 2020-07-14 15:07:30
- * @LastEditTime: 2020-07-23 15:20:30
+ * @LastEditTime: 2020-07-30 16:46:00
  * @FilePath: /koala_background_system/src/components/CategoriesSelect/index.tsx
  */
 
@@ -16,10 +16,12 @@ const CategoriesSelect = ({
   selectIdChange,
   defaultValue,
   isSearchSelect = false,
+  disabled = false,
 }: {
   isSearchSelect?: boolean; // 是否为搜索框中的筛选项
   selectIdChange: (id: string) => void;
   defaultValue?: undefined | string;
+  disabled?: boolean;
 }) => {
   const list = useGetUsingCategories();
   const [data, setData] = useState<Array<ICategoriesItem>>([]);
@@ -50,6 +52,7 @@ const CategoriesSelect = ({
 
   return (
     <Select
+      disabled={disabled}
       loading={loading}
       value={value}
       onChange={(value: string) => setValue(value)}
