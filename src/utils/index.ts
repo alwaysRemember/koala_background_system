@@ -2,7 +2,7 @@
  * @Author: Always
  * @LastEditors: Always
  * @Date: 2020-05-28 15:59:48
- * @LastEditTime: 2020-08-03 15:07:17
+ * @LastEditTime: 2020-08-03 17:09:50
  * @FilePath: /koala_background_system/src/utils/index.ts
  */
 
@@ -95,7 +95,7 @@ export const transferAmount = (
  * @param value
  */
 export const checkUserName = (value: string): boolean =>
-  /^^[0-9a-zA-Z]{6,}$/.test(value);
+  /^^[0-9a-zA-Z]{6,11}$/.test(value);
 
 /**
  * 校验密码(6-16位 && 数字字母组合)

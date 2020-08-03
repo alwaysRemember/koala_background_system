@@ -1,4 +1,4 @@
-import React, { useRef, useState, useEffect } from 'react';
+import React, { useRef, useState, useEffect, ReactNode } from 'react';
 import { Table, Input, Modal, Button, Popconfirm } from 'antd';
 import { Base64 } from 'js-base64';
 import styles from './index.less';
@@ -9,9 +9,10 @@ import { getAdminUserList, updateAdminUser, deleteAdminUser } from '@/api';
 import {
   IAdminUserListRequestDefaultParams,
   IAdminUserItem,
+  IEditableCellProps,
 } from './interface';
-import { ColumnsType } from 'antd/lib/table';
-import { dateFormat, checkUserName, checkPassword, checkEmail } from '@/utils';
+import { ColumnsType, ColumnType } from 'antd/lib/table';
+import { dateFormat, checkPassword, checkEmail } from '@/utils';
 
 const AdminUserList = () => {
   const [page, setPage] = useState<number>(1);
@@ -40,15 +41,6 @@ const AdminUserList = () => {
       dataIndex: 'password',
       align: 'center',
       width: 200,
-      render: (text: string, record: IAdminUserItem, index: number) => {
-        return (
-          <Input.Password
-            value={text}
-            onChange={e => listItemInputChange(e, index, 'password')}
-            onPressEnter={() => listItemInputPressEnter(record)}
-          />
-        );
-      },
     },
     {
       title: '用户类型',
@@ -72,16 +64,6 @@ const AdminUserList = () => {
       dataIndex: 'email',
       align: 'center',
       width: 200,
-      render: (text: string, record: IAdminUserItem, index: number) => {
-        return (
-          <Input
-            type="email"
-            value={text}
-            onChange={e => listItemInputChange(e, index, 'email')}
-            onPressEnter={() => listItemInputPressEnter(record)}
-          />
-        );
-      },
     },
     {
       title: '创建时间',
@@ -116,6 +98,88 @@ const AdminUserList = () => {
       ),
     },
   ];
+
+  /**
+   * 定义可编辑的表格数据
+   * @param param0
+   */
+  const EditableCell: React.FC<IEditableCellProps> = ({
+    editable,
+    record,
+    dataIndex,
+    children,
+    className,
+    style,
+  }) => {
+    let node: ReactNode;
+    let value: string;
+    switch (dataIndex) {
+      case 'password':
+        value = record.password as string;
+        break;
+      case 'email':
+        value = record.email;
+        break;
+      default:
+        value = '';
+    }
+
+    const [inputValue, setInputValue] = useState<string>(value);
+
+    const save = () => {
+      const data = JSON.parse(JSON.stringify(record));
+      data[dataIndex] = inputValue;
+      listItemInputPressEnter(data);
+    };
+
+    if (editable) {
+      switch (dataIndex) {
+        case 'password':
+          node = (
+            <Input.Password
+              value={inputValue}
+              onChange={e => {
+                e.persist();
+                setInputValue(e.target.value);
+              }}
+              onPressEnter={save}
+              onBlur={save}
+            />
+          );
+          break;
+        case 'email':
+          node = (
+            <Input
+              type="email"
+              value={inputValue}
+              onChange={e => {
+                e.persist();
+                setInputValue(e.target.value);
+              }}
+              onPressEnter={save}
+              onBlur={save}
+            />
+          );
+          break;
+        default:
+          node = 'Unknown data';
+      }
+    } else {
+      node = children;
+    }
+
+    return (
+      <td className={className} style={style}>
+        {node}
+      </td>
+    );
+  };
+
+  const components = {
+    body: {
+      cell: EditableCell,
+    },
+  };
 
   /**
    * 获取数据
@@ -323,12 +387,29 @@ const AdminUserList = () => {
     }
   }, [currentChangeData]);
 
+  const renderColumns = columns.map(item => {
+    const key = (item as ColumnType<IAdminUserItem>).dataIndex;
+    if (key === 'password' || key === 'email') {
+      return {
+        ...item,
+        onCell: (record: ColumnType<IAdminUserItem>, index: number) => ({
+          editable: true,
+          dataIndex: key,
+          record,
+          index,
+        }),
+      };
+    }
+    return item;
+  });
+
   return (
     <div className={styles['user-list-wrapper']}>
       <Search resetFn={reset} searchFn={search} cref={searchRef} />
       <div className={styles['table']}>
         <Table
-          columns={columns}
+          components={components}
+          columns={renderColumns as ColumnsType<IAdminUserItem>}
           dataSource={data}
           bordered
           loading={loading}
