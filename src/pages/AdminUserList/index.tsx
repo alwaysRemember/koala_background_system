@@ -11,7 +11,7 @@ import {
   IAdminUserItem,
 } from './interface';
 import { ColumnsType } from 'antd/lib/table';
-import { dateFormat } from '@/utils';
+import { dateFormat, checkUserName, checkPassword, checkEmail } from '@/utils';
 
 const AdminUserList = () => {
   const [page, setPage] = useState<number>(1);
@@ -44,8 +44,8 @@ const AdminUserList = () => {
         return (
           <Input.Password
             value={text}
-            onChange={e => usernameSearchInputChange(e, index)}
-            onPressEnter={() => usernameSearchPressEnter(record)}
+            onChange={e => listItemInputChange(e, index, 'password')}
+            onPressEnter={() => listItemInputPressEnter(record)}
           />
         );
       },
@@ -59,10 +59,26 @@ const AdminUserList = () => {
         return (
           <UserTypeSelect
             value={text}
-            onChange={(value: string) => userTypeSearchSelect(value, index)}
+            onChange={(value: string) => userTypeSelectChange(value, index)}
             data={Object.keys(EUserAuth).filter((key: string) =>
               Boolean(Number(key)),
             )}
+          />
+        );
+      },
+    },
+    {
+      title: '用户联系邮箱',
+      dataIndex: 'email',
+      align: 'center',
+      width: 200,
+      render: (text: string, record: IAdminUserItem, index: number) => {
+        return (
+          <Input
+            type="email"
+            value={text}
+            onChange={e => listItemInputChange(e, index, 'email')}
+            onPressEnter={() => listItemInputPressEnter(record)}
           />
         );
       },
@@ -189,10 +205,22 @@ const AdminUserList = () => {
       username,
       password,
       userType,
+      email,
     } = currentChangeData as IAdminUserItem;
+
+    // 校验邮箱格式/密码是否正确
+    if (!checkPassword(password as string)) {
+      window.message['error']('用户密码格式不正确', 1);
+      return;
+    }
+    if (!checkEmail(email)) {
+      window.message['error']('用户邮箱格式不正确', 1);
+      return;
+    }
+
     Modal.confirm({
       title: '确认',
-      content: `是否确认修改用户名为: ${username}的用户, 密码为: ${password}, 用户类型为: ${EUserAuth[userType]}?`,
+      content: `是否确认修改用户名为: ${username}的用户, 密码为: ${password}, 用户类型为: ${EUserAuth[userType]}, 用户邮箱为: ${email} ?`,
       okText: '确认',
       cancelText: '取消',
       onCancel: () => {
@@ -203,6 +231,7 @@ const AdminUserList = () => {
           await updateAdminUser({
             userId,
             username,
+            email,
             password: Base64.encode(currentChangeData?.password as string),
             userType,
           });
@@ -216,27 +245,36 @@ const AdminUserList = () => {
   };
 
   /**
-   * 用户名搜索框输入
+   * 表格中的输入框change
    * @param e
    * @param index 当前行下标
    */
-  const usernameSearchInputChange = (e: any, index: number) => {
+  const listItemInputChange = (
+    e: any,
+    index: number,
+    key: 'password' | 'email',
+  ) => {
     e.persist();
     let list = JSON.parse(JSON.stringify(data));
-    list[index].password = e.target.value;
+    list[index][key] = e.target.value;
     setData(list);
   };
 
   /**
-   * 用户名搜索框enter
+   * 表格中输入框enter
    * @param record
    */
-  const usernameSearchPressEnter = (record: IAdminUserItem) => {
-    const { userType, password }: IAdminUserItem = dataClone.filter(
+  const listItemInputPressEnter = (record: IAdminUserItem) => {
+    const { userType, password, email }: IAdminUserItem = dataClone.filter(
       (item: IAdminUserItem) => item.userId === record.userId,
     )[0];
     // 判断数据是否修改了
-    if (userType === record.userType && password === record.password) return;
+    if (
+      userType === record.userType &&
+      password === record.password &&
+      email === record.email
+    )
+      return;
     setCurrentChangeData(record);
   };
 
@@ -245,7 +283,7 @@ const AdminUserList = () => {
    * @param value
    * @param index
    */
-  const userTypeSearchSelect = (value: string, index: number) => {
+  const userTypeSelectChange = (value: string, index: number) => {
     let list = JSON.parse(JSON.stringify(data));
     list[index].userType = value;
     setData(list);
@@ -296,7 +334,7 @@ const AdminUserList = () => {
           loading={loading}
           rowKey={(record: IAdminUserItem) => record.userId}
           scroll={{
-            x: 600,
+            x: 800,
           }}
           pagination={{
             current: page,

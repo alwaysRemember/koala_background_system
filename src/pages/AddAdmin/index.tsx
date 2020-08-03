@@ -5,6 +5,7 @@ import styles from './index.less';
 import { IAddAdminData } from './interface';
 import { EUserAuth } from '@/enums/UserAuthEnum';
 import { addUser } from '@/api';
+import { checkPassword, checkUserName } from '@/utils';
 
 const { Option } = Select;
 
@@ -12,6 +13,7 @@ const AddAdmin = () => {
   const [data, setData] = useState<IAddAdminData>({
     username: '',
     password: '',
+    email: '',
     userType: EUserAuth.PROXY,
   });
 
@@ -23,7 +25,7 @@ const AddAdmin = () => {
    * @param key  输入框类型
    * @param e
    */
-  const onChange = (key: 'username' | 'password', e: any) => {
+  const onChange = (key: 'username' | 'password' | 'email', e: any) => {
     e.persist();
     const { value } = e.target;
     setData(prev =>
@@ -47,6 +49,7 @@ const AddAdmin = () => {
       setData({
         username: '',
         password: '',
+        email: '',
         userType: EUserAuth.PROXY,
       });
     } catch (e) {
@@ -56,13 +59,7 @@ const AddAdmin = () => {
 
   useEffect(() => {
     setBtnDisabled(
-      !(
-        /^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,16}$/.test(
-          data.password as string,
-        ) &&
-        data.username &&
-        data.username.length >= 6
-      ),
+      !(checkPassword(data.password as string) && checkUserName(data.username)),
     );
   }, [data]);
 
@@ -94,6 +91,22 @@ const AddAdmin = () => {
               className={styles['input']}
               onChange={e => onChange('password', e)}
               placeholder="请输入密码"
+            />
+          </Tooltip>
+        </div>
+      </div>
+      <div className={styles['add-admin-item']}>
+        <div>
+          <p className={styles['label']}>邮箱</p>
+          <Tooltip placement="top" title="请输入常用的邮箱">
+            <Input
+              size="small"
+              value={data.email}
+              type="email"
+              disabled={btnLoading}
+              className={styles['input']}
+              onChange={e => onChange('email', e)}
+              placeholder="请输入用户名"
             />
           </Tooltip>
         </div>

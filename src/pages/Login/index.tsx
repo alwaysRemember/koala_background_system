@@ -8,6 +8,7 @@ import { IUserData, IUserDataResponse } from './interface';
 import { userLogin } from '@/api';
 import { useDispatch } from 'redux-react-hook';
 import { updateUserInfo } from '@/store/actions';
+import { checkPassword, checkUserName } from '@/utils';
 
 /**
  * 登录
@@ -50,11 +51,7 @@ const Login = () => {
     }
 
     // 校验密码
-    if (
-      !/^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,16}$/.test(
-        userData.password as string,
-      )
-    ) {
+    if (checkPassword(userData.password as string)) {
       window.message.warning('请输入正确的密码，格式为6-16位数数字、字母混合');
       return;
     }
@@ -77,11 +74,8 @@ const Login = () => {
   useEffect(() => {
     setBtnDisabled(
       !(
-        userData.username &&
-        userData.username.length >= 6 &&
-        /^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,16}$/.test(
-          userData.password as string,
-        )
+        checkUserName(userData.username) &&
+        checkPassword(userData.password as string)
       ),
     );
   }, [userData]);

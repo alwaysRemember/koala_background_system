@@ -2,7 +2,7 @@
  * @Author: Always
  * @LastEditors: Always
  * @Date: 2020-05-28 15:59:48
- * @LastEditTime: 2020-07-28 15:25:56
+ * @LastEditTime: 2020-08-03 15:07:17
  * @FilePath: /koala_background_system/src/utils/index.ts
  */
 
@@ -89,3 +89,24 @@ export const transferAmount = (
       return Number(value) * 100;
   }
 };
+
+/**
+ * 校验用户名(v>=6 && 数字字母)
+ * @param value
+ */
+export const checkUserName = (value: string): boolean =>
+  /^^[0-9a-zA-Z]{6,}$/.test(value);
+
+/**
+ * 校验密码(6-16位 && 数字字母组合)
+ * @param value
+ */
+export const checkPassword = (value: string): boolean =>
+  /^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,16}$/.test(value);
+
+/**
+ * 校验邮箱
+ * @param value
+ */
+export const checkEmail = (value: string): boolean =>
+  /^[\w-]+(\.[\w-]+)*@[\w-]+(\.[\w-]+)+$/.test(value);

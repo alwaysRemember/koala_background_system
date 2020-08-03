@@ -11,5 +11,6 @@ import { EUserAuth } from '@/enums/UserAuthEnum';
 export interface IAddAdminData {
   username: string;
   password: string;
+  email: string;
   userType: EUserAuth;
 }
