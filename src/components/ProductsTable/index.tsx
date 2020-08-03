@@ -33,6 +33,12 @@ const ProductsTable = ({
 
   const [tableColumns, setTableColumns] = useState<ColumnsType<IProductItem>>([
     {
+      title: '商品ID',
+      align: 'center',
+      dataIndex: 'productId',
+      width: 140,
+    },
+    {
       title: '商品主图',
       align: 'center',
       dataIndex: 'productMainImg',
@@ -171,7 +177,7 @@ const ProductsTable = ({
       loading={loading}
       rowKey={(record: IProductItem) => record.productId}
       scroll={{
-        x: 1140,
+        x: 1280,
       }}
       pagination={{
         current: page,

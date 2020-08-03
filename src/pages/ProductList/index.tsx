@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
-import { Descriptions, Button } from 'antd';
+import { Descriptions, Button, Input } from 'antd';
 import styles from './index.less';
 import CategoriesSelect from '@/components/CategoriesSelect';
 import { EProductStatus, EProductStatusTransVal } from '@/enums/EProduct';
@@ -39,6 +39,7 @@ const ProductList = () => {
   ); // 商品归属人
   const [minAmount, setMinAmount] = useState<string>('');
   const [maxAmount, setMaxAmount] = useState<string>('');
+  const [productId, setProductId] = useState<string>('');
 
   // 用户列表
   const [userList, setUserList] = useState<Array<ISelectUserItem>>([]);
@@ -76,6 +77,7 @@ const ProductList = () => {
           maxAmount: Number(maxAmount) ? _stringTransferNumber(maxAmount) : 0,
           page,
           pageSize,
+          productId,
         };
     try {
       const { total, list } = await getProductList(params);
@@ -92,7 +94,8 @@ const ProductList = () => {
       productStatus === ALL &&
       userId === ALL &&
       !minAmount &&
-      !maxAmount
+      !maxAmount &&
+      !productId
     ) {
       window.message.warn('没有搜索条件');
       return;
@@ -116,6 +119,7 @@ const ProductList = () => {
         maxAmount: 0,
         page: 1,
         pageSize,
+        productId,
       });
     } else {
       setPage(1);
@@ -173,6 +177,7 @@ const ProductList = () => {
     setUserId(ALL);
     setMinAmount('');
     setMaxAmount('');
+    setProductId('');
   };
 
   /**
@@ -226,6 +231,16 @@ const ProductList = () => {
             <CategoriesSelect
               isSearchSelect={true}
               selectIdChange={(id: string) => setSelectCategoriesId(id)}
+            />
+          </Descriptions.Item>
+          <Descriptions.Item label="商品ID">
+            <Input
+              style={{ width: '200px' }}
+              placeholder="请输入商品ID"
+              value={productId}
+              onChange={e => {
+                setProductId(e.target.value);
+              }}
             />
           </Descriptions.Item>
           <Descriptions.Item label="商品状态">

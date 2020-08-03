@@ -2,7 +2,7 @@
  * @Author: Always
  * @LastEditors: Always
  * @Date: 2020-07-23 15:30:19
- * @LastEditTime: 2020-07-24 16:09:28
+ * @LastEditTime: 2020-08-03 17:51:47
  * @FilePath: /koala_background_system/src/pages/ProductList/interface.ts
  */
 
@@ -15,6 +15,7 @@ export interface ISelectUserItem {
 }
 
 export interface IRequestProduct {
+  productId: string;
   categoriesId: string;
   productStatus: EProductStatus | EDefaultSelect;
   userId: EDefaultSelect | number;
