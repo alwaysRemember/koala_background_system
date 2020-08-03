@@ -19,8 +19,17 @@ const MenuCom = ({ menuClick }: { menuClick?: () => void }) => {
 
   // 过滤掉不属于当前权限所能看到的页面
   const data: Array<ISubMenuItem | IMenuItem> = menuList.filter(
-    (item: ISubMenuItem | IMenuItem) =>
-      (item.auth as number) <= userInfo.userType,
+    (item: ISubMenuItem | IMenuItem) => {
+      // 判断是否有子项
+      if ((item as ISubMenuItem).children?.length) {
+        const list = (item as ISubMenuItem).children;
+        (item as ISubMenuItem).children = list.filter(
+          item => (item.auth as number) <= userInfo.userType,
+        );
+      }
+
+      return (item.auth as number) <= userInfo.userType;
+    },
   );
 
   const [selectedKeys, setSelectedKeys] = useState<Array<string>>([pathname]); // 当前的菜单项

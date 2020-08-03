@@ -1,4 +1,9 @@
-import React, { useState, useImperativeHandle } from 'react';
+import React, {
+  useState,
+  useImperativeHandle,
+  useCallback,
+  useEffect,
+} from 'react';
 import { IProductItem, IProductsTable } from './interface';
 import { Table, Popover, Button, Popconfirm } from 'antd';
 import { transferAmount, dateFormat } from '@/utils';
@@ -6,6 +11,7 @@ import styles from './index.less';
 import { useHistory } from 'umi';
 import { EProductStatus, EProductStatusTransVal } from '@/enums/EProduct';
 import { delProduct } from '@/api';
+import { ColumnsType, ColumnType } from 'antd/lib/table';
 const ProductsTable = ({
   pageChange,
   pageSize,
@@ -25,7 +31,7 @@ const ProductsTable = ({
   const history = useHistory();
   const [loading, setLoading] = useState<boolean>(true);
 
-  columns = columns.concat([
+  const [tableColumns, setTableColumns] = useState<ColumnsType<IProductItem>>([
     {
       title: '商品主图',
       align: 'center',
@@ -142,9 +148,24 @@ const ProductsTable = ({
       ),
     },
   ]);
+  useEffect(() => {
+    /* title相同的columns使用传入的数据替换 */
+    columns?.length &&
+      setTableColumns(
+        tableColumns.map(item => {
+          let j: number = -1;
+          columns.forEach((i, index) => {
+            if (i.title === item.title) {
+              j = index;
+            }
+          });
+          return j != -1 ? columns[j] : item;
+        }),
+      );
+  }, [columns]);
   return (
     <Table
-      columns={columns}
+      columns={tableColumns}
       dataSource={tableData}
       bordered
       loading={loading}

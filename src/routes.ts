@@ -2,7 +2,7 @@
  * @Author: Always
  * @LastEditors: Always
  * @Date: 2020-05-27 15:38:05
- * @LastEditTime: 2020-07-22 15:20:25
+ * @LastEditTime: 2020-07-30 16:50:57
  * @FilePath: /koala_background_system/src/routes.ts
  */
 
@@ -99,6 +99,16 @@ export let serverRoutes: Array<IRouteData> = [
     meta: {
       title: '商品列表',
       auth: EUserAuth.PROXY,
+    },
+  },
+  {
+    path: '/server/productReviewList',
+    exact: true,
+    wrappers: [require('./wrappers/Auth').default],
+    component: require('./pages/ProductReview').default,
+    meta: {
+      title: '商品审核列表',
+      auth: EUserAuth.ADMIN,
     },
   },
 ];
