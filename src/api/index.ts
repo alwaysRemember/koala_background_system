@@ -2,7 +2,7 @@
  * @Author: Always
  * @LastEditors: Always
  * @Date: 2020-05-28 15:37:50
- * @LastEditTime: 2020-07-30 17:13:19
+ * @LastEditTime: 2020-08-04 16:35:07
  * @FilePath: /koala_background_system/src/api/index.ts
  */
 import http from '../axios';
@@ -33,6 +33,7 @@ import {
   IRequestProduct,
 } from '@/pages/ProductList/interface';
 import { IProductItem } from '@/components/ProductsTable/interface';
+import { EProductStatus } from '@/enums/EProduct';
 
 /**
  * 用户登录
@@ -293,6 +294,21 @@ export const getProductReviewList = (params: {
   http.request<{ total: number; list: Array<IProductItem> }>({
     method: 'post',
     url: 'product-list/get-product-review-list',
+    params,
+    contentType: 'json',
+  });
+
+/**
+ * 更新产品状态
+ * @param params
+ */
+export const updateProductStatus = (params: {
+  productId: string;
+  productStatus: EProductStatus;
+}) =>
+  http.request({
+    method: 'post',
+    url: 'product/update-product-status',
     params,
     contentType: 'json',
   });

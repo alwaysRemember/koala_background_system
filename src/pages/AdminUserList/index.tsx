@@ -110,6 +110,7 @@ const AdminUserList = () => {
     children,
     className,
     style,
+    index,
   }) => {
     let node: ReactNode;
     let value: string;
@@ -127,9 +128,12 @@ const AdminUserList = () => {
     const [inputValue, setInputValue] = useState<string>(value);
 
     const save = () => {
-      const data = JSON.parse(JSON.stringify(record));
-      data[dataIndex] = inputValue;
-      listItemInputPressEnter(data);
+      const item = JSON.parse(JSON.stringify(record));
+      item[dataIndex] = inputValue;
+      const list = JSON.parse(JSON.stringify(data));
+      list[index] = item;
+      setData(list);
+      listItemInputPressEnter(item);
     };
 
     if (editable) {
@@ -306,22 +310,6 @@ const AdminUserList = () => {
         }
       },
     });
-  };
-
-  /**
-   * 表格中的输入框change
-   * @param e
-   * @param index 当前行下标
-   */
-  const listItemInputChange = (
-    e: any,
-    index: number,
-    key: 'password' | 'email',
-  ) => {
-    e.persist();
-    let list = JSON.parse(JSON.stringify(data));
-    list[index][key] = e.target.value;
-    setData(list);
   };
 
   /**

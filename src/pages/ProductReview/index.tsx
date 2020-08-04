@@ -4,11 +4,12 @@ import {
   IProductsTableRef,
   IProductItem,
 } from '@/components/ProductsTable/interface';
-import { getProductReviewList } from '@/api';
+import { getProductReviewList, updateProductStatus } from '@/api';
 import { ColumnsType } from 'antd/lib/table';
 import { Button } from 'antd';
 import styles from './index.less';
 import { useHistory } from 'umi';
+import { EProductStatus } from '@/enums/EProduct';
 
 const ProductReview = () => {
   const history = useHistory();
@@ -28,7 +29,17 @@ const ProductReview = () => {
       render: (_, record) => {
         return (
           <div className={styles['btn-wrapper']}>
-            <Button type="primary" size="small" className={styles['btn']}>
+            <Button
+              type="primary"
+              size="small"
+              className={styles['btn']}
+              onClick={() =>
+                changeProductStatus(
+                  record.productId,
+                  EProductStatus.PUT_ON_SHELF,
+                )
+              }
+            >
               通过
             </Button>
             <Button
@@ -36,6 +47,9 @@ const ProductReview = () => {
               size="small"
               danger
               className={styles['btn']}
+              onClick={() =>
+                changeProductStatus(record.productId, EProductStatus.OFF_SHELF)
+              }
             >
               拒绝
             </Button>
@@ -56,6 +70,22 @@ const ProductReview = () => {
       },
     },
   ];
+
+  /**
+   * 修改产品状态
+   * @param productId
+   * @param productStatus
+   */
+  const changeProductStatus = async (
+    productId: string,
+    productStatus: EProductStatus.OFF_SHELF | EProductStatus.PUT_ON_SHELF,
+  ) => {
+    productsTableRef.current?.setLoading(true);
+    try {
+      await updateProductStatus({ productId, productStatus });
+      getData();
+    } catch (e) {}
+  };
 
   const getData = async () => {
     productsTableRef.current?.setLoading(true);
