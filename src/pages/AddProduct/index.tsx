@@ -9,7 +9,7 @@ import { IBannerItem, IVideo, IProduct, IMainImg } from './interface';
 import Banner from './components/Banner';
 import { IBannerRef } from './components/Banner/interface';
 import { IVideoRef } from './components/Video/interface';
-import { uploadProduct, getProductDetail } from '@/api';
+import { uploadProduct, getProductDetail, updateProductStatus } from '@/api';
 import CategoriesSelect from '@/components/CategoriesSelect';
 import Video from './components/Video';
 import MainImg from './components/MainImg';
@@ -134,6 +134,22 @@ const AddProduct = ({
     }
   };
 
+  /**
+   * 修改产品状态
+   * @param productStatus
+   */
+  const changeProductStatus = async (
+    productStatus: EProductStatus.OFF_SHELF | EProductStatus.PUT_ON_SHELF,
+  ) => {
+    setIsLoading(true);
+    try {
+      await updateProductStatus({ productId, productStatus });
+      setIsLoading(false);
+      await window.message.success('已更新商品状态');
+      history.go(-1);
+    } catch (e) {}
+  };
+
   useEffect(() => {
     productId && getData();
   }, []);
@@ -256,7 +272,7 @@ const AddProduct = ({
         </div>
 
         <div className={styles['button-wrapper']}>
-          {!review && (
+          {(!review && (
             <Button
               type="primary"
               className={styles['submit']}
@@ -264,6 +280,24 @@ const AddProduct = ({
             >
               提交
             </Button>
+          )) || (
+            <>
+              <Button
+                type="primary"
+                className={styles['submit']}
+                onClick={() => changeProductStatus(EProductStatus.PUT_ON_SHELF)}
+              >
+                审核通过
+              </Button>
+              <Button
+                type="primary"
+                danger
+                className={styles['submit']}
+                onClick={() => changeProductStatus(EProductStatus.OFF_SHELF)}
+              >
+                审核拒绝
+              </Button>
+            </>
           )}
         </div>
       </div>

@@ -2,7 +2,7 @@
  * @Author: Always
  * @LastEditors: Always
  * @Date: 2020-06-15 17:46:47
- * @LastEditTime: 2020-08-03 16:53:02
+ * @LastEditTime: 2020-08-05 17:41:31
  * @FilePath: /koala_background_system/src/pages/AdminUserList/interface.ts
  */
 

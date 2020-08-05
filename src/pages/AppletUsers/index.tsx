@@ -28,6 +28,12 @@ const AppletUsers = () => {
       render: (text: string) => <Avatar size="large" src={text} />,
     },
     {
+      title: '手机号',
+      dataIndex: 'phone',
+      align: 'center',
+      width: 200,
+    },
+    {
       title: '性别',
       dataIndex: 'gender',
       align: 'center',
@@ -104,7 +110,7 @@ const AppletUsers = () => {
       loading={loading}
       rowKey={(record: IAppletUserItem) => record.userId}
       scroll={{
-        x: 1200,
+        x: 1400,
       }}
       pagination={{
         current: page,
