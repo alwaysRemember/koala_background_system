@@ -2,13 +2,13 @@
  * @Author: Always
  * @LastEditors: Always
  * @Date: 2020-05-28 15:37:50
- * @LastEditTime: 2020-08-04 16:35:07
+ * @LastEditTime: 2020-08-06 14:39:42
  * @FilePath: /koala_background_system/src/api/index.ts
  */
 import http from '../axios';
 import { IUserData, IUserDataResponse } from '@/pages/Login/interface';
 import { IRequestData } from '@/pages/ChangePassword/interface';
-import { IAddAdminData } from '@/pages/AddAdmin/interface';
+import { IAddAdminData, IAppletUserItem } from '@/pages/AddAdmin/interface';
 import {
   IAdminUserListRequestParams,
   IAdminUserListResponse,
@@ -310,5 +310,17 @@ export const updateProductStatus = (params: {
     method: 'post',
     url: 'product/update-product-status',
     params,
+    contentType: 'json',
+  });
+
+/**
+ * 根据手机号获取小程序用户
+ * @param params
+ */
+export const getAppletUserForPhone = (params: { phone: string }) =>
+  http.request<Array<IAppletUserItem>>({
+    url: '/backend-applet-user/get-user-for-phone',
+    params,
+    method: 'post',
     contentType: 'json',
   });

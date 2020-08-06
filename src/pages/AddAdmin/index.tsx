@@ -6,6 +6,7 @@ import { IAddAdminData } from './interface';
 import { EUserAuth } from '@/enums/UserAuthEnum';
 import { addUser } from '@/api';
 import { checkPassword, checkUserName } from '@/utils';
+import SelectAppletUser from './components/SelectAppletUser';
 
 const { Option } = Select;
 
@@ -15,6 +16,7 @@ const AddAdmin = () => {
     password: '',
     email: '',
     userType: EUserAuth.PROXY,
+    appletUserId: undefined,
   });
 
   const [btnLoading, setBtnLoading] = useState<boolean>(false); // 按钮loading状态
@@ -51,6 +53,7 @@ const AddAdmin = () => {
         password: '',
         email: '',
         userType: EUserAuth.PROXY,
+        appletUserId: undefined,
       });
     } catch (e) {
       setBtnLoading(false);
@@ -137,6 +140,22 @@ const AddAdmin = () => {
                 );
               })}
           </Select>
+        </div>
+      </div>
+      <div className={styles['add-admin-item']}>
+        <div>
+          <p className={styles['label']}>绑定小程序</p>
+          <div className={styles['input']}>
+            <SelectAppletUser
+              setAppletUserId={id => {
+                setData(prev =>
+                  Object.assign({}, prev, {
+                    appletUserId: id,
+                  }),
+                );
+              }}
+            />
+          </div>
         </div>
       </div>
       <Button
