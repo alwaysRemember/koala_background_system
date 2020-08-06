@@ -2,7 +2,7 @@
  * @Author: Always
  * @LastEditors: Always
  * @Date: 2020-05-28 15:37:50
- * @LastEditTime: 2020-08-06 14:39:42
+ * @LastEditTime: 2020-08-06 17:41:46
  * @FilePath: /koala_background_system/src/api/index.ts
  */
 import http from '../axios';
@@ -34,6 +34,7 @@ import {
 } from '@/pages/ProductList/interface';
 import { IProductItem } from '@/components/ProductsTable/interface';
 import { EProductStatus } from '@/enums/EProduct';
+import { IBindAppletUser } from '@/pages/AdminUserList/components/BindAppletUserModal/interface';
 
 /**
  * 用户登录
@@ -320,6 +321,18 @@ export const updateProductStatus = (params: {
 export const getAppletUserForPhone = (params: { phone: string }) =>
   http.request<Array<IAppletUserItem>>({
     url: '/backend-applet-user/get-user-for-phone',
+    params,
+    method: 'post',
+    contentType: 'json',
+  });
+
+/**
+ * 关联管理员和小程序用户
+ * @param params
+ */
+export const bindAppletUser = (params: IBindAppletUser) =>
+  http.request({
+    url: '/backend-user/bind-applet-user',
     params,
     method: 'post',
     contentType: 'json',

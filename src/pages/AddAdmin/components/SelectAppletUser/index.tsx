@@ -1,5 +1,5 @@
 import React, { useState, ReactNode, useEffect } from 'react';
-import { Select, Tooltip, Tag } from 'antd';
+import { Select, Tooltip, Tag, Spin } from 'antd';
 import { IAppletUserItem } from '../../interface';
 import { getAppletUserForPhone } from '@/api';
 import styles from './index.less';
@@ -50,8 +50,7 @@ const SelectAppletUser = ({
         filterOption={false}
         onSearch={search}
         onChange={change}
-        notFoundContent={null}
-        loading={loading}
+        notFoundContent={loading ? <Spin size="small" /> : '暂无数据'}
       >
         {list.map(item => (
           <Select.Option key={item.userId} value={item.userId}>

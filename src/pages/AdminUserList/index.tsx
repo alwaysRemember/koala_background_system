@@ -5,7 +5,12 @@ import styles from './index.less';
 import Search from './components/Search';
 import UserTypeSelect from './components/UserTypeSelect';
 import { EUserAuthSelectList, EUserAuth } from '@/enums/UserAuthEnum';
-import { getAdminUserList, updateAdminUser, deleteAdminUser } from '@/api';
+import {
+  getAdminUserList,
+  updateAdminUser,
+  deleteAdminUser,
+  bindAppletUser,
+} from '@/api';
 import {
   IAdminUserListRequestDefaultParams,
   IAdminUserItem,
@@ -13,6 +18,8 @@ import {
 } from './interface';
 import { ColumnsType, ColumnType } from 'antd/lib/table';
 import { dateFormat, checkPassword, checkEmail } from '@/utils';
+import BindAppletUserModal from './components/BindAppletUserModal';
+import { IBindAppletUserModalRef } from './components/BindAppletUserModal/interface';
 
 const AdminUserList = () => {
   const [page, setPage] = useState<number>(1);
@@ -21,12 +28,14 @@ const AdminUserList = () => {
   const [data, setData] = useState<Array<IAdminUserItem>>([]);
   const [dataClone, setDataClone] = useState<Array<IAdminUserItem>>([]); // 用于数据改变后的撤回操作
   const [loading, setLoading] = useState<boolean>(true);
-
   const [currentChangeData, setCurrentChangeData] = useState<
     IAdminUserItem | undefined
   >(undefined); // 当前改变的数据
 
+  const [currentUserId, setCurrentUserId] = useState<number>();
+
   const searchRef = useRef<any>();
+  const bindAppletUserModalRef = useRef<IBindAppletUserModalRef>();
 
   const columns: ColumnsType<IAdminUserItem> = [
     {
@@ -66,6 +75,24 @@ const AdminUserList = () => {
       width: 200,
     },
     {
+      title: '用户密码',
+      dataIndex: 'password',
+      align: 'center',
+      width: 200,
+    },
+    {
+      title: '小程序用户名',
+      dataIndex: 'appletUserName',
+      align: 'center',
+      width: 200,
+    },
+    {
+      title: '小程序用户手机号',
+      dataIndex: 'appletUserPhone',
+      align: 'center',
+      width: 200,
+    },
+    {
       title: '创建时间',
       dataIndex: 'createTime',
       align: 'center',
@@ -85,16 +112,29 @@ const AdminUserList = () => {
       align: 'center',
       width: 150,
       render: (_, { userId }: IAdminUserItem) => (
-        <Popconfirm
-          title="是否确认删除？"
-          okText="确认"
-          cancelText="取消"
-          onConfirm={() => tableDeleteAdminUser(userId)}
-        >
-          <Button danger type="primary" size="small">
-            删除
+        <>
+          <Popconfirm
+            title="是否确认删除？"
+            okText="确认"
+            cancelText="取消"
+            onConfirm={() => tableDeleteAdminUser(userId)}
+          >
+            <Button danger type="primary" size="small">
+              删除
+            </Button>
+          </Popconfirm>
+          <Button
+            type="primary"
+            size="small"
+            style={{ marginTop: '6px' }}
+            onClick={() => {
+              bindAppletUserModalRef.current?.setVisiable(true);
+              setCurrentUserId(userId);
+            }}
+          >
+            绑定小程序
           </Button>
-        </Popconfirm>
+        </>
       ),
     },
   ];
@@ -357,6 +397,24 @@ const AdminUserList = () => {
     }
   };
 
+  /**
+   * 管理员用户绑定小程序用户
+   */
+  const bindAppletUserModalSubmit = async () => {
+    bindAppletUserModalRef.current?.setLoading(true);
+    try {
+      await bindAppletUser({
+        userId: currentUserId as number,
+        appletUserId: bindAppletUserModalRef.current?.getAppletUserId() as number,
+      });
+      window.message.success('关联成功');
+    } catch (e) {}
+    bindAppletUserModalRef.current?.setVisiable(false);
+    bindAppletUserModalRef.current?.setLoading(false);
+    setCurrentUserId(undefined);
+    getData();
+  };
+
   useEffect(() => {
     getData();
   }, [page]);
@@ -403,7 +461,7 @@ const AdminUserList = () => {
           loading={loading}
           rowKey={(record: IAdminUserItem) => record.userId}
           scroll={{
-            x: 800,
+            x: 1200,
           }}
           pagination={{
             current: page,
@@ -418,6 +476,10 @@ const AdminUserList = () => {
           }}
         />
       </div>
+      <BindAppletUserModal
+        cref={bindAppletUserModalRef}
+        bindAppletUserModalSubmit={bindAppletUserModalSubmit}
+      />
     </div>
   );
 };
