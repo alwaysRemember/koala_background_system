@@ -21,7 +21,6 @@ const SelectAppletUser = ({
     }, 500);
   };
   const change = (value: string) => {
-    console.log(value);
     setValue(Number(value));
   };
 

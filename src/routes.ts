@@ -2,7 +2,7 @@
  * @Author: Always
  * @LastEditors: Always
  * @Date: 2020-05-27 15:38:05
- * @LastEditTime: 2020-07-30 16:50:57
+ * @LastEditTime: 2020-08-07 14:02:17
  * @FilePath: /koala_background_system/src/routes.ts
  */
 
@@ -108,6 +108,16 @@ export let serverRoutes: Array<IRouteData> = [
     component: require('./pages/ProductReview').default,
     meta: {
       title: '商品审核列表',
+      auth: EUserAuth.ADMIN,
+    },
+  },
+  {
+    path: '/server/appletBanner',
+    exact: true,
+    wrappers: [require('./wrappers/Auth').default],
+    component: require('./pages/AppletBanner').default,
+    meta: {
+      title: '首页banner配置',
       auth: EUserAuth.ADMIN,
     },
   },

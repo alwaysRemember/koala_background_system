@@ -119,7 +119,7 @@ const ProductList = () => {
         maxAmount: 0,
         page: 1,
         pageSize,
-        productId,
+        productId: '',
       });
     } else {
       setPage(1);

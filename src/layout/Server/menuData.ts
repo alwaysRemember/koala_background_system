@@ -2,7 +2,7 @@
  * @Author: Always
  * @LastEditors: Always
  * @Date: 2020-06-09 15:00:10
- * @LastEditTime: 2020-07-30 16:57:13
+ * @LastEditTime: 2020-08-07 14:02:29
  * @FilePath: /koala_background_system/src/layout/Server/menuData.ts
  */
 import { ISubMenuItem, IMenuItem } from './interface';
@@ -13,6 +13,19 @@ export const menuList: Array<ISubMenuItem | IMenuItem> = [
     path: '/server',
     menuTitle: '主页',
     auth: EUserAuth.PROXY,
+  },
+  {
+    subMenuTitle: '小程序首页配置',
+    key: 'appletHome',
+    auth: EUserAuth.ADMIN,
+    children: [
+      {
+        path: '/server/appletBanner',
+        menuTitle: '首页banner配置',
+        subMenuKey: 'appletHome',
+        auth: EUserAuth.ADMIN,
+      },
+    ],
   },
   {
     subMenuTitle: '商品分类管理',

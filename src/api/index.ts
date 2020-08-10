@@ -2,7 +2,7 @@
  * @Author: Always
  * @LastEditors: Always
  * @Date: 2020-05-28 15:37:50
- * @LastEditTime: 2020-08-06 17:41:46
+ * @LastEditTime: 2020-08-10 16:49:57
  * @FilePath: /koala_background_system/src/api/index.ts
  */
 import http from '../axios';
@@ -35,6 +35,10 @@ import {
 import { IProductItem } from '@/components/ProductsTable/interface';
 import { EProductStatus } from '@/enums/EProduct';
 import { IBindAppletUser } from '@/pages/AdminUserList/components/BindAppletUserModal/interface';
+import {
+  ISelectProductItem,
+  IBannerImgItem,
+} from '@/pages/AppletBanner/components/AddBannerModal/interface';
 
 /**
  * 用户登录
@@ -335,5 +339,41 @@ export const bindAppletUser = (params: IBindAppletUser) =>
     url: '/backend-user/bind-applet-user',
     params,
     method: 'post',
+    contentType: 'json',
+  });
+
+/**
+ * 根据产品id获取产品
+ * @param params
+ */
+export const getProductByProductId = (params: { productId: string }) =>
+  http.request<Array<ISelectProductItem>>({
+    method: 'post',
+    url: '/product-list/get-product-by-productId',
+    params,
+    contentType: 'json',
+  });
+
+/**
+ * 上传banner图片
+ * @param params
+ */
+export const uploadBannerImg = (params: FormData) =>
+  http.request<IBannerImgItem>({
+    method: 'post',
+    url: '/applet-home/upload-banner-img',
+    params,
+    contentType: 'formData',
+  });
+
+/**
+ * 删除banner图片
+ * @param params
+ */
+export const removeAppletHomeBannerImg = (params: { id: string }) =>
+  http.request({
+    method: 'post',
+    url: '/applet-home/remove-banner-img',
+    params,
     contentType: 'json',
   });
