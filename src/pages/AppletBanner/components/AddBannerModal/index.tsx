@@ -11,10 +11,11 @@ import {
   getProductByProductId,
   uploadBannerImg,
   removeAppletHomeBannerImg,
+  appletHomeAddBanner,
 } from '@/api';
 import { UploadOutlined } from '@ant-design/icons';
 import { UploadChangeParam } from 'antd/lib/upload';
-import { IFileItem } from '@/pages/AddProduct/components/Banner/interface';
+import { IFileItem } from './interface';
 import { UploadFile } from 'antd/lib/upload/interface';
 
 const AddBannerModal = ({
@@ -28,6 +29,7 @@ const AddBannerModal = ({
 
   const [visible, setVisible] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
+  const [submitBtnLoading, setSubmitBtnLoading] = useState<boolean>(false);
   const [uploadLoading, setUploadLoading] = useState<boolean>(false);
 
   const [productId, setProductId] = useState<string>();
@@ -38,11 +40,36 @@ const AddBannerModal = ({
 
   const cancel = () => {
     setVisible(false);
-    setProductId('');
   };
 
-  const submit = () => {};
+  /**
+   * 数据确认提交
+   */
+  const submit = async () => {
+    if (!productId || !bannerImgList.length) {
+      window.message.error('请正确填写数据');
+      return;
+    }
+    setSubmitBtnLoading(true);
 
+    try {
+      await appletHomeAddBanner({
+        productId,
+        bannerImgId: bannerImgList[0].id,
+      });
+      window.message.success('新增成功', 1).then(() => {
+        setProductId('');
+        setBannerImgList([]);
+      });
+      setVisible(false);
+    } catch (e) {}
+    setSubmitBtnLoading(false);
+  };
+
+  /**
+   * 根据产品id获取产品
+   * @param productId
+   */
   const getData = async (productId: string) => {
     if (!productId) return;
     setLoading(true);
@@ -72,6 +99,10 @@ const AddBannerModal = ({
     setProductId(value);
   };
 
+  /**
+   * 文件选中事件
+   * @param param0
+   */
   const uploadChange = async ({ file }: UploadChangeParam) => {
     if (file.status !== 'uploading') return;
     setUploadLoading(true);
@@ -84,6 +115,10 @@ const AddBannerModal = ({
     setUploadLoading(false);
   };
 
+  /**
+   * 删除banner
+   * @param param0
+   */
   const onRemoveFile = async ({ id }: IFileItem) => {
     setUploadLoading(true);
 
@@ -104,7 +139,12 @@ const AddBannerModal = ({
         <Button key="back" onClick={cancel}>
           取消
         </Button>,
-        <Button key="submit" type="primary" loading={loading} onClick={submit}>
+        <Button
+          key="submit"
+          type="primary"
+          loading={submitBtnLoading}
+          onClick={submit}
+        >
           确认
         </Button>,
       ]}

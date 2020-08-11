@@ -2,7 +2,7 @@
  * @Author: Always
  * @LastEditors: Always
  * @Date: 2020-05-28 15:37:50
- * @LastEditTime: 2020-08-10 16:49:57
+ * @LastEditTime: 2020-08-10 17:40:25
  * @FilePath: /koala_background_system/src/api/index.ts
  */
 import http from '../axios';
@@ -38,6 +38,7 @@ import { IBindAppletUser } from '@/pages/AdminUserList/components/BindAppletUser
 import {
   ISelectProductItem,
   IBannerImgItem,
+  IAppletHomeAddBannerRequest,
 } from '@/pages/AppletBanner/components/AddBannerModal/interface';
 
 /**
@@ -370,10 +371,22 @@ export const uploadBannerImg = (params: FormData) =>
  * 删除banner图片
  * @param params
  */
-export const removeAppletHomeBannerImg = (params: { id: string }) =>
+export const removeAppletHomeBannerImg = (params: { id: number }) =>
   http.request({
     method: 'post',
     url: '/applet-home/remove-banner-img',
+    params,
+    contentType: 'json',
+  });
+
+/**
+ * 添加小程序首页banner
+ * @param params
+ */
+export const appletHomeAddBanner = (params: IAppletHomeAddBannerRequest) =>
+  http.request({
+    method: 'post',
+    url: '/applet-home/add-banner',
     params,
     contentType: 'json',
   });
