@@ -2,7 +2,7 @@
  * @Author: Always
  * @LastEditors: Always
  * @Date: 2020-05-28 15:59:48
- * @LastEditTime: 2020-08-03 17:09:50
+ * @LastEditTime: 2020-08-11 15:41:03
  * @FilePath: /koala_background_system/src/utils/index.ts
  */
 
@@ -110,3 +110,15 @@ export const checkPassword = (value: string): boolean =>
  */
 export const checkEmail = (value: string): boolean =>
   /^[\w-]+(\.[\w-]+)*@[\w-]+(\.[\w-]+)+$/.test(value);
+
+/**
+ * 在新窗口打开资源
+ * @param href
+ */
+export const openInNewTab = (href: string) => {
+  if (!href) return;
+  const a = document.createElement('a');
+  a.href = href;
+  a.target = '_blank';
+  a.click();
+};

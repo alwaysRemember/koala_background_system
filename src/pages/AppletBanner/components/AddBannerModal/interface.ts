@@ -2,11 +2,12 @@
  * @Author: Always
  * @LastEditors: Always
  * @Date: 2020-08-07 14:11:35
- * @LastEditTime: 2020-08-10 17:40:06
+ * @LastEditTime: 2020-08-11 15:38:27
  * @FilePath: /koala_background_system/src/pages/AppletBanner/components/AddBannerModal/interface.ts
  */
 
 import { UploadFile } from 'antd/lib/upload/interface';
+import { EAppletHomeBannerTypeEnum } from '../../enum';
 
 type setType = (type: boolean) => void;
 
@@ -31,4 +32,11 @@ export interface IBannerImgItem {
 export interface IAppletHomeAddBannerRequest {
   productId: string;
   bannerImgId: number;
+}
+
+export interface IAppletHomeBannerItem {
+  id: number;
+  productId: string;
+  type: EAppletHomeBannerTypeEnum;
+  imgPath: string;
 }

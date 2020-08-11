@@ -20,8 +20,10 @@ import { UploadFile } from 'antd/lib/upload/interface';
 
 const AddBannerModal = ({
   cref,
+  submitCb,
 }: {
   cref: MutableRefObject<IAddBannerModalRef | undefined>;
+  submitCb: () => void;
 }) => {
   useImperativeHandle(cref, () => ({
     setVisible: type => setVisible(type),
@@ -62,6 +64,7 @@ const AddBannerModal = ({
         setBannerImgList([]);
       });
       setVisible(false);
+      submitCb();
     } catch (e) {}
     setSubmitBtnLoading(false);
   };
@@ -174,6 +177,7 @@ const AddBannerModal = ({
         <Descriptions.Item label="上传图片" className={styles['content-item']}>
           <Spin tip="正在上传中..." spinning={uploadLoading}>
             <Upload
+              accept="image/*"
               multiple
               onChange={uploadChange}
               fileList={bannerImgList.map(

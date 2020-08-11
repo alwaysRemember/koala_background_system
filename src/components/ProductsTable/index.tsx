@@ -6,7 +6,7 @@ import React, {
 } from 'react';
 import { IProductItem, IProductsTable } from './interface';
 import { Table, Popover, Button, Popconfirm } from 'antd';
-import { transferAmount, dateFormat } from '@/utils';
+import { transferAmount, dateFormat, openInNewTab } from '@/utils';
 import styles from './index.less';
 import { useHistory } from 'umi';
 import { EProductStatus, EProductStatusTransVal } from '@/enums/EProduct';
@@ -47,10 +47,7 @@ const ProductsTable = ({
         <img
           src={url}
           onClick={() => {
-            const a = document.createElement('a');
-            a.href = url;
-            a.target = '_blank';
-            a.click();
+            openInNewTab(url);
           }}
           className={styles['product-main-img']}
         />
