@@ -164,7 +164,7 @@ const Categories = () => {
       },
       onOk: async () => {
         try {
-          updateCategories({
+          await updateCategories({
             id: currentChangeData?.id,
             categoriesName: currentChangeData?.categoriesName,
             isShowOnHome: currentChangeData?.isShowOnHome,
@@ -172,7 +172,9 @@ const Categories = () => {
           } as IUpdateCategories);
           await window.message['success']('修改成功', 1);
           getData();
-        } catch (e) {}
+        } catch (e) {
+          resetUpdateData();
+        }
       },
     });
   };
