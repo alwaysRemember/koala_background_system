@@ -2,7 +2,7 @@
  * @Author: Always
  * @LastEditors: Always
  * @Date: 2020-07-14 14:15:29
- * @LastEditTime: 2020-07-28 18:12:55
+ * @LastEditTime: 2020-08-17 14:06:03
  * @FilePath: /koala_background_system/src/pages/AddProduct/interface.ts
  */
 
@@ -25,6 +25,7 @@ export interface IProduct {
   productId?: string;
   name: string;
   productStatus: EProductStatus;
+  productType: boolean;
   categoriesId: string;
   amount: number;
   productBrief: string;
@@ -42,6 +43,7 @@ export interface IProduct {
 export interface IProductResponse {
   name: string;
   productStatus: EProductStatus;
+  productType: boolean;
   categoriesId: string;
   amount: number;
   productBrief: string;

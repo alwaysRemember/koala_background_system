@@ -36,6 +36,7 @@ const AddProduct = ({
   const [productStatus, setProductStatus] = useState<EProductStatus>(
     EProductStatus.PUT_ON_SHELF,
   ); // 产品状态  default = 上架
+  const [productType, setProductType] = useState<boolean>(true); // 是否属于7天无理由退款产品
   const [categoriesId, setCategoriesId] = useState<string>(); // 产品所属类别
   const [productDetail, setProductDetail] = useState<string>(''); // 产品详情
   const [productBrief, setProductBrief] = useState<string>(''); // 产品简介
@@ -69,11 +70,13 @@ const AddProduct = ({
         bannerList,
         videoData,
         mainImg,
+        productType,
       } = await getProductDetail({
         productId,
       });
       setBannerList(bannerList);
       setVideoData(videoData);
+      setProductType(productType);
       setName(name);
       setProductStatus(productStatus);
       setCategoriesId(categoriesId);
@@ -107,6 +110,7 @@ const AddProduct = ({
     let params: IProduct = {
       name,
       productStatus,
+      productType,
       categoriesId: categoriesId as string,
       amount: productAmount,
       productBrief,
@@ -234,6 +238,18 @@ const AddProduct = ({
                 e.persist();
                 setProductBrief(e.target.value);
               }}
+            />
+          </div>
+        </div>
+
+        <div className={styles['add-product-item']}>
+          <ItemTitle text="是否数据7天无理由退款产品" />
+          <div className={styles['prodcut-item-value']}>
+            <Switch
+              checkedChildren="是"
+              unCheckedChildren="否"
+              checked={productType}
+              onChange={(checked: boolean) => setProductType(checked)}
             />
           </div>
         </div>
