@@ -5,6 +5,13 @@
   .product-editor {
     width: 100%;
   }
+  .item-title {
+    box-sizing: border-box;
+    padding-left: 10px;
+    font-size: 16px;
+    margin-bottom: 10px;
+    border-left: 4px solid #1890ff;
+  }
   .add-product-item {
     display: flex;
     flex-direction: column;
@@ -13,6 +20,11 @@
     width: 50%;
     border-left: 1px solid #ccc;
     margin-bottom: 20px;
+    &.width-100 {
+      width: 100%;
+      border-left: none;
+      padding-left: 0;
+    }
     &:nth-child(odd) {
       padding-left: 0;
       border: none;
@@ -20,12 +32,18 @@
     &:nth-child(even) {
       padding-right: 0;
     }
-    .item-title {
-      box-sizing: border-box;
-      padding-left: 10px;
-      font-size: 16px;
-      margin-bottom: 10px;
-      border-left: 4px solid #1890ff;
+    .product-parameter-wrapper {
+      display: flex;
+      flex-wrap: wrap;
+      .product-parameter-item {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        max-width: 300px;
+        min-height: 143px;
+        margin-bottom: 10px;
+      }
     }
     .product-item-value {
       display: flex;

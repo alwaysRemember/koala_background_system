@@ -2,7 +2,7 @@
  * @Author: Always
  * @LastEditors: Always
  * @Date: 2020-07-14 14:15:29
- * @LastEditTime: 2020-08-17 14:06:03
+ * @LastEditTime: 2020-08-17 16:17:44
  * @FilePath: /koala_background_system/src/pages/AddProduct/interface.ts
  */
 
@@ -38,6 +38,7 @@ export interface IProduct {
   delMainImgIdList: Array<string>;
   videoId: string;
   delVideoIdList: Array<string>;
+  productParameter: Array<IProductParameter>;
 }
 
 export interface IProductResponse {
@@ -51,4 +52,17 @@ export interface IProductResponse {
   bannerList: Array<IBannerItem>;
   videoData: IVideo;
   mainImg: IMainImg;
+  productParameter: Array<IProductParameter>;
+}
+
+export interface IProductParameter {
+  key: string;
+  value: string;
+}
+
+export interface IProductParameterRenderItem {
+  index: number;
+  label: string;
+  value: string;
+  onChange: (data: IProductParameter, index: number) => void;
 }

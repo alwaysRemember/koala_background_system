@@ -1,11 +1,17 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { history } from 'umi';
-import { Input, Button, Switch, InputNumber, Spin } from 'antd';
+import { Input, Button, Switch, InputNumber, Spin, Descriptions } from 'antd';
 import styles from './index.less';
 import { EProductStatus } from '@/enums/EProduct';
 import Editor from './components/Editor';
 import { IEditor } from './components/Editor/interface';
-import { IBannerItem, IVideo, IProduct, IMainImg } from './interface';
+import {
+  IBannerItem,
+  IVideo,
+  IProduct,
+  IMainImg,
+  IProductParameter,
+} from './interface';
 import Banner from './components/Banner';
 import { IBannerRef } from './components/Banner/interface';
 import { IVideoRef } from './components/Video/interface';
@@ -14,6 +20,8 @@ import CategoriesSelect from '@/components/CategoriesSelect';
 import Video from './components/Video';
 import MainImg from './components/MainImg';
 import { IMainImgRef } from './components/MainImg/interface';
+import { setClassName } from '@/utils';
+import ProductParameterItem from './components/ProductParameterItem';
 
 /**
  *
@@ -41,6 +49,10 @@ const AddProduct = ({
   const [productDetail, setProductDetail] = useState<string>(''); // 产品详情
   const [productBrief, setProductBrief] = useState<string>(''); // 产品简介
   const [productAmount, setProductAmount] = useState<number>(0); // 产品金额 分
+
+  const [productParameterList, setProductParameterList] = useState<
+    Array<IProductParameter>
+  >([]); // 产品参数
 
   const [isLoading, setIsLoading] = useState<boolean>(!!productId);
   const [spinTip, setSpinTip] = useState<string>('数据请求中');
@@ -71,6 +83,7 @@ const AddProduct = ({
         videoData,
         mainImg,
         productType,
+        productParameter,
       } = await getProductDetail({
         productId,
       });
@@ -84,6 +97,7 @@ const AddProduct = ({
       setProductBrief(productBrief);
       setProductAmount(amount);
       setMainImg(mainImg);
+      setProductParameterList(productParameter);
     } catch (e) {}
     setIsLoading(false);
   };
@@ -123,6 +137,7 @@ const AddProduct = ({
       delVideoIdList: videoRef.current?.getDelVideoIdList() || [],
       mainImgId: mainImg.id,
       delMainImgIdList: mainImgRef.current?.getDelMainImgIdList() || [],
+      productParameter: productParameterList,
     };
 
     if (productId) {
@@ -152,6 +167,21 @@ const AddProduct = ({
       await window.message.success('已更新商品状态');
       history.go(-1);
     } catch (e) {}
+  };
+
+  /**
+   * 产品参数输入框失焦事件
+   * @param data
+   * @param index
+   */
+  const productParameterItemOnBlur = (
+    data: IProductParameter,
+    index: number,
+  ) => {
+    setProductParameterList(prev => {
+      prev[index] = data;
+      return prev;
+    });
   };
 
   useEffect(() => {
@@ -282,8 +312,42 @@ const AddProduct = ({
           />
         </div>
 
+        <div
+          className={setClassName([
+            styles['add-product-item'],
+            styles['width-100'],
+          ])}
+        >
+          <ItemTitle text="产品参数" />
+
+          <div className={styles['product-parameter-wrapper']}>
+            {productParameterList.map(({ value, key }, index) => (
+              <ProductParameterItem
+                key={index}
+                label={key}
+                value={value}
+                index={index}
+                onChange={productParameterItemOnBlur}
+              />
+            ))}
+            <div className={styles['product-parameter-item']}>
+              <Button
+                type="primary"
+                onClick={() =>
+                  setProductParameterList(prev =>
+                    prev.concat([{ key: '', value: '' }]),
+                  )
+                }
+              >
+                添加产品参数
+              </Button>
+            </div>
+          </div>
+        </div>
+
         {/* 编辑器 */}
         <div className={styles['product-editor']}>
+          <ItemTitle text="产品详情" />
           <Editor disabled={review} cref={editorRef} content={productDetail} />
         </div>
 
