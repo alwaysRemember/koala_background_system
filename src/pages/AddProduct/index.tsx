@@ -11,6 +11,8 @@ import {
   IProduct,
   IMainImg,
   IProductParameter,
+  IProductConfig,
+  IProductConfigList,
 } from './interface';
 import Banner from './components/Banner';
 import { IBannerRef } from './components/Banner/interface';
@@ -49,6 +51,9 @@ const AddProduct = ({
   const [productDetail, setProductDetail] = useState<string>(''); // 产品详情
   const [productBrief, setProductBrief] = useState<string>(''); // 产品简介
   const [productAmount, setProductAmount] = useState<number>(0); // 产品金额 分
+  const [productConfigList, setProductConfigList] = useState<
+    Array<IProductConfigList>
+  >([]); // 产品配置
 
   const [productParameterList, setProductParameterList] = useState<
     Array<IProductParameter>
@@ -84,6 +89,7 @@ const AddProduct = ({
         mainImg,
         productType,
         productParameter,
+        productConfigList,
       } = await getProductDetail({
         productId,
       });
@@ -98,6 +104,7 @@ const AddProduct = ({
       setProductAmount(amount);
       setMainImg(mainImg);
       setProductParameterList(productParameter);
+      setProductConfigList(_formatProductConfigList(productConfigList));
     } catch (e) {}
     setIsLoading(false);
   };
@@ -137,7 +144,16 @@ const AddProduct = ({
       delVideoIdList: videoRef.current?.getDelVideoIdList() || [],
       mainImgId: mainImg.id,
       delMainImgIdList: mainImgRef.current?.getDelMainImgIdList() || [],
-      productParameter: productParameterList,
+      productParameter: productParameterList.filter(
+        item => item.key && item.value,
+      ),
+      productConfigList: productConfigList.reduce(
+        (prev: Array<IProductConfig>, value: IProductConfigList) => [
+          ...prev,
+          ...value.list,
+        ],
+        [],
+      ),
     };
 
     if (productId) {
@@ -182,6 +198,40 @@ const AddProduct = ({
       prev[index] = data;
       return prev;
     });
+  };
+
+  /**
+   * 组合商品配置数组
+   * @param data
+   */
+  const _formatProductConfigList = (
+    data: Array<IProductConfig>,
+  ): Array<IProductConfigList> => {
+    const arr = data.reduce(
+      (prev: Array<IProductConfigList>, current: IProductConfig) => {
+        let index: number = -1;
+        // 判断是否已存在当前的分类
+        prev.some((item, i) => {
+          if (item.title === current.categoryName) {
+            index = i;
+          }
+        });
+
+        if (index === -1) {
+          prev.push({
+            title: current.categoryName,
+            list: [current],
+          });
+        } else {
+          prev[index].list = prev[index].list.concat([current]);
+        }
+        return prev;
+      },
+      [],
+    );
+    console.log(arr);
+
+    return arr;
   };
 
   useEffect(() => {

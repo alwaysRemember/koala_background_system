@@ -24,6 +24,10 @@ const ProductParameterItem = ({
               setKey(e.target.value);
             }}
             onBlur={() => {
+              if (!inputKey) {
+                window.message.error('请输入产品参数标题！');
+                return;
+              }
               blur();
             }}
           />
@@ -36,6 +40,10 @@ const ProductParameterItem = ({
               setValue(e.target.value);
             }}
             onBlur={() => {
+              if (!inputKey) {
+                window.message.error('请输入产品参数内容！');
+                return;
+              }
               blur();
             }}
           />
