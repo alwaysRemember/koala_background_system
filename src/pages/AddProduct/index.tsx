@@ -195,9 +195,20 @@ const AddProduct = ({
     index: number,
   ) => {
     setProductParameterList(prev => {
-      prev[index] = data;
-      return prev;
+      const list = JSON.parse(JSON.stringify(prev));
+      list[index] = data;
+      return list;
     });
+  };
+
+  /**
+   * 删除对应的下标配置
+   * @param index
+   */
+  const removeProductParameter = (index: number) => {
+    const list = JSON.parse(JSON.stringify(productParameterList));
+    list.splice(index, 1);
+    setProductParameterList(list);
   };
 
   /**
@@ -206,33 +217,26 @@ const AddProduct = ({
    */
   const _formatProductConfigList = (
     data: Array<IProductConfig>,
-  ): Array<IProductConfigList> => {
-    const arr = data.reduce(
-      (prev: Array<IProductConfigList>, current: IProductConfig) => {
-        let index: number = -1;
-        // 判断是否已存在当前的分类
-        prev.some((item, i) => {
-          if (item.title === current.categoryName) {
-            index = i;
-          }
-        });
-
-        if (index === -1) {
-          prev.push({
-            title: current.categoryName,
-            list: [current],
-          });
-        } else {
-          prev[index].list = prev[index].list.concat([current]);
+  ): Array<IProductConfigList> =>
+    data.reduce((prev: Array<IProductConfigList>, current: IProductConfig) => {
+      let index: number = -1;
+      // 判断是否已存在当前的分类
+      prev.some((item, i) => {
+        if (item.title === current.categoryName) {
+          index = i;
         }
-        return prev;
-      },
-      [],
-    );
-    console.log(arr);
+      });
 
-    return arr;
-  };
+      if (index === -1) {
+        prev.push({
+          title: current.categoryName,
+          list: [current],
+        });
+      } else {
+        prev[index].list = prev[index].list.concat([current]);
+      }
+      return prev;
+    }, []);
 
   useEffect(() => {
     productId && getData();
@@ -373,11 +377,12 @@ const AddProduct = ({
           <div className={styles['product-parameter-wrapper']}>
             {productParameterList.map(({ value, key }, index) => (
               <ProductParameterItem
-                key={index}
+                key={`${index}_${key}`}
                 label={key}
                 value={value}
                 index={index}
                 onChange={productParameterItemOnBlur}
+                removeProductParameter={removeProductParameter}
               />
             ))}
             <div className={styles['product-parameter-item']}>

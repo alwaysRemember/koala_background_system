@@ -2,7 +2,7 @@
  * @Author: Always
  * @LastEditors: Always
  * @Date: 2020-07-14 14:15:29
- * @LastEditTime: 2020-08-18 16:48:08
+ * @LastEditTime: 2020-08-18 17:24:16
  * @FilePath: /koala_background_system/src/pages/AddProduct/interface.ts
  */
 
@@ -79,4 +79,5 @@ export interface IProductParameterRenderItem {
   label: string;
   value: string;
   onChange: (data: IProductParameter, index: number) => void;
+  removeProductParameter: (index: number) => void;
 }

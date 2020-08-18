@@ -2,11 +2,13 @@ import React, { useState } from 'react';
 import { IProductParameterRenderItem } from '../../interface';
 import styles from './index.less';
 import { Descriptions, Input } from 'antd';
+import { MinusCircleOutlined } from '@ant-design/icons';
 const ProductParameterItem = ({
   index,
   value,
   label,
   onChange,
+  removeProductParameter,
 }: IProductParameterRenderItem) => {
   const [inputKey, setKey] = useState<string>(label);
   const [inputValue, setValue] = useState<string>(value);
@@ -49,6 +51,10 @@ const ProductParameterItem = ({
           />
         </Descriptions.Item>
       </Descriptions>
+      <MinusCircleOutlined
+        className={styles['remove']}
+        onClick={() => removeProductParameter(index)}
+      />
     </div>
   );
 };
