@@ -2,7 +2,7 @@
  * @Author: Always
  * @LastEditors: Always
  * @Date: 2020-07-14 14:15:29
- * @LastEditTime: 2020-08-18 17:24:16
+ * @LastEditTime: 2020-08-19 17:49:12
  * @FilePath: /koala_background_system/src/pages/AddProduct/interface.ts
  */
 
@@ -40,6 +40,7 @@ export interface IProduct {
   delVideoIdList: Array<string>;
   productParameter: Array<IProductParameter>;
   productConfigList: Array<IProductConfig>;
+  productConfigDelList: Array<number>;
 }
 
 export interface IProductResponse {

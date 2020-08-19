@@ -24,6 +24,7 @@ import MainImg from './components/MainImg';
 import { IMainImgRef } from './components/MainImg/interface';
 import { setClassName } from '@/utils';
 import ProductParameterItem from './components/ProductParameterItem';
+import ProductConfigItem from './components/ProductConfigItem';
 
 /**
  *
@@ -58,6 +59,10 @@ const AddProduct = ({
   const [productParameterList, setProductParameterList] = useState<
     Array<IProductParameter>
   >([]); // 产品参数
+
+  const [productConfigDelList, setProductConfigDelList] = useState<
+    Array<number>
+  >([]); // 删除的产品配置
 
   const [isLoading, setIsLoading] = useState<boolean>(!!productId);
   const [spinTip, setSpinTip] = useState<string>('数据请求中');
@@ -148,12 +153,16 @@ const AddProduct = ({
         item => item.key && item.value,
       ),
       productConfigList: productConfigList.reduce(
-        (prev: Array<IProductConfig>, value: IProductConfigList) => [
-          ...prev,
-          ...value.list,
-        ],
+        (prev: Array<IProductConfig>, value: IProductConfigList) => {
+          // 给每一项绑定当前的分类名
+          value.list.forEach(item => {
+            item.categoryName = value.title;
+          });
+          return [...prev, ...value.list];
+        },
         [],
       ),
+      productConfigDelList,
     };
 
     if (productId) {
@@ -209,6 +218,37 @@ const AddProduct = ({
     const list = JSON.parse(JSON.stringify(productParameterList));
     list.splice(index, 1);
     setProductParameterList(list);
+  };
+
+  /**
+   * 产品配置数据改变
+   * @param data
+   * @param index
+   */
+  const productConfigItemDataChange = (
+    data: IProductConfigList,
+    index: number,
+  ) => {
+    const list = JSON.parse(JSON.stringify(productConfigList));
+    list[index] = data;
+    setProductConfigList(list);
+  };
+
+  /**
+   * 删除产品配置
+   * @param index
+   */
+  const removeProductConfig = (index: number) => {
+    const list = JSON.parse(JSON.stringify(productConfigList));
+    setProductConfigDelList(prev =>
+      prev.concat(
+        productConfigList[index].list
+          .filter(item => item.id)
+          .map(item => item.id as number),
+      ),
+    );
+    list.splice(index, 1);
+    setProductConfigList(list);
   };
 
   /**
@@ -373,7 +413,6 @@ const AddProduct = ({
           ])}
         >
           <ItemTitle text="产品参数" />
-
           <div className={styles['product-parameter-wrapper']}>
             {productParameterList.map(({ value, key }, index) => (
               <ProductParameterItem
@@ -395,6 +434,45 @@ const AddProduct = ({
                 }
               >
                 添加产品参数
+              </Button>
+            </div>
+          </div>
+        </div>
+
+        <div
+          className={setClassName([
+            styles['add-product-item'],
+            styles['width-100'],
+          ])}
+        >
+          <ItemTitle text="产品配置" />
+          <div className={styles['product-parameter-wrapper']}>
+            {productConfigList.map((data, index) => (
+              <ProductConfigItem
+                data={data}
+                key={index}
+                dataChange={data => productConfigItemDataChange(data, index)}
+                removeProductConfig={() => removeProductConfig(index)}
+                removeProductConfigChildrenItem={id =>
+                  setProductConfigDelList(prev => prev.concat([id]))
+                }
+              />
+            ))}
+            <div className={styles['product-parameter-item']}>
+              <Button
+                type="primary"
+                onClick={() =>
+                  setProductConfigList(prev =>
+                    prev.concat([
+                      {
+                        title: '',
+                        list: [],
+                      },
+                    ]),
+                  )
+                }
+              >
+                添加产品配置
               </Button>
             </div>
           </div>
