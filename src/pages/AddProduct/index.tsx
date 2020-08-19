@@ -152,16 +152,15 @@ const AddProduct = ({
       productParameter: productParameterList.filter(
         item => item.key && item.value,
       ),
-      productConfigList: productConfigList.reduce(
-        (prev: Array<IProductConfig>, value: IProductConfigList) => {
+      productConfigList: productConfigList
+        .reduce((prev: Array<IProductConfig>, value: IProductConfigList) => {
           // 给每一项绑定当前的分类名
           value.list.forEach(item => {
             item.categoryName = value.title;
           });
           return [...prev, ...value.list];
-        },
-        [],
-      ),
+        }, [])
+        .filter(item => item.name && item.amount >= 0),
       productConfigDelList,
     };
 
@@ -448,15 +447,17 @@ const AddProduct = ({
           <ItemTitle text="产品配置" />
           <div className={styles['product-parameter-wrapper']}>
             {productConfigList.map((data, index) => (
-              <ProductConfigItem
-                data={data}
-                key={index}
-                dataChange={data => productConfigItemDataChange(data, index)}
-                removeProductConfig={() => removeProductConfig(index)}
-                removeProductConfigChildrenItem={id =>
-                  setProductConfigDelList(prev => prev.concat([id]))
-                }
-              />
+              <div>
+                <ProductConfigItem
+                  data={data}
+                  key={index}
+                  dataChange={data => productConfigItemDataChange(data, index)}
+                  removeProductConfig={() => removeProductConfig(index)}
+                  removeProductConfigChildrenItem={id =>
+                    setProductConfigDelList(prev => prev.concat([id]))
+                  }
+                />
+              </div>
             ))}
             <div className={styles['product-parameter-item']}>
               <Button
