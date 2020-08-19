@@ -133,6 +133,16 @@ const AddProduct = ({
     }
     setSpinTip('商品信息上传中');
     setIsLoading(true);
+    const transferProductConfigList = productConfigList.reduce(
+      (prev: Array<IProductConfig>, value: IProductConfigList) => {
+        // 给每一项绑定当前的分类名
+        value.list.forEach(item => {
+          item.categoryName = value.title;
+        });
+        return [...prev, ...value.list];
+      },
+      [],
+    );
     let params: IProduct = {
       name,
       productStatus,
@@ -152,16 +162,12 @@ const AddProduct = ({
       productParameter: productParameterList.filter(
         item => item.key && item.value,
       ),
-      productConfigList: productConfigList
-        .reduce((prev: Array<IProductConfig>, value: IProductConfigList) => {
-          // 给每一项绑定当前的分类名
-          value.list.forEach(item => {
-            item.categoryName = value.title;
-          });
-          return [...prev, ...value.list];
-        }, [])
-        .filter(item => item.name && item.amount >= 0),
-      productConfigDelList,
+      productConfigList: transferProductConfigList.filter(
+        item => item.name && item.amount >= 0,
+      ),
+      productConfigDelList: transferProductConfigList
+        .filter(item => item.id && !item.name && item.amount <= 0)
+        .map(item => item.id as number),
     };
 
     if (productId) {
