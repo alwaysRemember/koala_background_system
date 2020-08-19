@@ -377,7 +377,7 @@ const AddProduct = ({
           <div className={styles['product-parameter-wrapper']}>
             {productParameterList.map(({ value, key }, index) => (
               <ProductParameterItem
-                key={`${index}_${key}`}
+                key={index}
                 label={key}
                 value={value}
                 index={index}

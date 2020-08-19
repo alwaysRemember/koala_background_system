@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { IProductParameterRenderItem } from '../../interface';
 import styles from './index.less';
 import { Descriptions, Input } from 'antd';
@@ -16,6 +16,11 @@ const ProductParameterItem = ({
   const blur = () => {
     onChange({ key: inputKey, value: inputValue }, index);
   };
+
+  useEffect(() => {
+    setKey(label);
+    setValue(value);
+  }, [label, value]);
   return (
     <div className={styles['product-parameter-item']}>
       <Descriptions bordered size="small" column={1}>
