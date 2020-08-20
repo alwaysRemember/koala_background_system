@@ -23,8 +23,6 @@ const ProductConfigChildren = ({
    * 输入框失焦事件
    */
   const inputBlur = () => {
-    console.log(name, amount);
-
     onBlur({ ...data, ...{ name, amount } }, index);
   };
 

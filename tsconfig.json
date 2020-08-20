@@ -21,5 +21,6 @@
     "config/**/*",
     ".umirc.ts",
     "typings.d.ts"
-  ]
+  ],
+  "resolveJsonModule": true
 }

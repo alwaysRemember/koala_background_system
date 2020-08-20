@@ -25,6 +25,7 @@ import { IMainImgRef } from './components/MainImg/interface';
 import { setClassName } from '@/utils';
 import ProductParameterItem from './components/ProductParameterItem';
 import ProductConfigItem from './components/ProductConfigItem';
+import CitySelect from './components/CitySelect';
 
 /**
  *
@@ -55,6 +56,7 @@ const AddProduct = ({
   const [productConfigList, setProductConfigList] = useState<
     Array<IProductConfigList>
   >([]); // 产品配置
+  const [productDeliveryCity, setProductDeliveryCity] = useState<string>(''); // 产品发货地
 
   const [productParameterList, setProductParameterList] = useState<
     Array<IProductParameter>
@@ -95,6 +97,7 @@ const AddProduct = ({
         productType,
         productParameter,
         productConfigList,
+        productDeliveryCity,
       } = await getProductDetail({
         productId,
       });
@@ -110,6 +113,7 @@ const AddProduct = ({
       setMainImg(mainImg);
       setProductParameterList(productParameter);
       setProductConfigList(_formatProductConfigList(productConfigList));
+      setProductDeliveryCity(productDeliveryCity);
     } catch (e) {}
     setIsLoading(false);
   };
@@ -126,7 +130,8 @@ const AddProduct = ({
       !productDetail ||
       !bannerIdList.length ||
       !videoData ||
-      !mainImg
+      !mainImg ||
+      !productDeliveryCity
     ) {
       window.message.error('请填写商品必须的参数');
       return;
@@ -168,6 +173,7 @@ const AddProduct = ({
       productConfigDelList: transferProductConfigList
         .filter(item => item.id && !item.name && item.amount <= 0)
         .map(item => item.id as number),
+      productDeliveryCity,
     };
 
     if (productId) {
@@ -372,6 +378,18 @@ const AddProduct = ({
         </div>
 
         <div className={styles['add-product-item']}>
+          <ItemTitle text="发货地点" />
+          <div className={styles['product-item-value']}>
+            <CitySelect
+              value={productDeliveryCity}
+              onChange={value => {
+                setProductDeliveryCity(value.join(','));
+              }}
+            />
+          </div>
+        </div>
+
+        <div className={styles['add-product-item']}>
           <ItemTitle text="是否数据7天无理由退款产品" />
           <div className={styles['prodcut-item-value']}>
             <Switch
@@ -453,10 +471,9 @@ const AddProduct = ({
           <ItemTitle text="产品配置" />
           <div className={styles['product-parameter-wrapper']}>
             {productConfigList.map((data, index) => (
-              <div>
+              <div key={index}>
                 <ProductConfigItem
                   data={data}
-                  key={index}
                   dataChange={data => productConfigItemDataChange(data, index)}
                   removeProductConfig={() => removeProductConfig(index)}
                   removeProductConfigChildrenItem={id =>
