@@ -27,6 +27,11 @@
     .product-config-children-wrapper {
       position: relative;
       margin-bottom: 20px;
+      :global {
+        .ant-descriptions-item-label {
+          text-align: center;
+        }
+      }
       &:last-child {
         margin-bottom: 0;
       }
@@ -58,5 +63,12 @@
     &:hover {
       transform: scale(1.5);
     }
+  }
+}
+
+@media all and (max-width: 768px) {
+  .product-config-item-wrapper {
+    margin: 0 auto;
+    margin-bottom: 20px;
   }
 }

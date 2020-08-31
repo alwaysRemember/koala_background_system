@@ -471,16 +471,15 @@ const AddProduct = ({
           <ItemTitle text="产品配置" />
           <div className={styles['product-parameter-wrapper']}>
             {productConfigList.map((data, index) => (
-              <div key={index}>
-                <ProductConfigItem
-                  data={data}
-                  dataChange={data => productConfigItemDataChange(data, index)}
-                  removeProductConfig={() => removeProductConfig(index)}
-                  removeProductConfigChildrenItem={id =>
-                    setProductConfigDelList(prev => prev.concat([id]))
-                  }
-                />
-              </div>
+              <ProductConfigItem
+                key={index}
+                data={data}
+                dataChange={data => productConfigItemDataChange(data, index)}
+                removeProductConfig={() => removeProductConfig(index)}
+                removeProductConfigChildrenItem={id =>
+                  setProductConfigDelList(prev => prev.concat([id]))
+                }
+              />
             ))}
             <div className={styles['product-parameter-item']}>
               <Button
