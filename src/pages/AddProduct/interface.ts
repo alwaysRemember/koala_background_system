@@ -2,7 +2,7 @@
  * @Author: Always
  * @LastEditors: Always
  * @Date: 2020-07-14 14:15:29
- * @LastEditTime: 2020-08-20 15:14:24
+ * @LastEditTime: 2020-09-01 14:43:06
  * @FilePath: /koala_background_system/src/pages/AddProduct/interface.ts
  */
 
@@ -42,6 +42,7 @@ export interface IProduct {
   productConfigList: Array<IProductConfig>;
   productConfigDelList: Array<number>;
   productDeliveryCity: string;
+  productShipping: number; // 运费
 }
 
 export interface IProductResponse {
@@ -58,6 +59,7 @@ export interface IProductResponse {
   productParameter: Array<IProductParameter>;
   productConfigList: Array<IProductConfig>;
   productDeliveryCity: string;
+  productShipping: number; // 运费
 }
 
 export interface IProductConfig {

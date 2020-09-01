@@ -57,6 +57,7 @@ const AddProduct = ({
     Array<IProductConfigList>
   >([]); // 产品配置
   const [productDeliveryCity, setProductDeliveryCity] = useState<string>(''); // 产品发货地
+  const [productShipping, setProductShipping] = useState<number>(0); // 产品运费
 
   const [productParameterList, setProductParameterList] = useState<
     Array<IProductParameter>
@@ -98,6 +99,7 @@ const AddProduct = ({
         productParameter,
         productConfigList,
         productDeliveryCity,
+        productShipping,
       } = await getProductDetail({
         productId,
       });
@@ -114,6 +116,7 @@ const AddProduct = ({
       setProductParameterList(productParameter);
       setProductConfigList(_formatProductConfigList(productConfigList));
       setProductDeliveryCity(productDeliveryCity);
+      setProductShipping(productShipping);
     } catch (e) {}
     setIsLoading(false);
   };
@@ -174,6 +177,7 @@ const AddProduct = ({
         .filter(item => item.id && !item.name && item.amount <= 0)
         .map(item => item.id as number),
       productDeliveryCity,
+      productShipping,
     };
 
     if (productId) {
@@ -322,6 +326,22 @@ const AddProduct = ({
               value={Boolean(productAmount) ? productAmount : undefined}
               onChange={(value: number | string | undefined) =>
                 setProductAmount(Number(value))
+              }
+            />
+          </div>
+        </div>
+        <div className={styles['add-product-item']}>
+          <ItemTitle text="产品运费 (分,默认0)" />
+          <div className={styles['prodcut-item-value']}>
+            <InputNumber
+              disabled={review}
+              style={{
+                width: '300px',
+              }}
+              step={10}
+              value={productShipping}
+              onChange={(value: number | string | undefined) =>
+                setProductShipping(Number(value))
               }
             />
           </div>
