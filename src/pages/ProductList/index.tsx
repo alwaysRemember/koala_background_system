@@ -3,29 +3,27 @@ import { Descriptions, Button, Input } from 'antd';
 import styles from './index.less';
 import CategoriesSelect from '@/components/CategoriesSelect';
 import { EProductStatus, EProductStatusTransVal } from '@/enums/EProduct';
-import { ISelectUserItem, IRequestProduct } from './interface';
+import { IRequestProduct } from './interface';
 import { getAllUserList, getProductList } from '@/api';
 import { useMappedState } from 'redux-react-hook';
 import { IUserDataResponse } from '../Login/interface';
 import { EUserAuth } from '@/enums/UserAuthEnum';
-import SearchSelect, { IListItem } from './components/SearchSelect';
+import SearchSelect, { IListItem } from '../../components/SearchSelect';
 import {
   EDefaultSelect,
   EDefaultSelectTransVal,
-} from './components/SearchSelect/enums';
+} from '../../components/SearchSelect/enums';
 import SearchAmount from './components/SearchAmount';
 import ProductsTable from '@/components/ProductsTable';
 import {
   IProductItem,
   IProductsTableRef,
 } from '@/components/ProductsTable/interface';
+import { useGetUserList } from '@/hooks';
+import { ISelectUserItem } from '@/hooks/interface';
 
 const ProductList = () => {
-  const { userInfo }: { userInfo: IUserDataResponse } = useMappedState(
-    useCallback(state => state, []),
-  );
-
-  const isAdmin: boolean = userInfo.userType === EUserAuth.ADMIN; // 是否为管理员
+  const { isAdmin, userList } = useGetUserList();
 
   // 搜索条件
   const [selectCategoriesId, setSelectCategoriesId] = useState<string>(
@@ -41,9 +39,6 @@ const ProductList = () => {
   const [maxAmount, setMaxAmount] = useState<string>('');
   const [productId, setProductId] = useState<string>('');
 
-  // 用户列表
-  const [userList, setUserList] = useState<Array<ISelectUserItem>>([]);
-
   // 分页数据
   const [total, setTotal] = useState<number>(1);
   const [page, setPage] = useState<number>(1);
@@ -51,13 +46,6 @@ const ProductList = () => {
   const [data, setData] = useState<Array<IProductItem>>([]);
 
   const productsTableRef = useRef<IProductsTableRef>();
-
-  const getUserList = async () => {
-    try {
-      const list = await getAllUserList();
-      setUserList(list);
-    } catch (e) {}
-  };
 
   /**
    * 请求表格数据
@@ -204,9 +192,6 @@ const ProductList = () => {
       .concat(list.map((item: T) => cb(item)));
   };
 
-  useEffect(() => {
-    isAdmin && getUserList();
-  }, []);
   useEffect(() => {
     getData();
   }, [page]);

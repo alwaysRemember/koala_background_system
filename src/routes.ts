@@ -2,7 +2,7 @@
  * @Author: Always
  * @LastEditors: Always
  * @Date: 2020-05-27 15:38:05
- * @LastEditTime: 2020-08-07 14:02:17
+ * @LastEditTime: 2020-09-25 14:11:30
  * @FilePath: /koala_background_system/src/routes.ts
  */
 
@@ -119,6 +119,16 @@ export let serverRoutes: Array<IRouteData> = [
     meta: {
       title: '首页banner配置',
       auth: EUserAuth.ADMIN,
+    },
+  },
+  {
+    path: '/server/orderList',
+    exact: true,
+    wrappers: [require('./wrappers/Auth').default],
+    component: require('./pages/OrderList').default,
+    meta: {
+      title: '订单列表',
+      auth: EUserAuth.PROXY,
     },
   },
 ];

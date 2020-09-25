@@ -38,7 +38,6 @@ const AddCategories = () => {
     data.set('name', name);
     data.set('file', file as File);
     data.set('isUse', isUse ? 'on' : 'off');
-    console.log(data);
 
     try {
       await createCategories(data);

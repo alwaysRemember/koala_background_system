@@ -51,7 +51,7 @@ const Login = () => {
     }
 
     // 校验密码
-    if (checkPassword(userData.password as string)) {
+    if (!checkPassword(userData.password as string)) {
       window.message.warning('请输入正确的密码，格式为6-16位数数字、字母混合');
       return;
     }
