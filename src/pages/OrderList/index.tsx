@@ -6,8 +6,11 @@ import {
   Select,
   Button,
   Switch,
+  Table,
+  Tag,
 } from 'antd';
 import React, { useEffect, useState } from 'react';
+import { useHistory } from 'umi';
 import {
   EDefaultSelect,
   EDefaultSelectTransVal,
@@ -15,15 +18,18 @@ import {
 import {
   EOrderAmountSelectType,
   EOrderType,
+  EOrderTypeTransferColor,
   EOrderTypeTransferVal,
 } from './enum';
 import styles from './index.less';
 import moment from 'moment';
 import SearchSelect, { IListItem } from '../../components/SearchSelect';
-import { IGetDataParams, IGetOrderListRequest } from './interface';
-import { getTime, transferAmount } from '@/utils';
+import { IGetDataParams, IGetOrderListRequest, IOrderItem } from './interface';
+import { dateFormat, getTime, transferAmount } from '@/utils';
 import { useGetUserList } from '@/hooks';
 import { ISelectUserItem } from '@/hooks/interface';
+import { getOrderList } from '@/api';
+import { ColumnsType } from 'antd/lib/table';
 
 const { RangePicker } = DatePicker;
 const DEFAULT_VALUE = {
@@ -33,11 +39,13 @@ const DEFAULT_VALUE = {
 };
 
 const OrderList = () => {
+  const history = useHistory();
   // 用户列表
   const { isAdmin, userList } = useGetUserList();
-
+  const [page, setPage] = useState<number>(1);
   const [pageSize, setPageSize] = useState<number>(10);
   const [totalSize, setTotalSize] = useState<number>(1);
+  const [orderList, setOrderList] = useState<Array<IOrderItem>>([]);
 
   // 搜索框
   const [orderId, setOrderId] = useState<string>('');
@@ -61,6 +69,74 @@ const OrderList = () => {
     EOrderAmountSelectType
   >(EOrderAmountSelectType.HUNDRED); // 订单金额等级
   const [isSelectCreateDate, setIsSelectCreateDate] = useState<boolean>(false); // 是否启用下单时间搜索项
+
+  const [tableLoading, setTableLoading] = useState<boolean>(false);
+
+  const columns: ColumnsType<IOrderItem> = [
+    {
+      title: '订单ID',
+      align: 'center',
+      dataIndex: 'orderId',
+      width: 140,
+      fixed: 'left',
+    },
+    {
+      title: '订单总金额',
+      align: 'center',
+      dataIndex: 'payAmount',
+      width: 140,
+      render: (value: number) => `${transferAmount(String(value), 'yuan')}元`,
+    },
+    {
+      title: '订单状态',
+      align: 'center',
+      dataIndex: 'orderType',
+      width: 140,
+      render: (value: EOrderType) => (
+        <Tag color={EOrderTypeTransferColor[value]}>
+          {EOrderTypeTransferVal[value]}
+        </Tag>
+      ),
+    },
+    {
+      title: '订单运费',
+      align: 'center',
+      dataIndex: 'orderShopping',
+      width: 140,
+      render: (value: number) => `${transferAmount(String(value), 'yuan')}元`,
+    },
+    {
+      title: '订单创建时间',
+      align: 'center',
+      dataIndex: 'createTime',
+      width: 140,
+      render: (date: Date) => dateFormat(new Date(date), 'yy-mm-dd-hh-ii'),
+    },
+    {
+      title: '订单修改时间',
+      align: 'center',
+      dataIndex: 'updateTime',
+      width: 140,
+      render: (date: Date) => dateFormat(new Date(date), 'yy-mm-dd-hh-ii'),
+    },
+    {
+      title: '操作',
+      align: 'center',
+      width: 140,
+      fixed: 'right',
+      render: (_, record: IOrderItem) => (
+        <Button
+          type="primary"
+          size="small"
+          onClick={() => {
+            history.push(`/server/orderDetail?orderId=${record.orderId}`);
+          }}
+        >
+          查看详情
+        </Button>
+      ),
+    },
+  ];
 
   const submitClick = () => {
     getData(1);
@@ -87,7 +163,8 @@ const OrderList = () => {
    * @param page 请求页数
    * @param data 强制请求的参数
    */
-  const getData = (page: number, data?: IGetDataParams) => {
+  const getData = async (page: number, data?: IGetDataParams) => {
+    setTableLoading(true);
     let params: IGetOrderListRequest = {
       page,
       pageSize,
@@ -95,10 +172,10 @@ const OrderList = () => {
       minOrderAmount: transferAmount(minOrderAmount, 'fen') as number,
       maxOrderAmount: transferAmount(maxOrderAmount, 'fen') as number,
       minOrderCreateDate: isSelectCreateDate
-        ? String(getTime('start', new Date(minOrderCreateDate.format())))
+        ? getTime('start', new Date(minOrderCreateDate.format()))
         : '',
       maxOrderCreateDate: isSelectCreateDate
-        ? String(getTime('end', new Date(maxOrderCreateDate.format())))
+        ? getTime('end', new Date(maxOrderCreateDate.format()))
         : '',
       orderType,
       userId,
@@ -111,6 +188,12 @@ const OrderList = () => {
         data,
       );
     }
+    try {
+      const { total, list } = await getOrderList(params);
+      setTotalSize(total);
+      setOrderList(list);
+    } catch (e) {}
+    setTableLoading(false);
   };
 
   /**
@@ -162,7 +245,7 @@ const OrderList = () => {
 
   useEffect(() => {
     getData(1);
-  }, []);
+  }, [pageSize]);
 
   return (
     <div className={styles['order-list-wrapper']}>
@@ -280,6 +363,28 @@ const OrderList = () => {
           </Descriptions.Item>
         </Descriptions>
       </div>
+      <Table
+        columns={columns}
+        dataSource={orderList}
+        bordered
+        loading={tableLoading}
+        rowKey={(record: IOrderItem) => record.orderId}
+        scroll={{
+          x: 980,
+        }}
+        pagination={{
+          current: page,
+          pageSize: pageSize,
+          hideOnSinglePage: true,
+          total: totalSize,
+          showSizeChanger: true,
+          onChange: (page: number) => {
+            setPage(page);
+            getData(page);
+          },
+          onShowSizeChange: (_, pageSize) => setPageSize(pageSize),
+        }}
+      />
     </div>
   );
 };

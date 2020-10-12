@@ -2,7 +2,7 @@
  * @Author: Always
  * @LastEditors: Always
  * @Date: 2020-08-12 17:55:20
- * @LastEditTime: 2020-08-12 18:01:52
+ * @LastEditTime: 2020-10-12 14:16:05
  * @FilePath: /koala_background_system/src/api/user.ts
  */
 
@@ -13,7 +13,7 @@ import {
   IAdminUserListResponse,
   IAdminUserItem,
 } from '@/pages/AdminUserList/interface';
-import { ISelectUserItem } from '@/pages/ProductList/interface';
+import { ISelectUserItem } from '../hooks/interface';
 import { IBindAppletUser } from '@/pages/AdminUserList/components/BindAppletUserModal/interface';
 
 /**

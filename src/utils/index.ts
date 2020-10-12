@@ -2,7 +2,7 @@
  * @Author: Always
  * @LastEditors: Always
  * @Date: 2020-05-28 15:59:48
- * @LastEditTime: 2020-09-25 18:19:03
+ * @LastEditTime: 2020-10-12 14:12:07
  * @FilePath: /koala_background_system/src/utils/index.ts
  */
 
@@ -134,12 +134,14 @@ export const getTime = (type: 'start' | 'end', date: Date): string => {
     1}-${date.getDate()}`;
   switch (type) {
     case 'start':
-      return String(new Date(t).getTime());
+      return new Date(t).getTime() + '';
     case 'end':
-      return String(
-        new Date(new Date(t).toLocaleDateString()).getTime() +
-          24 * 60 * 60 * 1000 -
-          1,
+      return (
+        new Date(
+          new Date(new Date(t).toLocaleDateString()).getTime() +
+            24 * 60 * 60 * 1000 -
+            1,
+        ).getTime() + ''
       );
   }
 };
