@@ -93,7 +93,10 @@ const OrderList = () => {
       dataIndex: 'orderType',
       width: 140,
       render: (value: EOrderType) => (
-        <Tag color={EOrderTypeTransferColor[value]}>
+        <Tag
+          color={EOrderTypeTransferColor[value]}
+          className={styles['order-type']}
+        >
           {EOrderTypeTransferVal[value]}
         </Tag>
       ),

@@ -2,7 +2,7 @@
  * @Author: Always
  * @LastEditors: Always
  * @Date: 2020-05-27 15:38:05
- * @LastEditTime: 2020-09-25 14:11:30
+ * @LastEditTime: 2020-10-12 16:36:23
  * @FilePath: /koala_background_system/src/routes.ts
  */
 
@@ -128,6 +128,16 @@ export let serverRoutes: Array<IRouteData> = [
     component: require('./pages/OrderList').default,
     meta: {
       title: '订单列表',
+      auth: EUserAuth.PROXY,
+    },
+  },
+  {
+    path: '/server/orderDetail',
+    exact: true,
+    wrappers: [require('./wrappers/Auth').default],
+    component: require('./pages/OrderDetail').default,
+    meta: {
+      title: '订单详情',
       auth: EUserAuth.PROXY,
     },
   },
