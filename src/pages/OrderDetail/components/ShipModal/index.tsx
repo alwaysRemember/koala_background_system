@@ -34,6 +34,10 @@ const ShipModal = ({
         type: !/^[A-Za-z-0-9]+$/.test(num),
         msg: '快递运单号不正确',
       },
+      {
+        type: code === courierCode && num === courierNum,
+        msg: '未修改数据',
+      },
     ];
     // 获取错误
     const isError:
@@ -52,6 +56,7 @@ const ShipModal = ({
         setConfirmLoading(true);
         try {
           await shipModalConfirm({ num, code, name });
+          setShow(false);
         } catch (e) {}
         setConfirmLoading(false);
       },
@@ -66,12 +71,12 @@ const ShipModal = ({
     setCode(value);
     setName(label);
   };
-  const selectSearch = (value: string) => {};
 
   useEffect(() => {
     setNum(courierNum);
     setCode(courierCode);
-  }, [courierCode, courierNum]);
+    setName(courierName);
+  }, [courierCode, courierNum, courierName]);
 
   return (
     <Modal
@@ -94,9 +99,13 @@ const ShipModal = ({
           onSelect={(value, option) => {
             selectChange(value, option as ISelectOptionsProps);
           }}
-          onSearch={selectSearch}
           filterOption={(input, option) =>
-            option?.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+            (option?.label as string)
+              .toLowerCase()
+              .indexOf(input.toLowerCase()) >= 0 ||
+            (option?.value as string)
+              .toLowerCase()
+              .indexOf(input.toLowerCase()) >= 0
           }
           options={courierData}
         />
