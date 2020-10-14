@@ -4,7 +4,7 @@ import { EOrderType } from '../OrderList/enum';
  * @Author: Always
  * @LastEditors: Always
  * @Date: 2020-10-12 16:38:13
- * @LastEditTime: 2020-10-13 17:39:44
+ * @LastEditTime: 2020-10-14 16:48:31
  * @FilePath: /koala_background_system/src/pages/OrderDetail/interface.ts
  */
 export interface IOrderDetailResponse {
@@ -34,5 +34,17 @@ export interface IOrderDetailProductItem {
 
 export interface IOrderLogisticsInfo {
   courierName: string; // 快递名称
+  courierCode: string; // 快递代码
   courierNum: string; // 快递单号
+}
+
+export interface IShipModalConfirmMethodParams {
+  code: string;
+  num: string;
+  name: string;
+}
+
+export interface IUpdateOrderLogisticsInfoParams
+  extends IShipModalConfirmMethodParams {
+  orderId: string;
 }

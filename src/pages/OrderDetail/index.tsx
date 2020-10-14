@@ -1,15 +1,20 @@
-import { getOrderDetail } from '@/api';
+import { getOrderDetail, updateOrderLogisticsInfo } from '@/api';
 import { Descriptions, Button, Tag, Tooltip, Image } from 'antd';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import {
   EOrderType,
   EOrderTypeTransferColor,
   EOrderTypeTransferVal,
 } from '../OrderList/enum';
 import styles from './index.less';
-import { IOrderDetailResponse } from './interface';
+import {
+  IOrderDetailResponse,
+  IShipModalConfirmMethodParams,
+} from './interface';
 import * as clipboard from 'clipboard-polyfill';
 import { transferAmount } from '@/utils';
+import { IShipModalRef } from './components/ShipModal/interface';
+import ShipModal from './components/ShipModal';
 
 const OrderDetail = ({
   location: {
@@ -31,10 +36,29 @@ const OrderDetail = ({
     orderId,
   });
 
+  const shipModalRef = useRef<IShipModalRef>();
+
   const getData = async () => {
     try {
       const data = await getOrderDetail({ orderId });
       setData(data);
+    } catch (e) {}
+  };
+
+  /**
+   * 发货modal确认按钮
+   * @param params
+   */
+  const shipModalConfirm = async (params: IShipModalConfirmMethodParams) => {
+    try {
+      await updateOrderLogisticsInfo(
+        Object.assign<{}, IShipModalConfirmMethodParams, { orderId: string }>(
+          {},
+          params,
+          { orderId: data.orderId },
+        ),
+      );
+      getData();
     } catch (e) {}
   };
 
@@ -104,10 +128,56 @@ const OrderDetail = ({
           {data.deliveryInfo.address}
         </Descriptions.Item>
       </Descriptions>
+      <Descriptions
+        bordered
+        title="物流信息"
+        className={styles['info-group']}
+        column={{
+          xs: 1,
+          sm: 2,
+          md: 2,
+        }}
+      >
+        <Descriptions.Item label="快递公司">
+          {data.logisticsInfo?.courierName || '空'}
+        </Descriptions.Item>
+        <Descriptions.Item label="快递单号">
+          <p>{data.logisticsInfo?.courierNum || '空'}</p>
+          {!!data.logisticsInfo?.courierNum && (
+            <Button
+              size="small"
+              type="primary"
+              onClick={() => {
+                clipboard
+                  .writeText(data.logisticsInfo?.courierNum || '')
+                  .then(() => {
+                    window.message.success('复制成功', 1);
+                  });
+              }}
+            >
+              复制单号
+            </Button>
+          )}
+        </Descriptions.Item>
+        {(data.orderType === EOrderType.TO_BE_DELIVERED ||
+          data.orderType === EOrderType.TO_BE_RECEIVED) && (
+          <Descriptions.Item label="操作">
+            <Button
+              type="primary"
+              onClick={() => shipModalRef.current?.changeShowType(true)}
+            >
+              {data.orderType === EOrderType.TO_BE_DELIVERED
+                ? '发货'
+                : '修改物流信息'}
+            </Button>
+          </Descriptions.Item>
+        )}
+      </Descriptions>
+
       <Descriptions title="商品列表" className={styles['info-group']}>
         {data.productList.map(
           ({ img, name, buyQuantity, amount, remark, productId }, index) => (
-            <Descriptions.Item>
+            <Descriptions.Item key={productId}>
               <Descriptions
                 title={`商品 ${index + 1}`}
                 bordered
@@ -162,6 +232,15 @@ const OrderDetail = ({
           ),
         )}
       </Descriptions>
+
+      {/* 发货modal */}
+      <ShipModal
+        cref={shipModalRef}
+        courierName={data.deliveryInfo.name}
+        courierCode={data.logisticsInfo?.courierCode || ''}
+        courierNum={data.logisticsInfo?.courierNum || ''}
+        shipModalConfirm={shipModalConfirm}
+      />
     </div>
   );
 };
