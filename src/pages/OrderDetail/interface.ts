@@ -4,7 +4,7 @@ import { EOrderType } from '../OrderList/enum';
  * @Author: Always
  * @LastEditors: Always
  * @Date: 2020-10-12 16:38:13
- * @LastEditTime: 2020-10-14 16:48:31
+ * @LastEditTime: 2020-10-14 17:25:05
  * @FilePath: /koala_background_system/src/pages/OrderDetail/interface.ts
  */
 export interface IOrderDetailResponse {
@@ -47,4 +47,11 @@ export interface IShipModalConfirmMethodParams {
 export interface IUpdateOrderLogisticsInfoParams
   extends IShipModalConfirmMethodParams {
   orderId: string;
+}
+
+export interface IUpdateOrderLogisticsInfoResponse {
+  code: string;
+  num: string;
+  name: string;
+  orderType: EOrderType;
 }

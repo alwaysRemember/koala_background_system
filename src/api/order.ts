@@ -1,6 +1,7 @@
 import {
   IOrderDetailResponse,
   IUpdateOrderLogisticsInfoParams,
+  IUpdateOrderLogisticsInfoResponse,
 } from '@/pages/OrderDetail/interface';
 import {
   IGetDataParams,
@@ -12,7 +13,7 @@ import {
  * @Author: Always
  * @LastEditors: Always
  * @Date: 2020-10-12 14:13:46
- * @LastEditTime: 2020-10-14 16:47:00
+ * @LastEditTime: 2020-10-14 17:25:20
  * @FilePath: /koala_background_system/src/api/order.ts
  */
 import http from '../axios';
@@ -39,7 +40,7 @@ export const getOrderDetail = (params: { orderId: string }) =>
 export const updateOrderLogisticsInfo = (
   params: IUpdateOrderLogisticsInfoParams,
 ) =>
-  http.request({
+  http.request<IUpdateOrderLogisticsInfoResponse>({
     url: '/order/update-order-logistics-info',
     params,
     method: 'post',

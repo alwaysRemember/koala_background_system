@@ -9,6 +9,7 @@ import {
 import styles from './index.less';
 import {
   IOrderDetailResponse,
+  IOrderLogisticsInfo,
   IShipModalConfirmMethodParams,
 } from './interface';
 import * as clipboard from 'clipboard-polyfill';
@@ -51,14 +52,27 @@ const OrderDetail = ({
    */
   const shipModalConfirm = async (params: IShipModalConfirmMethodParams) => {
     try {
-      await updateOrderLogisticsInfo(
+      const { orderType, name, num, code } = await updateOrderLogisticsInfo(
         Object.assign<{}, IShipModalConfirmMethodParams, { orderId: string }>(
           {},
           params,
           { orderId: data.orderId },
         ),
       );
-      getData();
+      setData(prev =>
+        Object.assign<
+          {},
+          IOrderDetailResponse,
+          { orderType: EOrderType; logisticsInfo: IOrderLogisticsInfo }
+        >({}, prev, {
+          orderType,
+          logisticsInfo: {
+            courierName: name,
+            courierCode: code,
+            courierNum: num,
+          },
+        }),
+      );
     } catch (e) {}
   };
 
