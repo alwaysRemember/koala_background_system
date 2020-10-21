@@ -1,10 +1,10 @@
-import { EOrderType } from '../OrderList/enum';
+import { EOrderRefundStatus, EOrderType } from '../OrderList/enum';
 
 /*
  * @Author: Always
  * @LastEditors: Always
  * @Date: 2020-10-12 16:38:13
- * @LastEditTime: 2020-10-14 17:25:05
+ * @LastEditTime: 2020-10-21 17:25:54
  * @FilePath: /koala_background_system/src/pages/OrderDetail/interface.ts
  */
 export interface IOrderDetailResponse {
@@ -15,6 +15,11 @@ export interface IOrderDetailResponse {
   orderShopping: number; // 订单运费
   orderType: EOrderType;
   orderId: string;
+  refundId: string; // 微信退款单号
+  outRefundNo: string; // 商户退款单号
+  refundStatus: EOrderRefundStatus; // 退款状态
+  refundRecvAccount: string; // 退款入账账户
+  refundSuccessTime: string; // 退款成功时间
 }
 export interface IOrderDetailDeliveryInfo {
   name: string;

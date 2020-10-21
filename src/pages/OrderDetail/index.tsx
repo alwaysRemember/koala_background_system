@@ -1,7 +1,8 @@
-import { getOrderDetail, updateOrderLogisticsInfo } from '@/api';
+import { getOrderDetail, returnOfGoods, updateOrderLogisticsInfo } from '@/api';
 import { Descriptions, Button, Tag, Tooltip, Image } from 'antd';
 import React, { useState, useEffect, useRef } from 'react';
 import {
+  EOrderRefundStatus,
   EOrderType,
   EOrderTypeTransferColor,
   EOrderTypeTransferVal,
@@ -35,6 +36,11 @@ const OrderDetail = ({
     orderShopping: 0,
     orderType: EOrderType.PENDING_PAYMENT,
     orderId,
+    refundId: '',
+    outRefundNo: '',
+    refundStatus: EOrderRefundStatus.NULL,
+    refundRecvAccount: '',
+    refundSuccessTime: '',
   });
 
   const shipModalRef = useRef<IShipModalRef>();
@@ -117,8 +123,31 @@ const OrderDetail = ({
         </Descriptions.Item>
         <Descriptions.Item label="订单状态">
           <Tag color={EOrderTypeTransferColor[data.orderType]}>
-            {EOrderTypeTransferVal[data.orderType]}
+            {/* 显示状态名称改变 */}
+            {data.orderType !== EOrderType.REFUNDING
+              ? EOrderTypeTransferVal[data.orderType]
+              : data.refundStatus === EOrderRefundStatus.NULL
+              ? '退款待处理'
+              : '退款处理中'}
           </Tag>
+          {/* 只有订单状态为退款中并且退款处理进度为未处理的情况才显示 */}
+          {data.orderType === EOrderType.REFUNDING &&
+            data.refundStatus === EOrderRefundStatus.NULL && (
+              <Button
+                size="small"
+                type="primary"
+                danger
+                onClick={async () => {
+                  try {
+                    await returnOfGoods({ orderId: data.orderId });
+                    await window.message.success('申请退款成功');
+                    getData();
+                  } catch (e) {}
+                }}
+              >
+                申请退款
+              </Button>
+            )}
         </Descriptions.Item>
       </Descriptions>
       <Descriptions

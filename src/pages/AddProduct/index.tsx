@@ -410,7 +410,7 @@ const AddProduct = ({
         </div>
 
         <div className={styles['add-product-item']}>
-          <ItemTitle text="是否数据7天无理由退款产品" />
+          <ItemTitle text="是否属于7天无理由退款产品" />
           <div className={styles['prodcut-item-value']}>
             <Switch
               checkedChildren="是"
