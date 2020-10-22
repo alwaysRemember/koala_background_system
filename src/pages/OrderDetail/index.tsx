@@ -3,6 +3,7 @@ import { Descriptions, Button, Tag, Tooltip, Image } from 'antd';
 import React, { useState, useEffect, useRef } from 'react';
 import {
   EOrderRefundStatus,
+  EOrderRefundStatusTransferVal,
   EOrderType,
   EOrderTypeTransferColor,
   EOrderTypeTransferVal,
@@ -44,6 +45,9 @@ const OrderDetail = ({
   });
 
   const shipModalRef = useRef<IShipModalRef>();
+  const [returnOfGoodsBtnLoading, setReturnOfGoodsBtnLoading] = useState<
+    boolean
+  >(false);
 
   const getData = async () => {
     try {
@@ -137,10 +141,13 @@ const OrderDetail = ({
                 size="small"
                 type="primary"
                 danger
+                loading={returnOfGoodsBtnLoading}
                 onClick={async () => {
                   try {
+                    setReturnOfGoodsBtnLoading(true);
                     await returnOfGoods({ orderId: data.orderId });
                     await window.message.success('申请退款成功');
+                    setReturnOfGoodsBtnLoading(false);
                     getData();
                   } catch (e) {}
                 }}
@@ -150,6 +157,35 @@ const OrderDetail = ({
             )}
         </Descriptions.Item>
       </Descriptions>
+      {data.refundStatus !== EOrderRefundStatus.NULL && (
+        <Descriptions
+          layout="vertical"
+          title="微信退款信息"
+          column={{
+            xs: 1,
+            sm: 2,
+            md: 2,
+          }}
+          bordered
+          className={styles['info-group']}
+        >
+          <Descriptions.Item label="微信退款单号">
+            {data.refundId}
+          </Descriptions.Item>
+          <Descriptions.Item label="商户退款单号">
+            {data.outRefundNo}
+          </Descriptions.Item>
+          <Descriptions.Item label="微信退款状态">
+            {EOrderRefundStatusTransferVal[data.refundStatus]}
+          </Descriptions.Item>
+          <Descriptions.Item label="退款入账账户">
+            {data.refundRecvAccount}
+          </Descriptions.Item>
+          <Descriptions.Item label="退款成功时间">
+            {data.refundSuccessTime ? data.refundSuccessTime : '--'}
+          </Descriptions.Item>
+        </Descriptions>
+      )}
       <Descriptions
         title="用户收货信息"
         bordered

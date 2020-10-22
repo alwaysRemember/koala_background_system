@@ -2,7 +2,7 @@
  * @Author: Always
  * @LastEditors: Always
  * @Date: 2020-09-25 14:19:58
- * @LastEditTime: 2020-10-21 17:25:41
+ * @LastEditTime: 2020-10-22 16:03:05
  * @FilePath: /koala_background_system/src/pages/OrderList/enum.ts
  */
 export enum EOrderType {
@@ -20,7 +20,7 @@ export enum EOrderTypeTransferVal {
   PENDING_PAYMENT = '待付款',
   TO_BE_DELIVERED = '待发货',
   TO_BE_RECEIVED = '待收货',
-  SUCCESS_RETURN = '交易关闭',
+  SUCCESS_RETURN = '退款成功',
   REFUNDING = '退款中',
   COMMENT = '待评价',
   FINISHED = '已完结',
@@ -52,6 +52,14 @@ export enum EOrderRefundStatus {
   REFUNDCLOSE = 'REFUNDCLOSE', // 退款关闭
   PROCESSING = 'PROCESSING', // 退款处理中
   CHANGE = 'CHANGE', // 退款异常
+}
+
+export enum EOrderRefundStatusTransferVal {
+  NULL = '未退款',
+  SUCCESS = '退款成功', // 退款成功
+  REFUNDCLOSE = '退款关闭', // 退款关闭
+  PROCESSING = '退款处理中', // 退款处理中
+  CHANGE = '退款异常', // 退款异常
 }
 
 // 订单退款资金来源
