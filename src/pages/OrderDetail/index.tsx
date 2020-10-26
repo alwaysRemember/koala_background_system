@@ -80,6 +80,8 @@ const OrderDetail = ({
             courierName: name,
             courierCode: code,
             courierNum: num,
+            signStatus: '',
+            expressData: [],
           },
         }),
       );
@@ -237,6 +239,13 @@ const OrderDetail = ({
               复制单号
             </Button>
           )}
+        </Descriptions.Item>
+        <Descriptions.Item label="快递运输情况">
+          {data.logisticsInfo?.signStatus || '空'}
+        </Descriptions.Item>
+        <Descriptions.Item label="快递当前所在地">
+          <p>{data.logisticsInfo?.expressData[0]?.context || '空'}</p>
+          <p>{data.logisticsInfo?.expressData[0]?.time || '空'}</p>
         </Descriptions.Item>
         {(data.orderType === EOrderType.TO_BE_DELIVERED ||
           data.orderType === EOrderType.TO_BE_RECEIVED) && (
