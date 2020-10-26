@@ -4,7 +4,7 @@ import { EOrderRefundStatus, EOrderType } from '../OrderList/enum';
  * @Author: Always
  * @LastEditors: Always
  * @Date: 2020-10-12 16:38:13
- * @LastEditTime: 2020-10-26 15:51:18
+ * @LastEditTime: 2020-10-26 16:13:23
  * @FilePath: /koala_background_system/src/pages/OrderDetail/interface.ts
  */
 export interface IOrderDetailResponse {
@@ -54,6 +54,7 @@ export interface IShipModalConfirmMethodParams {
   code: string;
   num: string;
   name: string;
+  isNeedExpress: boolean;
 }
 
 export interface IUpdateOrderLogisticsInfoParams

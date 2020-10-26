@@ -245,7 +245,7 @@ const OrderDetail = ({
         </Descriptions.Item>
         <Descriptions.Item label="快递当前所在地">
           <p>{data.logisticsInfo?.expressData[0]?.context || '空'}</p>
-          <p>{data.logisticsInfo?.expressData[0]?.time || '空'}</p>
+          <p>{data.logisticsInfo?.expressData[0]?.time || ''}</p>
         </Descriptions.Item>
         {(data.orderType === EOrderType.TO_BE_DELIVERED ||
           data.orderType === EOrderType.TO_BE_RECEIVED) && (

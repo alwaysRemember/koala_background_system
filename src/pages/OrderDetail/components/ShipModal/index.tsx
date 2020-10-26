@@ -1,6 +1,6 @@
 import React, { useEffect, useImperativeHandle, useState } from 'react';
 import { ISelectOptionsProps, IShipModalProps } from './interface';
-import { Modal, Select, Input } from 'antd';
+import { Modal, Select, Input, Switch } from 'antd';
 import styles from './index.less';
 import courierData from '../../../../common/json/courier.json';
 
@@ -22,6 +22,7 @@ const ShipModal = ({
   const [name, setName] = useState<string>(courierName);
   const [code, setCode] = useState<string>(courierCode);
   const [confirmLoading, setConfirmLoading] = useState<boolean>(false);
+  const [isNeedExpress, setIsNeedExpress] = useState<boolean>(true); // 是否需要快递
 
   const confirm = () => {
     // 条件判断
@@ -44,18 +45,20 @@ const ShipModal = ({
       | { type: boolean; msg: string }
       | undefined = conditionList.find(data => data.type);
 
-    if (isError) {
+    if (isError && isNeedExpress) {
       window.message.error(isError.msg);
       return;
     }
     // 数据确认框
     Modal.confirm({
       title: '数据确认',
-      content: `是否确认快递公司为: ${name}, 快递运单号为: ${num}`,
+      content: isNeedExpress
+        ? `是否确认快递公司为: ${name}, 快递运单号为: ${num}`
+        : '确认不需要快递么？',
       onOk: async () => {
         setConfirmLoading(true);
         try {
-          await shipModalConfirm({ num, code, name });
+          await shipModalConfirm({ num, code, name, isNeedExpress });
           setShow(false);
         } catch (e) {}
         setConfirmLoading(false);
@@ -89,7 +92,12 @@ const ShipModal = ({
       cancelText="取消"
     >
       <div className={styles['ship-modal-con']}>
+        <div className={styles['is-need-express']}>
+          <p className={styles['label']}>是否需要使用快递</p>
+          <Switch checked={isNeedExpress} onChange={v => setIsNeedExpress(v)} />
+        </div>
         <Select
+          disabled={!isNeedExpress}
           style={{
             width: '100%',
           }}
@@ -110,6 +118,7 @@ const ShipModal = ({
           options={courierData}
         />
         <Input
+          disabled={!isNeedExpress}
           style={{
             marginTop: '20px',
           }}
