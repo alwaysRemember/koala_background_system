@@ -4,7 +4,7 @@ import { EOrderRefundStatus, EOrderType } from '../OrderList/enum';
  * @Author: Always
  * @LastEditors: Always
  * @Date: 2020-10-12 16:38:13
- * @LastEditTime: 2020-10-26 16:13:23
+ * @LastEditTime: 2020-10-27 17:37:57
  * @FilePath: /koala_background_system/src/pages/OrderDetail/interface.ts
  */
 export interface IOrderDetailResponse {
@@ -20,8 +20,15 @@ export interface IOrderDetailResponse {
   refundStatus: EOrderRefundStatus; // 退款状态
   refundRecvAccount: string; // 退款入账账户
   refundSuccessTime: string; // 退款成功时间
+  refundCourier: null | IRefundCourier;
 }
 
+// 用户退款快递信息
+export interface IRefundCourier {
+  reason: string;
+  courierName: string;
+  trackingNumber: string;
+}
 export interface IExpressDataItem {
   context: string; // 快递当前信息
   time: string; // 格式化后的时间

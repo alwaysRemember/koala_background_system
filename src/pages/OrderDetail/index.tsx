@@ -42,6 +42,7 @@ const OrderDetail = ({
     refundStatus: EOrderRefundStatus.NULL,
     refundRecvAccount: '',
     refundSuccessTime: '',
+    refundCourier: null, // 用户退款快递信息
   });
 
   const shipModalRef = useRef<IShipModalRef>();
@@ -188,6 +189,45 @@ const OrderDetail = ({
           </Descriptions.Item>
         </Descriptions>
       )}
+      {!!data.refundCourier && (
+        <Descriptions
+          layout="vertical"
+          title="用户退款信息"
+          column={{
+            xs: 1,
+            sm: 2,
+            md: 2,
+          }}
+          bordered
+          className={styles['info-group']}
+        >
+          <Descriptions.Item label="用户退款快递名称">
+            {data.refundCourier.courierName || '空'}
+          </Descriptions.Item>
+          <Descriptions.Item label="用户退款快递单号">
+            <p>{data.refundCourier.trackingNumber || '空'}</p>
+            {!!data.refundCourier.trackingNumber && (
+              <Button
+                size="small"
+                type="primary"
+                onClick={() => {
+                  if (!data.refundCourier) return;
+                  clipboard
+                    .writeText(data.refundCourier.trackingNumber)
+                    .then(() => {
+                      window.message.success('复制成功', 1);
+                    });
+                }}
+              >
+                复制订单号
+              </Button>
+            )}
+          </Descriptions.Item>
+          <Descriptions.Item label="用户退款理由">
+            {data.refundCourier.reason}
+          </Descriptions.Item>
+        </Descriptions>
+      )}
       <Descriptions
         title="用户收货信息"
         bordered
@@ -244,8 +284,16 @@ const OrderDetail = ({
           {data.logisticsInfo?.signStatus || '空'}
         </Descriptions.Item>
         <Descriptions.Item label="快递当前所在地">
-          <p>{data.logisticsInfo?.expressData[0]?.context || '空'}</p>
-          <p>{data.logisticsInfo?.expressData[0]?.time || ''}</p>
+          <p>
+            {(data.logisticsInfo?.expressData &&
+              data.logisticsInfo?.expressData[0]?.context) ||
+              '空'}
+          </p>
+          <p>
+            {(data.logisticsInfo?.expressData &&
+              data.logisticsInfo?.expressData[0]?.time) ||
+              ''}
+          </p>
         </Descriptions.Item>
         {(data.orderType === EOrderType.TO_BE_DELIVERED ||
           data.orderType === EOrderType.TO_BE_RECEIVED) && (
