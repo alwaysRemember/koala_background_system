@@ -1,5 +1,13 @@
 import { getOrderDetail, returnOfGoods, updateOrderLogisticsInfo } from '@/api';
-import { Descriptions, Button, Tag, Tooltip, Image } from 'antd';
+import {
+  Descriptions,
+  Button,
+  Tag,
+  Tooltip,
+  Image,
+  Modal,
+  InputNumber,
+} from 'antd';
 import React, { useState, useEffect, useRef } from 'react';
 import {
   EOrderRefundStatus,
@@ -45,6 +53,11 @@ const OrderDetail = ({
     refundCourier: null, // 用户退款快递信息
   });
 
+  const [refundAmount, setRefundAmount] = useState<number>(0);
+  const [showRefundAmountModal, setShowRefundAmountModal] = useState<boolean>(
+    false,
+  );
+
   const shipModalRef = useRef<IShipModalRef>();
   const [returnOfGoodsBtnLoading, setReturnOfGoodsBtnLoading] = useState<
     boolean
@@ -55,6 +68,24 @@ const OrderDetail = ({
       const data = await getOrderDetail({ orderId });
       setData(data);
     } catch (e) {}
+  };
+
+  const confirmRefundAmount = async () => {
+    setShowRefundAmountModal(false);
+    try {
+      setReturnOfGoodsBtnLoading(true);
+      await returnOfGoods({
+        orderId: data.orderId,
+        amount: Number(transferAmount(refundAmount, 'fen')),
+      });
+      await window.message.success('申请退款成功');
+      setReturnOfGoodsBtnLoading(false);
+      getData();
+    } catch (e) {}
+  };
+
+  const refund = async () => {
+    setShowRefundAmountModal(true);
   };
 
   /**
@@ -92,6 +123,11 @@ const OrderDetail = ({
   useEffect(() => {
     getData();
   }, []);
+
+  useEffect(() => {
+    setRefundAmount(Number(transferAmount(data.orderAmount, 'yuan')));
+  }, [data]);
+
   return (
     <div className={styles['order-detail-wrapper']}>
       <Descriptions
@@ -145,15 +181,7 @@ const OrderDetail = ({
                 type="primary"
                 danger
                 loading={returnOfGoodsBtnLoading}
-                onClick={async () => {
-                  try {
-                    setReturnOfGoodsBtnLoading(true);
-                    await returnOfGoods({ orderId: data.orderId });
-                    await window.message.success('申请退款成功');
-                    setReturnOfGoodsBtnLoading(false);
-                    getData();
-                  } catch (e) {}
-                }}
+                onClick={refund}
               >
                 申请退款
               </Button>
@@ -252,10 +280,11 @@ const OrderDetail = ({
       <Descriptions
         bordered
         title="物流信息"
+        size="small"
         className={styles['info-group']}
         column={{
           xs: 1,
-          sm: 2,
+          sm: 1,
           md: 2,
         }}
       >
@@ -362,7 +391,9 @@ const OrderDetail = ({
                 <Descriptions.Item label="商品总价">
                   {transferAmount(buyQuantity * amount, 'yuan')} 元
                 </Descriptions.Item>
-                <Descriptions.Item label="商品备注">{remark}</Descriptions.Item>
+                <Descriptions.Item label="商品备注">
+                  {remark || '空'}
+                </Descriptions.Item>
               </Descriptions>
             </Descriptions.Item>
           ),
@@ -372,11 +403,29 @@ const OrderDetail = ({
       {/* 发货modal */}
       <ShipModal
         cref={shipModalRef}
-        courierName={data.deliveryInfo.name}
+        courierName={data.logisticsInfo?.courierName || ''}
         courierCode={data.logisticsInfo?.courierCode || ''}
         courierNum={data.logisticsInfo?.courierNum || ''}
         shipModalConfirm={shipModalConfirm}
       />
+
+      <Modal
+        title="确认退款金额"
+        visible={showRefundAmountModal}
+        onOk={confirmRefundAmount}
+        onCancel={() => {
+          setShowRefundAmountModal(false);
+        }}
+      >
+        <InputNumber
+          defaultValue={refundAmount}
+          value={refundAmount}
+          onChange={v => {
+            setRefundAmount(Number(v));
+          }}
+        />{' '}
+        元
+      </Modal>
     </div>
   );
 };

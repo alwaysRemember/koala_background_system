@@ -3,7 +3,7 @@
  * @LastEditors: Always
  * @email: 740905172@qq.com
  * @Date: 2020-03-19 15:45:36
- * @LastEditTime: 2020-07-10 14:39:10
+ * @LastEditTime: 2020-10-28 10:54:52
  * @FilePath: /koala_background_system/src/axios.ts
  */
 import axios, {
@@ -125,7 +125,15 @@ class Axios {
     if (options.method === 'get') {
       op = { ...op, ...{ params: Qs.stringify(options.params) } };
     } else {
-      op = { ...op, ...{ data: options.params } };
+      op = {
+        ...op,
+        ...{
+          data:
+            options.contentType === 'json'
+              ? options.params
+              : Qs.stringify(options.params),
+        },
+      };
     }
     return op;
   }

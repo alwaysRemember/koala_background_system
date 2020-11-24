@@ -56,7 +56,7 @@ const AdminUserList = () => {
       dataIndex: 'userType',
       align: 'center',
       width: 150,
-      render: (text: string, _, index: number) => {
+      render: (text: EUserAuth, _, index: number) => {
         return (
           <UserTypeSelect
             value={text}
@@ -71,12 +71,6 @@ const AdminUserList = () => {
     {
       title: '用户联系邮箱',
       dataIndex: 'email',
-      align: 'center',
-      width: 200,
-    },
-    {
-      title: '用户密码',
-      dataIndex: 'password',
       align: 'center',
       width: 200,
     },

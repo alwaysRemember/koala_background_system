@@ -7,11 +7,11 @@ export default ({
   data,
   onChange,
 }: {
-  value: string;
+  value: EUserAuth;
   data: Array<any>;
   onChange: (value: string) => void;
 }) => (
-  <Select value={value} onChange={onChange}>
+  <Select value={EUserAuth[value]} onChange={onChange}>
     {data.map((key: string) => {
       const label: number = Number(key);
       return (

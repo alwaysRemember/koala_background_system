@@ -2,7 +2,7 @@
  * @Author: Always
  * @LastEditors: Always
  * @Date: 2020-10-12 14:13:46
- * @LastEditTime: 2020-10-21 17:08:10
+ * @LastEditTime: 2020-11-17 16:16:45
  * @FilePath: /koala_background_system/src/api/order.ts
  */
 import {
@@ -47,7 +47,7 @@ export const updateOrderLogisticsInfo = (
   });
 
 // 申请微信退款
-export const returnOfGoods = (params: { orderId: string }) =>
+export const returnOfGoods = (params: { orderId: string; amount: number }) =>
   http.request({
     url: '/order/return-of-goods',
     params,
