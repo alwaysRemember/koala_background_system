@@ -3,7 +3,7 @@
  * @LastEditors: Always
  * @email: 740905172@qq.com
  * @Date: 2020-03-19 15:45:36
- * @LastEditTime: 2020-10-28 10:54:52
+ * @LastEditTime: 2020-12-08 16:43:37
  * @FilePath: /koala_background_system/src/axios.ts
  */
 import axios, {
@@ -129,9 +129,9 @@ class Axios {
         ...op,
         ...{
           data:
-            options.contentType === 'json'
-              ? options.params
-              : Qs.stringify(options.params),
+            options.contentType == 'form'
+              ? Qs.stringify(options.params)
+              : options.params,
         },
       };
     }
@@ -142,14 +142,14 @@ class Axios {
    * 设置请求类型
    * @param ct
    */
-  _setContentType(ct: TContentType): string {
-    let contentType: string;
+  _setContentType(ct: TContentType): string | boolean {
+    let contentType: string | boolean;
     switch (ct) {
       case 'form':
         contentType = 'application/x-www-form-urlencoded';
         break;
       case 'formData':
-        contentType = 'multipart/form-data';
+        contentType = false;
         break;
       case 'json':
         contentType = 'application/json';
