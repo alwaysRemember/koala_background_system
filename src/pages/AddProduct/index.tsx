@@ -53,6 +53,7 @@ const AddProduct = ({
   const [productDetail, setProductDetail] = useState<string>(''); // 产品详情
   const [productBrief, setProductBrief] = useState<string>(''); // 产品简介
   const [productAmount, setProductAmount] = useState<number>(0); // 产品金额 分
+  const [productCostAmount, setProductConstAmount] = useState<number>(0); // 产品成本金额
   const [productConfigList, setProductConfigList] = useState<
     Array<IProductConfigList>
   >([]); // 产品配置
@@ -100,6 +101,7 @@ const AddProduct = ({
         productConfigList,
         productDeliveryCity,
         productShipping,
+        costAmount,
       } = await getProductDetail({
         productId,
       });
@@ -112,6 +114,7 @@ const AddProduct = ({
       setProductDetail(productDetail);
       setProductBrief(productBrief);
       setProductAmount(amount);
+      setProductConstAmount(costAmount);
       setMainImg(mainImg);
       setProductParameterList(productParameter);
       setProductConfigList(_formatProductConfigList(productConfigList));
@@ -134,7 +137,8 @@ const AddProduct = ({
       !bannerIdList.length ||
       !videoData ||
       !mainImg ||
-      !productDeliveryCity
+      !productDeliveryCity ||
+      !productCostAmount
     ) {
       window.message.error('请填写商品必须的参数');
       return;
@@ -157,6 +161,7 @@ const AddProduct = ({
       productType,
       categoriesId: categoriesId as string,
       amount: productAmount,
+      costAmount: productCostAmount,
       productBrief,
       productDetail,
       mediaIdList: editorRef.current?.getMediaList() || [],
@@ -315,6 +320,16 @@ const AddProduct = ({
           </div>
         </div>
         <div className={styles['add-product-item']}>
+          <ItemTitle text="产品类型" />
+          <div className={styles['prodcut-item-value']}>
+            <CategoriesSelect
+              disabled={review}
+              defaultValue={categoriesId}
+              selectIdChange={id => setCategoriesId(id)}
+            />
+          </div>
+        </div>
+        <div className={styles['add-product-item']}>
           <ItemTitle text="产品金额 (分)" />
           <div className={styles['prodcut-item-value']}>
             <InputNumber
@@ -326,6 +341,22 @@ const AddProduct = ({
               value={Boolean(productAmount) ? productAmount : undefined}
               onChange={(value: number | string | undefined) =>
                 setProductAmount(Number(value))
+              }
+            />
+          </div>
+        </div>
+        <div className={styles['add-product-item']}>
+          <ItemTitle text="产品成本金额 (分)" />
+          <div className={styles['prodcut-item-value']}>
+            <InputNumber
+              disabled={review}
+              style={{
+                width: '300px',
+              }}
+              step={10}
+              value={Boolean(productCostAmount) ? productCostAmount : undefined}
+              onChange={(value: number | string | undefined) =>
+                setProductConstAmount(Number(value))
               }
             />
           </div>
@@ -343,17 +374,6 @@ const AddProduct = ({
               onChange={(value: number | string | undefined) =>
                 setProductShipping(Number(value))
               }
-            />
-          </div>
-        </div>
-
-        <div className={styles['add-product-item']}>
-          <ItemTitle text="产品类型" />
-          <div className={styles['prodcut-item-value']}>
-            <CategoriesSelect
-              disabled={review}
-              defaultValue={categoriesId}
-              selectIdChange={id => setCategoriesId(id)}
             />
           </div>
         </div>

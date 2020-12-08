@@ -18,17 +18,19 @@ const ProductConfigChildren = ({
 }) => {
   const [name, setName] = useState<string>(data.name);
   const [amount, setAmount] = useState<number>(data.amount);
+  const [costAmount, setCostAmount] = useState<number>(data.costAmount);
 
   /**
    * 输入框失焦事件
    */
   const inputBlur = () => {
-    onBlur({ ...data, ...{ name, amount } }, index);
+    onBlur({ ...data, ...{ name, amount, costAmount } }, index);
   };
 
   useEffect(() => {
     setName(data.name);
     setAmount(data.amount);
+    setCostAmount(data.costAmount);
   }, [data]);
   return (
     <div className={styles['product-config-children-wrapper']}>
@@ -46,6 +48,16 @@ const ProductConfigChildren = ({
               min={0}
               value={amount}
               onChange={value => setAmount(value as number)}
+              onBlur={inputBlur}
+            />
+          </Tooltip>
+        </Descriptions.Item>
+        <Descriptions.Item label="成本金额（分）">
+          <Tooltip title="此金额是基于产品成本金额累加的金额">
+            <InputNumber
+              min={0}
+              value={costAmount}
+              onChange={value => setCostAmount(value as number)}
               onBlur={inputBlur}
             />
           </Tooltip>
@@ -77,7 +89,9 @@ const ProductConfigItem = ({
 
   const addConfigItem = () => {
     setList(prev =>
-      prev.concat([{ name: '', amount: 0, categoryName: title }]),
+      prev.concat([
+        { name: '', amount: 0, categoryName: title, costAmount: 0 },
+      ]),
     );
   };
 

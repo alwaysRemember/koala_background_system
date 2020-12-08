@@ -2,7 +2,7 @@
  * @Author: Always
  * @LastEditors: Always
  * @Date: 2020-07-14 14:15:29
- * @LastEditTime: 2020-09-01 14:43:06
+ * @LastEditTime: 2020-11-30 16:25:37
  * @FilePath: /koala_background_system/src/pages/AddProduct/interface.ts
  */
 
@@ -28,6 +28,7 @@ export interface IProduct {
   productType: boolean;
   categoriesId: string;
   amount: number;
+  costAmount: number;
   productBrief: string;
   productDetail: string;
   mediaIdList: Array<string>;
@@ -51,6 +52,7 @@ export interface IProductResponse {
   productType: boolean;
   categoriesId: string;
   amount: number;
+  costAmount: number; // 成本价
   productBrief: string;
   productDetail: string;
   bannerList: Array<IBannerItem>;
@@ -66,6 +68,7 @@ export interface IProductConfig {
   id?: number;
   name: string;
   amount: number;
+  costAmount: number;
   categoryName: string;
 }
 

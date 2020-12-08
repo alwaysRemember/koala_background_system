@@ -24,6 +24,7 @@
     "@umijs/preset-react": "1.x",
     "@umijs/test": "^3.2.3",
     "antd": "^4.7.0",
+    "axios": "^0.21.0",
     "braft-editor": "^2.3.9",
     "clipboard-polyfill": "^3.0.1",
     "js-base64": "^2.5.2",
