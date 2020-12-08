@@ -8,6 +8,13 @@
     }
     .amount-slider-wrapper {
       display: block;
+      :global {
+        .ant-descriptions-item-container {
+          .ant-descritions-item-content {
+            display: block;
+          }
+        }
+      }
       & > span {
         padding-right: 10px;
         padding-left: 5px;

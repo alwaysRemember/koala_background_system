@@ -305,19 +305,17 @@ const OrderList = () => {
             label="订单金额"
             className={styles['amount-slider-wrapper']}
           >
-            <div>
-              <span>金额等级:&nbsp;</span>
-              <Select
-                value={orderAmountSelectType}
-                onChange={value => setOrderAmountSelectType(value)}
-              >
-                {[...Object.values(EOrderAmountSelectType)].map(value => (
-                  <Select.Option key={value} value={value}>
-                    {value}
-                  </Select.Option>
-                ))}
-              </Select>
-            </div>
+            <span>金额等级:&nbsp;</span>
+            <Select
+              value={orderAmountSelectType}
+              onChange={value => setOrderAmountSelectType(value)}
+            >
+              {[...Object.values(EOrderAmountSelectType)].map(value => (
+                <Select.Option key={value} value={value}>
+                  {value}
+                </Select.Option>
+              ))}
+            </Select>
             <Slider
               range
               min={0}
