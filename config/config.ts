@@ -2,7 +2,7 @@
  * @Author: Always
  * @LastEditors: Always
  * @Date: 2020-05-28 13:36:22
- * @LastEditTime: 2020-12-08 15:19:42
+ * @LastEditTime: 2020-12-08 20:59:05
  * @FilePath: /koala_background_system/config/config.ts
  */
 
@@ -15,6 +15,7 @@ export default defineConfig({
   history: {
     type: 'hash',
   },
+  outputPath: 'system',
   publicPath: '/system/',
   routes: [
     {
